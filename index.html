@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MdcatPrep — MDCAT 2027 Preparation</title>
+<meta name="description" content="MdcatPrep — a dedicated platform for MDCAT 2027 preparation with chapter-wise tests and study resources.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="logo" href="#"><span class="md">Mdcat</span><span class="prep">Prep</span></a>
+    <div class="header-spacer"></div>
+    <span class="user-chip" id="userChip" style="display:none"></span>
+    <button class="icon-btn" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">☀️</button>
+    <button class="btn btn-sm" id="registerBtn" data-auth="register">Register</button>
+    <button class="btn btn-sm btn-outline" id="headerLogout" style="display:none">Log Out</button>
+    <button class="icon-btn" id="menuBtn" title="Menu" aria-label="Menu">☰</button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a class="btn btn-outline" href="#subjects">Subjects</a>
+    <a class="btn btn-outline" href="#tests">Tests</a>
+    <a class="btn btn-outline" href="#resources">Study Resources</a>
+    <a class="btn btn-outline" href="#about">About</a>
+    <a class="btn btn-outline" href="#contact">Contact</a>
+    <button class="btn" id="mobileRegister" data-auth="register">Register</button>
+    <button class="btn btn-outline" id="mobileLogout" style="display:none">Log Out</button>
+  </div>
+</header>
+
+<section class="dashboard" id="dashboard">
+  <div class="container" style="padding-top:26px">
+    <div class="info-card">
+      <h3 id="dashGreeting">Welcome!</h3>
+      <p>Your preparation overview for this session.</p>
+      <div class="dash-stats">
+        <div class="stat"><b>0</b><span>Tests Attempted</span></div>
+        <div class="stat"><b>&mdash;</b><span>Best Score</span></div>
+        <div class="stat"><b>No results yet</b><span>Recent Results</span></div>
+      </div>
+      <div style="margin-top:18px"><button class="btn btn-outline" id="dashLogout">Log Out</button></div>
+    </div>
+  </div>
+</section>
+
+<section class="hero">
+  <div class="container">
+    <h1>Pakistan&rsquo;s Dedicated Platform<br><span class="accent-line">for MDCAT 2027 Preparation</span></h1>
+    <p class="lead">Chapter-wise tests, structured study resources and a realistic exam experience for MDCAT 2027.</p>
+    <div class="pill-row">
+      <span class="pill">PMDC Syllabus</span>
+      <span class="pill">Chapter-wise Tests</span>
+      <span class="pill">Mock Tests</span>
+      <span class="pill">Study Resources</span>
+    </div>
+    <div class="hero-actions">
+      <a class="btn" href="#tests">Browse Tests</a>
+      <a class="btn btn-outline" href="#how-to">How To Attempt Test</a>
+    </div>
+    <div class="stats-strip">
+      <div class="stat"><b>2,700+</b><span>MCQs</span></div>
+      <div class="stat"><b>54</b><span>Tests</span></div>
+      <div class="stat"><b>62</b><span>Notes</span></div>
+      <div class="stat"><b>5</b><span>Subjects</span></div>
+    </div>
+    <div class="countdown-card">
+      <span class="cd-pill"><span class="cd-dot"></span>MDCAT 2027</span>
+      <h2>Your MDCAT Journey Starts Here</h2>
+      <p class="sub">Every day brings you one step closer to your dream medical college.</p>
+      <div class="cd-boxes">
+        <div class="cd-box"><b id="cdDays">--</b><span>DAYS</span></div>
+        <div class="cd-box"><b id="cdHours">--</b><span>HRS</span></div>
+        <div class="cd-box"><b id="cdMinutes">--</b><span>MIN</span></div>
+        <div class="cd-box"><b id="cdSeconds" class="sec">--</b><span>SEC</span></div>
+      </div>
+      <div class="cd-notice"><b>NOTICE:</b> This is an expected date. No official date has been announced yet by PMDC.</div>
+    </div>
+  </div>
+</section>
+
+<div class="container"><div class="divider"><span class="line"></span><span class="dot"></span><span class="gem"></span><span class="dot"></span><span class="line"></span></div></div>
+
+<section class="section" id="subjects">
+  <div class="container">
+    <div class="section-head">
+      <h2>Everything You Need <span class="u">for MDCAT</span></h2>
+      <p>Select an exam subject to explore comprehensive chapter syllabi and units.</p>
+    </div>
+    <div class="subject-grid">
+      <div class="subject-box red"><h3>Biology</h3><p class="count">1,200+ MCQs</p><a class="arrow" href="#subject-biology" aria-label="Biology tests">&rarr;</a></div>
+      <div class="subject-box blue"><h3>Chemistry</h3><p class="count">900+ MCQs</p><a class="arrow" href="#subject-chemistry" aria-label="Chemistry tests">&rarr;</a></div>
+      <div class="subject-box purple"><h3>Physics</h3><p class="count">850+ MCQs</p><a class="arrow" href="#subject-physics" aria-label="Physics tests">&rarr;</a></div>
+      <div class="subject-box amber"><h3>English</h3><p class="count">500+ MCQs</p><span class="arrow">&rarr;</span></div>
+      <div class="subject-box green"><h3>Logical Reasoning</h3><p class="count">300+ MCQs</p><span class="arrow">&rarr;</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="container"><div class="divider"><span class="line"></span><span class="dot"></span><span class="gem"></span><span class="dot"></span><span class="line"></span></div></div>
+
+<section class="section" id="tests">
+  <div class="container">
+    <div class="section-head">
+      <h2>Recently Uploaded <span class="u">Tests</span></h2>
+      <p>Explore the latest uploaded tests and practice important MDCAT questions to strengthen your concepts, assess your preparation, and improve your performance.</p>
+    </div>
+<div class="subject-group" id="subject-biology"><h3>Biology &mdash; 17 Tests</h3><div class="test-grid">
+<div class="test-box"><span class="chip">Biology</span><h4>Bioenergetics</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Biology</span><h4>Biological Molecules</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Biology</span><h4>Biotechnology</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Biology</span><h4>Chemical Coordination</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Biology</span><h4>Circulation</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Biology</span><h4>Digestion</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Biology</span><h4>Evolution</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Biology</span><h4>Homeostasis and Excretion</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Biology</span><h4>Immunity</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Biology</span><h4>Inheritance</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Biology</span><h4>Nervous Coordination</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Biology</span><h4>Reproduction</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Biology</span><h4>Respiration</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Biology</span><h4>Support and Movement</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Biology</span><h4>The Cell</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Biology</span><h4>The Enzyme</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Biology</span><h4>The Virus</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+</div></div>
+<div class="subject-group" id="subject-chemistry"><h3>Chemistry &mdash; 20 Tests</h3><div class="test-grid">
+<div class="test-box"><span class="chip">Chemistry</span><h4>Alcohol, Phenol and Ether</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Chemistry</span><h4>Aldehydes and Ketones</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Chemistry</span><h4>Alkyl Halide and Amine</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Chemistry</span><h4>Atomic Structure</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Chemistry</span><h4>Carboxylic Acid</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Chemistry</span><h4>Chemical Equilibrium</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Chemistry</span><h4>D and f block Elements</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Chemistry</span><h4>Electrochemistry</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Chemistry</span><h4>Fundamentals of Chemistry</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Chemistry</span><h4>Gases</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Chemistry</span><h4>Hydrocarbons</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Chemistry</span><h4>Industrial Chemistry</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Chemistry</span><h4>Introduction To Organic Chemistry</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Chemistry</span><h4>Liquids</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Chemistry</span><h4>Macromolecules</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Chemistry</span><h4>Nomenclature</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Chemistry</span><h4>Reaction Kinetics</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Chemistry</span><h4>S and p block</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Chemistry</span><h4>Solids</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Chemistry</span><h4>Thermochemistry</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+</div></div>
+<div class="subject-group" id="subject-physics"><h3>Physics &mdash; 17 Tests</h3><div class="test-grid">
+<div class="test-box"><span class="chip">Physics</span><h4>AC and Electronics</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Physics</span><h4>Atomic Spectra</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Physics</span><h4>Current Electricity</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Physics</span><h4>Dawn Of Modern Physics</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Physics</span><h4>Dynamics</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Physics</span><h4>Electromagnetic Induction</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Physics</span><h4>Electromagnetism</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Physics</span><h4>Electronics</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Physics</span><h4>Electrostatics</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Physics</span><h4>Fluid Dynamics</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Physics</span><h4>Kinematics</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Physics</span><h4>Nuclear Physics</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Physics</span><h4>Projectile Motion + Rotational and Circular Motion</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Physics</span><h4>Thermodynamics</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Physics</span><h4>Vectors and Equilibrium</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Physics</span><h4>Waves And Oscillations</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+<div class="test-box"><span class="chip">Physics</span><h4>Work Power and Energy</h4><div class="kind">Chapter Test</div><div class="meta">50 Questions &middot; 50 Minutes &middot; 50 Marks</div><button class="btn btn-sm" data-preview>Attempt Test &rarr;</button></div>
+</div></div>
+  </div>
+</section>
+
+<div class="container"><div class="divider"><span class="line"></span><span class="dot"></span><span class="gem"></span><span class="dot"></span><span class="line"></span></div></div>
+
+<section class="section" id="how-to">
+  <div class="container">
+    <div class="section-head">
+      <h2>How To Attempt <span class="u">Test</span></h2>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card"><div class="step-num">1</div><h3>Choose Your Chapter</h3><p>Pick a subject and chapter from the directory &mdash; every test follows the PMDC syllabus for that chapter.</p></div>
+      <div class="step-card"><div class="step-num">2</div><h3>Attempt the Timed Test</h3><p>Attempt a complete paper built on the PMDC pattern with a timer, a question palette and mark-for-review, so you can rehearse exam-day time management.</p></div>
+      <div class="step-card"><div class="step-num">3</div><h3>Review Your Result</h3><p>Check your score with a per-question review of your answers and see where to improve next.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="container"><div class="divider"><span class="line"></span><span class="dot"></span><span class="gem"></span><span class="dot"></span><span class="line"></span></div></div>
+
+<section class="section" id="resources">
+  <div class="container">
+    <div class="section-head">
+      <h2>Study Resources <span class="u">and Notes</span></h2>
+      <p>Explore quality study materials, high-yield notes, and essential resources to strengthen your concepts and prepare confidently for MDCAT 2027.</p>
+    </div>
+    <div class="empty-box">Currently No Study Resources and Notes Uploaded.</div>
+  </div>
+</section>
+
+<div class="container"><div class="divider"><span class="line"></span><span class="dot"></span><span class="gem"></span><span class="dot"></span><span class="line"></span></div></div>
+
+<section class="section" id="about">
+  <div class="container">
+    <div class="info-card">
+      <h3>About MdcatPrep</h3>
+      <p>MdcatPrep is a dedicated platform for MDCAT 2027 preparation. It brings together chapter-wise tests and study resources organized around the PMDC syllabus, so students can practise steadily, attempt realistic papers and track their progress.</p>
+    </div>
+    <div class="info-card" id="contact">
+      <h3>Contact</h3>
+      <p>We are building MdcatPrep for MDCAT 2027 aspirants. New tests and resources will appear on this page as they are added.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">&copy; MdcatPrep</footer>
+
+<div class="modal-overlay" id="authModal">
+  <div class="modal">
+    <button class="modal-close" data-close="authModal" aria-label="Close">&times;</button>
+    <h3 id="authTitle">Create Account</h3>
+    <p class="hint">Your account stays in this browser only.</p>
+    <form id="registerForm">
+      <div class="field"><label for="regName">Full Name</label><input id="regName" type="text" autocomplete="name"></div>
+      <div class="field"><label for="regEmail">Email</label><input id="regEmail" type="email" autocomplete="email"></div>
+      <div class="field"><label for="regPass">Password</label><input id="regPass" type="password" autocomplete="new-password"></div>
+      <div class="field"><label for="regConfirm">Confirm Password</label><input id="regConfirm" type="password" autocomplete="new-password"></div>
+      <div class="field-error" id="regError"></div>
+      <button class="btn" type="submit" style="width:100%">Create Account</button>
+      <div class="form-switch">Already have an account? <button type="button" id="toSignin">Sign In</button></div>
+    </form>
+    <form id="signinForm" style="display:none">
+      <div class="field"><label for="signEmail">Email</label><input id="signEmail" type="email" autocomplete="email"></div>
+      <div class="field"><label for="signPass">Password</label><input id="signPass" type="password" autocomplete="current-password"></div>
+      <div class="field-error" id="signError"></div>
+      <button class="btn" type="submit" style="width:100%">Sign In</button>
+      <div class="form-switch">New here? <button type="button" id="toRegister">Create Account</button></div>
+    </form>
+  </div>
+</div>
+
+<div class="modal-overlay" id="previewModal">
+  <div class="modal">
+    <button class="modal-close" data-close="previewModal" aria-label="Close">&times;</button>
+    <h3>Preview Only</h3>
+    <p class="hint">Tests on this page are catalogue listings. A playable exam is not available here.</p>
+    <button class="btn" data-close="previewModal" style="width:100%">OK</button>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
