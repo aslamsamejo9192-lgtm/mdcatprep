@@ -2287,7 +2287,7 @@
                 <button class="forgot-link" type="button" id="forgotBtn">Forgot password?</button>
               </div>
               <div class="forgot-notice" id="forgotNotice" role="status">
-                <b>Password recovery is not available in this preview.</b> Accounts here are kept only for this session, so there is no reset link to send. If you have forgotten your password, please create a new account for this session.
+                <b>Password recovery is not available right now.</b> There is no reset link to send at the moment. If you have forgotten your password, please contact us on WhatsApp at 03343759613 for help with your account.
               </div>
               <button class="btn btn-primary auth-submit" type="submit"><i data-lucide="log-in"></i> Sign In</button>
               <p class="auth-alt">Don&rsquo;t have an account? <button type="button" id="goRegister">Sign up</button></p>
@@ -2776,7 +2776,7 @@
       tickCountdown();
       setInterval(tickCountdown, 1000);
 
-      /* ---------- Working preview tests (session only, nothing saved) ---------- */
+      /* ---------- Working preview tests ---------- */
       var EXAM_TESTS = {
         bio: {
           title: 'Cell Structure & Function',
@@ -2958,7 +2958,7 @@
         document.getElementById('resCorrect').textContent = correct;
         document.getElementById('resWrong').textContent = wrong;
         document.getElementById('resSkipped').textContent = skipped;
-        if (currentUser) currentUser.results.push({ title: t.title, correct: correct, total: total, pct: pct });
+        if (currentUser) { saveResultToStore({ testName: t.title, subject: t.subject, score: correct, total: total, percentage: pct }); }
         showView('result');
         lucide.createIcons();
       }
@@ -2982,13 +2982,89 @@
       document.getElementById('resultClose2').addEventListener('click', closeExam);
       document.getElementById('resultRetake').addEventListener('click', function () { if (cur) startExam(cur.key); });
 
-      /* ---------- Accounts & dashboard (kept for this preview session only) ---------- */
-      var ACCOUNTS = {};
+      /* ---------- Accounts & dashboard — real accounts + results ---------- */
+      var FS_BASE = 'https://firestore.googleapis.com/v1/projects/mdcatprep-4ae3e/databases/(default)/documents';
+      var FS_KEY = 'AIzaSyCthuUN4Uhn-gllqufLhP1cMfss8r6vFwM';
+      var SESSION_KEY = 'mdcatprep-session';
       var currentUser = null;
       var accountBack = document.getElementById('accountBack');
       var authView = document.getElementById('authView');
       var dashView = document.getElementById('dashView');
       var accountTitle = document.getElementById('accountTitle');
+      function sha256Hex(text) {
+        return crypto.subtle.digest('SHA-256', new TextEncoder().encode(text)).then(function (buf) {
+          return Array.from(new Uint8Array(buf)).map(function (b) { return ('0' + b.toString(16)).slice(-2); }).join('');
+        });
+      }
+      function fsFieldStr(v) { return { stringValue: String(v) }; }
+      function fsFieldInt(v) { return { integerValue: String(parseInt(v, 10)) }; }
+      function fsFieldDouble(v) { return { doubleValue: Number(v) }; }
+      function fsFieldTime(v) { return { timestampValue: v }; }
+      function fsReadStr(fields, name) {
+        if (!fields || !fields[name]) return '';
+        var f = fields[name];
+        if (typeof f.stringValue === 'string') return f.stringValue;
+        if (typeof f.timestampValue === 'string') return f.timestampValue;
+        return '';
+      }
+      function fsReadNum(fields, name) {
+        if (!fields || !fields[name]) return 0;
+        var f = fields[name];
+        if (typeof f.integerValue !== 'undefined') return parseInt(f.integerValue, 10) || 0;
+        if (typeof f.doubleValue !== 'undefined') return Number(f.doubleValue) || 0;
+        if (typeof f.stringValue !== 'undefined') return Number(f.stringValue) || 0;
+        return 0;
+      }
+      function fsGetUserDoc(userId) {
+        return fetch(FS_BASE + '/users/' + userId + '?key=' + FS_KEY).then(function (r) {
+          if (r.status === 404) return null;
+          if (!r.ok) throw new Error('fetch-failed');
+          return r.json();
+        });
+      }
+      function fsCreateUserDoc(userId, data) {
+        var body = { fields: { fullName: fsFieldStr(data.fullName), email: fsFieldStr(data.email), passwordHash: fsFieldStr(data.passwordHash), createdAt: fsFieldTime(data.createdAt) } };
+        return fetch(FS_BASE + '/users/' + userId + '?key=' + FS_KEY, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).then(function (r) {
+          if (!r.ok) throw new Error('create-failed');
+          return r.json();
+        });
+      }
+      function fsFetchUserResults(userId) {
+        var body = { structuredQuery: { from: [{ collectionId: 'results' }], where: { fieldFilter: { field: { fieldPath: 'userId' }, op: 'EQUAL', value: { stringValue: userId } } }, limit: 100 } };
+        return fetch(FS_BASE + ':runQuery?key=' + FS_KEY, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).then(function (r) {
+          if (!r.ok) throw new Error('query-failed');
+          return r.json();
+        }).then(function (rows) {
+          var out = [];
+          (rows || []).forEach(function (row) {
+            if (!row.document || !row.document.fields) return;
+            var f = row.document.fields;
+            out.push({ title: fsReadStr(f, 'testName'), testName: fsReadStr(f, 'testName'), subject: fsReadStr(f, 'subject'), correct: fsReadNum(f, 'score'), score: fsReadNum(f, 'score'), total: fsReadNum(f, 'total'), pct: Math.round(fsReadNum(f, 'percentage')), percentage: fsReadNum(f, 'percentage'), date: fsReadStr(f, 'date') });
+          });
+          out.sort(function (a, b) { return (b.date || '').localeCompare(a.date || ''); });
+          return out;
+        }).catch(function () { return []; });
+      }
+      function saveResultToStore(res) {
+        if (!currentUser || !currentUser.email) return;
+        sha256Hex(currentUser.email.toLowerCase()).then(function (userId) {
+          var nowIso = new Date().toISOString();
+          var body = { fields: { userId: fsFieldStr(userId), userEmail: fsFieldStr(currentUser.email.toLowerCase()), testName: fsFieldStr(res.testName), subject: fsFieldStr(res.subject || ''), score: fsFieldInt(res.score), total: fsFieldInt(res.total), percentage: fsFieldInt(res.percentage), date: fsFieldTime(nowIso) } };
+          return fetch(FS_BASE + '/results?key=' + FS_KEY, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+        }).catch(function () { /* result display is already shown; saving is best-effort */ });
+      }
+      function restoreSession() {
+        try {
+          var raw = sessionStorage.getItem(SESSION_KEY);
+          if (!raw) return;
+          var s = JSON.parse(raw);
+          if (!s || !s.email || !s.fullName) return;
+          currentUser = { name: s.fullName, fullName: s.fullName, email: s.email, results: [] };
+          document.body.classList.add('signed-in');
+          document.getElementById('userChipName').textContent = 'Hi, ' + s.fullName.split(' ')[0];
+          document.getElementById('userAvatar').textContent = s.fullName.trim().charAt(0).toUpperCase();
+        } catch (e) { /* no saved session */ }
+      }
 
       function validEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
       function setFieldErr(fieldId, errId, msg) {
@@ -3022,14 +3098,7 @@
         accountBack.classList.remove('open');
         document.body.style.overflow = '';
       }
-      function showDashboard() {
-        authView.style.display = 'none';
-        dashView.style.display = '';
-        accountTitle.textContent = 'Student Dashboard';
-        var first = currentUser.name.split(' ')[0];
-        document.getElementById('dashGreeting').textContent = 'Welcome, ' + first + '!';
-        document.getElementById('dashEmail').textContent = 'Signed in as ' + currentUser.email + '. Your practice activity for this session is summarised below.';
-        var res = currentUser.results;
+      function renderDashboardStats(res) {
         var questions = 0, pctSum = 0, best = null;
         res.forEach(function (r) {
           questions += r.total; pctSum += r.pct;
@@ -3048,7 +3117,7 @@
           d.textContent = 'No test submissions yet.';
           list.appendChild(d);
         } else {
-          res.slice().reverse().forEach(function (r) {
+          res.forEach(function (r) {
             var row = document.createElement('div');
             row.className = 'dash-result-row';
             var b = document.createElement('b'); b.textContent = r.title;
@@ -3059,12 +3128,34 @@
         }
         lucide.createIcons();
       }
+      function showDashboard() {
+        if (!currentUser) return;
+        authView.style.display = 'none';
+        dashView.style.display = '';
+        accountTitle.textContent = 'Student Dashboard';
+        var displayName = currentUser.name || currentUser.fullName || '';
+        var first = displayName.split(' ')[0];
+        document.getElementById('dashGreeting').textContent = 'Welcome, ' + first + '!';
+        document.getElementById('dashEmail').textContent = 'Signed in as ' + currentUser.email + '. Your practice activity is summarised below.';
+        renderDashboardStats([]);
+        sha256Hex(currentUser.email.toLowerCase()).then(function (userId) {
+          return fsFetchUserResults(userId);
+        }).then(function (res) {
+          if (!currentUser) return;
+          currentUser.results = res;
+          if (dashView.style.display !== 'none') renderDashboardStats(res);
+        }).catch(function () {
+          if (currentUser) renderDashboardStats([]);
+        });
+        lucide.createIcons();
+      }
       function signInSuccess(user) {
-        currentUser = user;
+        currentUser = { name: user.fullName || user.name, fullName: user.fullName || user.name, email: user.email, results: [] };
+        try { sessionStorage.setItem(SESSION_KEY, JSON.stringify({ email: currentUser.email, fullName: currentUser.fullName })); } catch (e) {}
         document.body.classList.add('signed-in');
-        var first = user.name.split(' ')[0];
+        var first = currentUser.fullName.split(' ')[0];
         document.getElementById('userChipName').textContent = 'Hi, ' + first;
-        document.getElementById('userAvatar').textContent = user.name.trim().charAt(0).toUpperCase();
+        document.getElementById('userAvatar').textContent = currentUser.fullName.trim().charAt(0).toUpperCase();
         accountBack.classList.add('open');
         document.body.style.overflow = 'hidden';
         accountBack.scrollTop = 0;
@@ -3072,40 +3163,86 @@
       }
       function signOut() {
         currentUser = null;
+        try { sessionStorage.removeItem(SESSION_KEY); } catch (e) {}
         document.body.classList.remove('signed-in');
         closeAccount();
       }
 
       document.getElementById('registerForm').addEventListener('submit', function (ev) {
         ev.preventDefault();
+        var form = ev.target;
         var name = document.getElementById('regName').value.trim();
-        var email = document.getElementById('regEmail').value.trim();
+        var emailRaw = document.getElementById('regEmail').value.trim();
+        var email = emailRaw.toLowerCase();
         var pass = document.getElementById('regPass').value;
         var pass2 = document.getElementById('regPass2').value;
         var ok = true;
         ok = setFieldErr('f-regName', 'err-regName', name ? '' : 'Please enter your full name.') && ok;
-        var emailMsg = '';
-        if (!validEmail(email)) emailMsg = 'Please enter a valid email address.';
-        else if (ACCOUNTS[email.toLowerCase()]) emailMsg = 'An account with this email already exists. Please sign in.';
-        ok = setFieldErr('f-regEmail', 'err-regEmail', emailMsg) && ok;
+        ok = setFieldErr('f-regEmail', 'err-regEmail', validEmail(email) ? '' : 'Please enter a valid email address.') && ok;
         ok = setFieldErr('f-regPass', 'err-regPass', pass.length >= 6 ? '' : 'Password must be at least 6 characters.') && ok;
         ok = setFieldErr('f-regPass2', 'err-regPass2', (pass2 && pass2 === pass) ? '' : 'Passwords do not match.') && ok;
         if (!ok) return;
-        var user = { name: name, email: email, pass: pass, results: [] };
-        ACCOUNTS[email.toLowerCase()] = user;
-        signInSuccess(user);
+        var submitBtn = form.querySelector('.auth-submit');
+        var origBtn = submitBtn ? submitBtn.innerHTML : '';
+        if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Creating account…'; }
+        Promise.all([sha256Hex(email), sha256Hex(pass)]).then(function (hashes) {
+          var userId = hashes[0]; var passwordHash = hashes[1];
+          return fsGetUserDoc(userId).then(function (existing) {
+            if (existing) {
+              setFieldErr('f-regEmail', 'err-regEmail', 'An account with this email already exists. Please sign in.');
+              throw new Error('exists');
+            }
+            return fsCreateUserDoc(userId, { fullName: name, email: email, passwordHash: passwordHash, createdAt: new Date().toISOString() });
+          });
+        }).then(function () {
+          signInSuccess({ fullName: name, email: email });
+          form.reset();
+        }).catch(function (err) {
+          if (err && err.message !== 'exists') {
+            setFieldErr('f-regEmail', 'err-regEmail', 'Something went wrong. Please check your connection and try again.');
+          }
+        }).finally(function () {
+          if (submitBtn) { submitBtn.disabled = false; submitBtn.innerHTML = origBtn; lucide.createIcons(); }
+        });
       });
 
       document.getElementById('loginForm').addEventListener('submit', function (ev) {
         ev.preventDefault();
-        var email = document.getElementById('loginEmail').value.trim();
+        var form = ev.target;
+        var emailRaw = document.getElementById('loginEmail').value.trim();
+        var email = emailRaw.toLowerCase();
         var pass = document.getElementById('loginPass').value;
-        if (!setFieldErr('f-loginEmail', 'err-loginEmail', validEmail(email) ? '' : 'Please enter a valid email address.')) return;
-        var user = ACCOUNTS[email.toLowerCase()];
-        if (!user) { setFieldErr('f-loginEmail', 'err-loginEmail', 'No account found with this email. Please create an account first.'); return; }
-        if (user.pass !== pass) { setFieldErr('f-loginPass', 'err-loginPass', 'Incorrect password. Please try again.'); return; }
         setFieldErr('f-loginPass', 'err-loginPass', '');
-        signInSuccess(user);
+        if (!setFieldErr('f-loginEmail', 'err-loginEmail', validEmail(email) ? '' : 'Please enter a valid email address.')) return;
+        if (!pass) { setFieldErr('f-loginPass', 'err-loginPass', 'Please enter your password.'); return; }
+        var submitBtn = form.querySelector('.auth-submit');
+        var origBtn = submitBtn ? submitBtn.innerHTML : '';
+        if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Signing in…'; }
+        Promise.all([sha256Hex(email), sha256Hex(pass)]).then(function (hashes) {
+          var userId = hashes[0]; var passwordHash = hashes[1];
+          return fsGetUserDoc(userId).then(function (doc) {
+            if (!doc) {
+              setFieldErr('f-loginEmail', 'err-loginEmail', 'No account found with this email. Please create an account first.');
+              throw new Error('not-found');
+            }
+            var fields = doc.fields || {};
+            var storedHash = fsReadStr(fields, 'passwordHash');
+            if (storedHash !== passwordHash) {
+              setFieldErr('f-loginPass', 'err-loginPass', 'Incorrect password. Please try again.');
+              throw new Error('bad-pass');
+            }
+            var fullName = fsReadStr(fields, 'fullName') || email;
+            var storedEmail = fsReadStr(fields, 'email') || email;
+            signInSuccess({ fullName: fullName, email: storedEmail });
+            form.reset();
+          });
+        }).catch(function (err) {
+          if (err && err.message !== 'not-found' && err.message !== 'bad-pass') {
+            setFieldErr('f-loginEmail', 'err-loginEmail', 'Something went wrong. Please check your connection and try again.');
+          }
+        }).finally(function () {
+          if (submitBtn) { submitBtn.disabled = false; submitBtn.innerHTML = origBtn; lucide.createIcons(); }
+        });
       });
 
       document.querySelectorAll('[data-auth]').forEach(function (btn) {
@@ -3144,6 +3281,7 @@
         setActiveMenuItem('tests');
         openAllTests('all');
       });
+      restoreSession();
     </script>
   </body>
 </html>
