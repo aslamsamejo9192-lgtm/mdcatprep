@@ -1035,6 +1035,71 @@
       [data-theme="light"] .res-grid .res:nth-child(3) svg{ color:#D97706 !important; }
       [data-theme="light"] .res-grid .res:nth-child(4) svg{ color:#0D9488 !important; }
 
+      /* ---------- Home-page horizontal containment (phone: no sideways pan) ----------
+         The home page must never be wider than the viewport, so a finger drag can
+         only scroll vertically. Root causes fixed here: <html> had no overflow-x
+         containment (body-only clip does not stop viewport panning on mobile when
+         a child spills); the header flex row is wider than the content box on
+         narrow phones; home grids used bare 1fr tracks that item min-content can
+         inflate past the screen (same mechanism as the dashboard grid fix); and
+         the recent-test cards' nowrap meta row has a fixed min-content width.
+         Every home grid track is now capped with minmax(0,1fr), flex/grid items
+         may shrink (min-width:0), the home meta row may wrap instead of spilling,
+         and the root clips any residual horizontal spill. Content, values and
+         layout are unchanged wherever they already fit. */
+      html{ overflow-x:hidden; overflow-x:clip; }
+      body{ max-width:100%; }
+      .wrap{ min-width:0; }
+      header{ max-width:100%; }
+      .header-in{ min-width:0; }
+      .header-in .logo{ min-width:0; }
+      .wordmark{ white-space:nowrap; }
+      .header-actions{ min-width:0; }
+      @media (max-width:420px){
+        .header-in{ gap:6px; padding:0 16px; }
+        .header-actions{ gap:5px; }
+        .header-actions .btn-primary{ padding:8px 11px; }
+        .logo{ gap:8px; }
+        .wordmark{ font-size:20px; }
+      }
+      .hero-grid{ grid-template-columns:minmax(0,1fr); }
+      .hero-grid > div{ min-width:0; }
+      .hero h1, .hero-desc{ overflow-wrap:break-word; }
+      .pill{ max-width:100%; }
+      .hero-points span{ max-width:100%; min-width:0; }
+      .stats{ grid-template-columns:repeat(2, minmax(0,1fr)); }
+      @media (min-width:760px){ .stats{ grid-template-columns:repeat(4, minmax(0,1fr)); } }
+      .stat{ min-width:0; overflow-wrap:break-word; }
+      .countdown{ min-width:0; }
+      .cd-badge{ max-width:100%; }
+      .cd-grid{ grid-template-columns:repeat(4, minmax(0,1fr)); }
+      .cd-cell{ min-width:0; overflow:hidden; }
+      #subjects, #tests, #resources{ overflow-x:clip; }
+      footer{ overflow-x:clip; }
+      .subj-grid{ grid-template-columns:minmax(0,1fr); }
+      @media (min-width:640px){ .subj-grid{ grid-template-columns:repeat(2, minmax(0,1fr)); } }
+      @media (min-width:1020px){ .subj-grid{ grid-template-columns:repeat(3, minmax(0,1fr)); } }
+      .subj{ min-width:0; }
+      .chapter-grid{ grid-template-columns:minmax(0,1fr); }
+      @media (min-width:640px){ .chapter-grid{ grid-template-columns:repeat(2, minmax(0,1fr)); } }
+      @media (min-width:1020px){ .chapter-grid{ grid-template-columns:repeat(3, minmax(0,1fr)); } }
+      .chapter-box{ min-width:0; }
+      #recentGrid .chapter-box .tc-top{ flex-wrap:wrap; }
+      #recentGrid .chapter-box .tc-meta{ flex-wrap:wrap; max-width:100%; }
+      .steps{ grid-template-columns:minmax(0,1fr); }
+      @media (min-width:860px){ .steps{ grid-template-columns:repeat(3, minmax(0,1fr)); } }
+      .step{ min-width:0; }
+      .sec-head{ min-width:0; }
+      .sec-head h2, .sec-head p{ overflow-wrap:break-word; }
+      .divider{ max-width:100%; }
+      .divider .d-line{ min-width:0; }
+      .view-all-row .btn{ max-width:100%; }
+      .res-empty{ min-width:0; overflow-wrap:break-word; }
+      .foot-grid{ grid-template-columns:minmax(0,1fr); }
+      @media (min-width:860px){ .foot-grid{ grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr); } }
+      .foot-grid > div{ min-width:0; }
+      .foot-credit, .foot-helpline{ max-width:100%; overflow-wrap:break-word; }
+
       @media (prefers-reduced-motion: reduce){
         html{ scroll-behavior:auto; }
         *{ transition:none !important; }
@@ -1063,7 +1128,6 @@
             <i data-lucide="sun"></i>
           </button>
           <button class="btn btn-ghost btn-sm btn-signin auth-only" type="button" data-auth="login">Sign In</button>
-          <button class="btn btn-primary btn-sm auth-only" type="button" data-auth="register">Register</button>
           <button class="user-chip user-only" type="button" id="userChip" aria-label="Open your dashboard"><span class="avatar" id="userAvatar">?</span><span id="userChipName">Account</span></button>
           <button class="btn btn-ghost btn-sm user-only" type="button" id="logoutBtn">Log Out</button>
           <button class="menu-btn" type="button" id="menuBtn" aria-label="Open menu" aria-expanded="false">
