@@ -506,6 +506,10 @@
       a.res{ text-decoration:none; color:var(--text); }
       .res .res-open{ display:inline-flex; align-items:center; gap:6px; font-size:14px; font-weight:700; color:var(--sky); margin-top:2px; }
       .res .res-open svg{ width:16px; height:16px; }
+      .res .res-actions{ display:flex; flex-wrap:wrap; gap:8px 20px; align-items:center; }
+      .res a.res-open, .res a.res-download{ text-decoration:none; }
+      .res .res-download{ display:inline-flex; align-items:center; gap:6px; font-size:14px; font-weight:700; color:var(--sky); margin-top:2px; }
+      .res .res-download svg{ width:16px; height:16px; }
       .res-empty{
         margin-top:38px; text-align:center;
         background:linear-gradient(180deg, var(--surface-2), var(--surface));
@@ -1368,12 +1372,15 @@
           <p>Explore quality study materials, high-yield notes, and essential resources to strengthen your concepts and prepare confidently for MDCAT 2027.</p>
         </div>
         <div class="res-grid">
-          <a class="res" href="resources/sindh-mdcat-2025-paper-a.pdf" target="_blank" rel="noopener">
+          <div class="res">
             <i data-lucide="file-text"></i>
             <h3>Sindh MDCAT Paper 2025 — Version A</h3>
-            <p>SIBA Testing Services · 47 pages · PDF</p>
-            <span class="res-open">Open PDF <i data-lucide="arrow-up-right"></i></span>
-          </a>
+            <p>MdcatPrep · 47 pages · PDF</p>
+            <div class="res-actions">
+              <a class="res-open" href="resources/sindh-mdcat-2025-paper-a.pdf" target="_blank" rel="noopener">Open PDF <i data-lucide="arrow-up-right"></i></a>
+              <a class="res-download" href="resources/sindh-mdcat-2025-paper-a.pdf" download>Download <i data-lucide="download"></i></a>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -2048,12 +2055,15 @@
           <p>Explore quality study materials, high-yield notes, and essential resources to strengthen your concepts and prepare confidently for MDCAT 2027.</p>
         </div>
         <div class="res-grid">
-          <a class="res" href="resources/sindh-mdcat-2025-paper-a.pdf" target="_blank" rel="noopener">
+          <div class="res">
             <i data-lucide="file-text"></i>
             <h3>Sindh MDCAT Paper 2025 — Version A</h3>
-            <p>SIBA Testing Services · 47 pages · PDF</p>
-            <span class="res-open">Open PDF <i data-lucide="arrow-up-right"></i></span>
-          </a>
+            <p>MdcatPrep · 47 pages · PDF</p>
+            <div class="res-actions">
+              <a class="res-open" href="resources/sindh-mdcat-2025-paper-a.pdf" target="_blank" rel="noopener">Open PDF <i data-lucide="arrow-up-right"></i></a>
+              <a class="res-download" href="resources/sindh-mdcat-2025-paper-a.pdf" download>Download <i data-lucide="download"></i></a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
