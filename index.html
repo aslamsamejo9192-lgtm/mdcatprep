@@ -352,10 +352,12 @@
       .subj{
         background:linear-gradient(180deg, var(--surface-2), var(--surface)); border:1px solid var(--line); border-radius:22px;
         padding:22px 22px; min-height:176px; display:flex; flex-direction:column;
-        box-shadow:var(--shadow-card);
+        box-shadow:var(--shadow-card); cursor:pointer;
         transition:transform .24s cubic-bezier(.22,1,.36,1), box-shadow .24s ease, border-color .24s ease;
       }
       .subj:hover{ transform:translateY(-5px); box-shadow:var(--shadow-card-hover); }
+      .subj:focus-visible{ outline:2px solid var(--sky); outline-offset:3px; }
+      .subj:hover .subj-arrow{ transform:translateX(4px); }
       .subj h3{ font-size:24px; font-weight:800; letter-spacing:-.025em; line-height:1.1; }
       .subj-count{ font-size:15px; font-weight:550; color:var(--muted); margin-top:7px; }
       .subj-arrow{
@@ -919,35 +921,35 @@
           <p>Select an exam subject to explore comprehensive chapter syllabi and units.</p>
         </div>
         <div class="subj-grid">
-          <article class="subj subj-bio">
+          <article class="subj subj-bio" data-open-subject="biology" tabindex="0" role="button" aria-label="View Biology chapter tests">
             <h3>Biology</h3>
             <p class="subj-count">1,200+ MCQs</p>
-            <a class="subj-arrow" href="#tests" aria-label="View Biology tests"><i data-lucide="arrow-right"></i></a>
+            <span class="subj-arrow" aria-hidden="true"><i data-lucide="arrow-right"></i></span>
           </article>
-          <article class="subj subj-chem">
+          <article class="subj subj-chem" data-open-subject="chemistry" tabindex="0" role="button" aria-label="View Chemistry chapter tests">
             <h3>Chemistry</h3>
             <p class="subj-count">900+ MCQs</p>
-            <a class="subj-arrow" href="#tests" aria-label="View Chemistry tests"><i data-lucide="arrow-right"></i></a>
+            <span class="subj-arrow" aria-hidden="true"><i data-lucide="arrow-right"></i></span>
           </article>
-          <article class="subj subj-phy">
+          <article class="subj subj-phy" data-open-subject="physics" tabindex="0" role="button" aria-label="View Physics chapter tests">
             <h3>Physics</h3>
             <p class="subj-count">850+ MCQs</p>
-            <a class="subj-arrow" href="#tests" aria-label="View Physics tests"><i data-lucide="arrow-right"></i></a>
+            <span class="subj-arrow" aria-hidden="true"><i data-lucide="arrow-right"></i></span>
           </article>
-          <article class="subj subj-eng">
+          <article class="subj subj-eng" data-open-subject="english" tabindex="0" role="button" aria-label="View English chapter tests">
             <h3>English</h3>
             <p class="subj-count">500+ MCQs</p>
-            <a class="subj-arrow" href="#tests" aria-label="View English tests"><i data-lucide="arrow-right"></i></a>
+            <span class="subj-arrow" aria-hidden="true"><i data-lucide="arrow-right"></i></span>
           </article>
-          <article class="subj subj-log">
+          <article class="subj subj-log" data-open-subject="logical" tabindex="0" role="button" aria-label="View Logical Reasoning chapter tests">
             <h3>Logical Reasoning</h3>
             <p class="subj-count">300+ MCQs</p>
-            <a class="subj-arrow" href="#tests" aria-label="View Logical Reasoning tests"><i data-lucide="arrow-right"></i></a>
+            <span class="subj-arrow" aria-hidden="true"><i data-lucide="arrow-right"></i></span>
           </article>
-          <article class="subj subj-all">
+          <article class="subj subj-all" data-open-subject="all" tabindex="0" role="button" aria-label="Browse all subjects chapter tests">
             <h3>All Subjects Combined</h3>
             <p class="subj-count">2,700+ MCQs</p>
-            <a class="subj-arrow" href="#tests" aria-label="Browse all subjects"><i data-lucide="arrow-right"></i></a>
+            <span class="subj-arrow" aria-hidden="true"><i data-lucide="arrow-right"></i></span>
           </article>
         </div>
       </div>
@@ -1972,7 +1974,18 @@
         testsCount.textContent = 'Showing ' + shown + ' of 54 tests';
         noResults.style.display = shown ? 'none' : '';
       }
-      function openAllTests() {
+      function setActiveFilter(filter) {
+        activeFilter = filter;
+        document.querySelectorAll('.filter-pill').forEach(function (x) {
+          x.classList.toggle('active', x.getAttribute('data-filter') === filter);
+        });
+      }
+      function openAllTests(filter) {
+        if (typeof filter === 'string') {
+          setActiveFilter(filter);
+          testSearch.value = '';
+          applyTestFilter();
+        }
         allTestsView.classList.add('open');
         document.body.style.overflow = 'hidden';
         allTestsView.scrollTop = 0;
@@ -1982,17 +1995,23 @@
         allTestsView.classList.remove('open');
         document.body.style.overflow = '';
       }
-      document.getElementById('viewAllTests').addEventListener('click', openAllTests);
+      document.getElementById('viewAllTests').addEventListener('click', function () { openAllTests('all'); });
       document.getElementById('allTestsCloseBtn').addEventListener('click', closeAllTests);
       document.querySelectorAll('.filter-pill').forEach(function (pill) {
         pill.addEventListener('click', function () {
-          document.querySelectorAll('.filter-pill').forEach(function (x) { x.classList.remove('active'); });
-          pill.classList.add('active');
-          activeFilter = pill.getAttribute('data-filter');
+          setActiveFilter(pill.getAttribute('data-filter'));
           applyTestFilter();
         });
       });
       testSearch.addEventListener('input', applyTestFilter);
+      /* Subject boxes — like MDCAT Hub: open the listing with that subject's chapters */
+      document.querySelectorAll('[data-open-subject]').forEach(function (box) {
+        function openSubject() { openAllTests(box.getAttribute('data-open-subject')); }
+        box.addEventListener('click', openSubject);
+        box.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openSubject(); }
+        });
+      });
 
       /* MDCAT 2027 countdown — expected exam: Sunday 19 Sep 2027, 8:00 AM PKT (UTC+5 = 03:00 UTC) */
       var cdTarget = Date.UTC(2027, 8, 19, 3, 0, 0);
