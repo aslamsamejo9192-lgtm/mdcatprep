@@ -522,7 +522,11 @@
       .pdf-dl-btn[disabled]{ opacity:.65; cursor:default; }
       .pdf-frame-wrap{ flex:1 1 auto; min-height:0; position:relative; background:var(--surface-2); }
       .pdf-frame{ position:absolute; inset:0; width:100%; height:100%; border:0; background:#fff; }
-      .pdf-status{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; text-align:center; padding:24px; color:var(--muted); font-size:15px; font-weight:600; }
+      .pdf-pages{ position:absolute; inset:0; overflow-y:auto; -webkit-overflow-scrolling:touch; padding:14px 10px 34px; }
+      .pdf-page{ position:relative; background:#fff; margin:0 auto 12px; max-width:820px; box-shadow:0 2px 12px rgba(2,8,30,.35); }
+      .pdf-page canvas{ display:block; width:100%; height:auto; }
+      .pdf-page-num{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:#8A94A6; font-size:13.5px; font-weight:600; }
+      .pdf-status{ position:absolute; inset:0; z-index:3; display:flex; align-items:center; justify-content:center; text-align:center; padding:24px; background:var(--surface-2); color:var(--muted); font-size:15px; font-weight:600; }
       .pdf-status.hide{ display:none; }
       .res-empty{
         margin-top:38px; text-align:center;
@@ -2093,7 +2097,8 @@
       </div>
       <div class="pdf-frame-wrap">
         <div class="pdf-status" id="pdfStatus">Loading paper…</div>
-        <iframe class="pdf-frame" id="pdfFrame" title="Sindh MDCAT Paper 2025 — Version A (PDF)"></iframe>
+        <div class="pdf-pages" id="pdfPages"></div>
+        <iframe class="pdf-frame" id="pdfFrame" title="Sindh MDCAT Paper 2025 — Version A (PDF)" style="display:none"></iframe>
       </div>
     </div>
 
@@ -2673,68 +2678,182 @@
       }
       document.getElementById('subjectsCloseBtn').addEventListener('click', closeSubjectsView);
       document.getElementById('resourcesCloseBtn').addEventListener('click', closeResourcesView);
-      /* ---------- Paper PDF: in-page viewer + direct download ---------- */
+      /* ---------- Paper PDF: fast progressive viewer + instant download ----------
+         Speed rules (student limit: visible start within 3–4 seconds):
+         - The viewer renders with PDF.js over HTTP range requests, so page 1
+           paints as soon as its few KB arrive — it never waits for the whole
+           1.1 MB file the way the old iframe / built-in viewer did. Later
+           pages stream in as the student scrolls.
+         - Download is a plain native download: the browser starts it the
+           moment it is tapped. Nothing is fetched into a blob first (that
+           full-file wait was what made saving take up to a minute). */
       var PDF_URL = 'resources/sindh-mdcat-2025-paper-a.pdf';
       var PDF_NAME = 'Sindh-MDCAT-Paper-2025-Version-A.pdf';
+      var PDFJS_SRC = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+      var PDFJS_WORKER = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
       var pdfView = document.getElementById('pdfView');
       var pdfFrame = document.getElementById('pdfFrame');
+      var pdfPages = document.getElementById('pdfPages');
       var pdfStatus = document.getElementById('pdfStatus');
+      var pdfDoc = null, pdfDocPromise = null, pdfObserver = null, pdfToken = 0;
+
       pdfFrame.addEventListener('load', function () {
         if (pdfFrame.getAttribute('src')) pdfStatus.classList.add('hide');
       });
-      function openPdfView() {
+      function setPdfStatus(txt) {
+        pdfStatus.textContent = txt;
         pdfStatus.classList.remove('hide');
+      }
+      /* Load PDF.js on demand; also warmed up in the background once the
+         page has settled, so the first tap on Open PDF renders at once. */
+      var pdfLibPromise = null;
+      function loadPdfLib() {
+        if (window.pdfjsLib) return Promise.resolve(window.pdfjsLib);
+        if (pdfLibPromise) return pdfLibPromise;
+        pdfLibPromise = new Promise(function (resolve, reject) {
+          var s = document.createElement('script');
+          s.src = PDFJS_SRC;
+          s.onload = function () {
+            if (window.pdfjsLib) {
+              window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER;
+              resolve(window.pdfjsLib);
+            } else { pdfLibPromise = null; reject(new Error('pdfjs-missing')); }
+          };
+          s.onerror = function () { pdfLibPromise = null; reject(new Error('pdfjs-load')); };
+          document.head.appendChild(s);
+        });
+        return pdfLibPromise;
+      }
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(function () { loadPdfLib().catch(function () {}); }, { timeout: 4000 });
+      } else {
+        window.addEventListener('load', function () { setTimeout(function () { loadPdfLib().catch(function () {}); }, 1500); });
+      }
+      function ensurePdfDoc(lib, token) {
+        if (pdfDoc) return Promise.resolve(pdfDoc);
+        if (!pdfDocPromise) {
+          var task = lib.getDocument({ url: PDF_URL, rangeChunkSize: 65536, disableAutoFetch: true });
+          task.onProgress = function (p) {
+            if (token !== pdfToken) return;
+            if (p && p.total) setPdfStatus('Loading paper… ' + Math.max(1, Math.min(99, Math.round(p.loaded / p.total * 100))) + '%');
+          };
+          pdfDocPromise = task.promise.then(function (doc) { pdfDoc = doc; return doc; }, function (err) {
+            pdfDocPromise = null;
+            throw err;
+          });
+        }
+        return pdfDocPromise;
+      }
+      function renderPdfPage(doc, num, holder, token, prePage) {
+        if (holder.getAttribute('data-done') === '1') return;
+        holder.setAttribute('data-done', '1');
+        var got = prePage ? Promise.resolve(prePage) : doc.getPage(num);
+        got.then(function (page) {
+          if (token !== pdfToken) return null;
+          var wrapW = holder.clientWidth || Math.min(820, Math.max(280, pdfPages.clientWidth - 20));
+          var base = page.getViewport({ scale: 1 });
+          var dpr = Math.min(window.devicePixelRatio || 1, 2);
+          var vp = page.getViewport({ scale: (wrapW / base.width) * dpr });
+          var canvas = document.createElement('canvas');
+          canvas.width = Math.floor(vp.width);
+          canvas.height = Math.floor(vp.height);
+          holder.innerHTML = '';
+          holder.appendChild(canvas);
+          return page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
+        }).then(function () {
+          if (num === 1 && token === pdfToken) pdfStatus.classList.add('hide');
+        }).catch(function () {
+          holder.removeAttribute('data-done');
+        });
+      }
+      function buildPdfPages(doc, token) {
+        pdfPages.innerHTML = '';
+        pdfPages.scrollTop = 0;
+        if (pdfObserver) { pdfObserver.disconnect(); pdfObserver = null; }
+        doc.getPage(1).then(function (first) {
+          if (token !== pdfToken) return;
+          var base = first.getViewport({ scale: 1 });
+          var ratio = base.width + ' / ' + base.height;
+          var holders = [];
+          for (var i = 1; i <= doc.numPages; i++) {
+            var h = document.createElement('div');
+            h.className = 'pdf-page';
+            h.style.aspectRatio = ratio;
+            h.setAttribute('data-page', String(i));
+            h.innerHTML = '<span class="pdf-page-num">Page ' + i + '</span>';
+            pdfPages.appendChild(h);
+            holders.push(h);
+          }
+          if ('IntersectionObserver' in window) {
+            pdfObserver = new IntersectionObserver(function (entries) {
+              entries.forEach(function (en) {
+                if (en.isIntersecting) {
+                  renderPdfPage(doc, parseInt(en.target.getAttribute('data-page'), 10), en.target, token);
+                  pdfObserver.unobserve(en.target);
+                }
+              });
+            }, { root: pdfPages, rootMargin: '800px 0px' });
+            holders.forEach(function (h) { pdfObserver.observe(h); });
+          } else {
+            holders.forEach(function (h, idx) { renderPdfPage(doc, idx + 1, h, token); });
+          }
+          renderPdfPage(doc, 1, holders[0], token, first);
+        }).catch(function () {
+          if (token === pdfToken) setPdfStatus('The paper could not be loaded here. Tap Download above to save a copy, or check your connection and try again.');
+        });
+      }
+      function pdfFallbackToFrame() {
+        pdfPages.style.display = 'none';
+        pdfFrame.style.display = 'block';
+        setPdfStatus('Loading paper…');
         pdfFrame.setAttribute('src', PDF_URL);
+      }
+      function openPdfView() {
+        var token = ++pdfToken;
         pdfView.classList.add('open');
         document.body.style.overflow = 'hidden';
         lucide.createIcons();
+        pdfFrame.removeAttribute('src');
+        pdfFrame.style.display = 'none';
+        pdfPages.style.display = '';
+        setPdfStatus('Loading paper…');
+        loadPdfLib().then(function (lib) {
+          if (token !== pdfToken) return;
+          ensurePdfDoc(lib, token).then(function (doc) {
+            if (token !== pdfToken) return;
+            buildPdfPages(doc, token);
+          }, function () {
+            if (token !== pdfToken) return;
+            setPdfStatus('The paper could not be loaded here. Tap Download above to save a copy, or check your connection and try again.');
+          });
+        }, function () {
+          if (token !== pdfToken) return;
+          pdfFallbackToFrame();
+        });
       }
       function closePdfView() {
+        pdfToken++;
         pdfView.classList.remove('open');
         pdfFrame.removeAttribute('src');
+        if (pdfObserver) { pdfObserver.disconnect(); pdfObserver = null; }
+        pdfPages.innerHTML = '';
         syncBodyScroll();
       }
       document.getElementById('pdfCloseBtn').addEventListener('click', closePdfView);
       document.querySelectorAll('[data-open-pdf]').forEach(function (el) {
         el.addEventListener('click', function (e) { e.preventDefault(); openPdfView(); });
       });
-      /* Direct download: fetch the file the moment Download is tapped and hand
-         the browser a ready blob, so saving starts immediately instead of
-         waiting on a fresh navigation to the PDF. Falls back to a plain
-         download link if the fetch fails. */
-      function savePdfBlob(blob) {
-        var url = URL.createObjectURL(blob);
-        var a = document.createElement('a');
-        a.href = url; a.download = PDF_NAME;
-        document.body.appendChild(a); a.click(); a.remove();
-        setTimeout(function () { URL.revokeObjectURL(url); }, 30000);
-      }
+      /* Instant native download: the card links keep their plain href +
+         download attributes and are NOT intercepted, so the browser starts
+         the download on the tap itself. Only the viewer's Download button
+         needs a handler, and it fires the same native download at once. */
       function nativePdfDownload() {
         var a = document.createElement('a');
         a.href = PDF_URL; a.setAttribute('download', PDF_NAME);
         document.body.appendChild(a); a.click(); a.remove();
       }
       document.querySelectorAll('[data-download-pdf]').forEach(function (el) {
-        el.addEventListener('click', function (e) {
-          e.preventDefault();
-          if (el.getAttribute('data-busy') === '1') return;
-          el.setAttribute('data-busy', '1');
-          el.setAttribute('aria-disabled', 'true');
-          if (el.tagName === 'BUTTON') el.disabled = true;
-          var label = el.innerHTML;
-          el.innerHTML = 'Preparing…';
-          fetch(PDF_URL)
-            .then(function (r) { if (!r.ok) throw new Error('fetch failed'); return r.blob(); })
-            .then(function (blob) { savePdfBlob(blob); })
-            .catch(function () { nativePdfDownload(); })
-            .then(function () {
-              el.innerHTML = label;
-              el.removeAttribute('data-busy');
-              el.removeAttribute('aria-disabled');
-              if (el.tagName === 'BUTTON') el.disabled = false;
-              lucide.createIcons();
-            });
-        });
+        if (el.tagName === 'BUTTON') el.addEventListener('click', nativePdfDownload);
       });
       /* ---------- About view (side-menu page) ---------- */
       var aboutView = document.getElementById('aboutView');
