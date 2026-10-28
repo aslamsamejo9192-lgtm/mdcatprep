@@ -500,8 +500,15 @@
       .view-all-row{ display:flex; justify-content:center; margin-top:28px; }
       .view-all-row .btn{ padding:14px 30px; font-size:15.5px; border-radius:13px; }
       .tests-listing-wrap{ max-width:1180px; margin:0 auto; padding:26px 20px 56px; }
-      .tests-controls{ display:grid; gap:14px; }
-      @media (min-width:820px){ .tests-controls{ grid-template-columns:1fr auto; align-items:center; } }
+      /* listing view heading + description (MdcatPrep blue / orange brand split) */
+      .tests-page-title{ font-family:"Sora",sans-serif; font-size:30px; font-weight:800; letter-spacing:-.03em; line-height:1.12; }
+      @media (min-width:640px){ .tests-page-title{ font-size:38px; } }
+      .tests-page-title .tp-a{ color:var(--blue-bright); }
+      .tests-page-title .tp-b{ color:var(--accent); }
+      [data-theme="light"] .tests-page-title .tp-a{ color:#2563EB; }
+      [data-theme="light"] .tests-page-title .tp-b{ color:#D97706; }
+      .tests-page-desc{ color:var(--muted); font-size:16px; line-height:1.65; margin-top:12px; max-width:640px; }
+      .tests-controls{ display:grid; gap:14px; margin-top:26px; }
       .search-box{ position:relative; }
       .search-box svg{ position:absolute; left:15px; top:50%; transform:translateY(-50%); width:19px; height:19px; color:var(--muted-2); pointer-events:none; }
       .search-box input{
@@ -1141,23 +1148,23 @@
       <div class="exam-top">
         <div class="exam-top-in">
           <button class="exam-exit" type="button" id="allTestsCloseBtn"><i data-lucide="arrow-left"></i> Back to Home</button>
-          <div class="exam-title">
-            <b>MDCAT Practice Tests &amp; Quizzes</b>
-            <span>54 chapter-wise tests — Biology, Chemistry &amp; Physics</span>
-          </div>
         </div>
       </div>
       <div class="tests-listing-wrap">
+        <h2 class="tests-page-title"><span class="tp-a">MDCAT</span> <span class="tp-b">Practice Tests &amp; Quizzes</span></h2>
+        <p class="tests-page-desc">Practice MDCAT with topic-wise tests and interactive quizzes to strengthen your concepts, improve accuracy, and boost your confidence for MDCAT 2027.</p>
         <div class="tests-controls">
-          <div class="search-box">
-            <i data-lucide="search"></i>
-            <input id="testSearch" type="search" placeholder="Search tests by chapter name…" aria-label="Search tests by chapter name" autocomplete="off" />
-          </div>
           <div class="filter-pills" role="group" aria-label="Filter tests by subject">
-            <button class="filter-pill active" type="button" data-filter="all">All <span>54</span></button>
+            <button class="filter-pill active" type="button" data-filter="all">All Subjects <span>54</span></button>
             <button class="filter-pill" type="button" data-filter="biology">Biology <span>17</span></button>
             <button class="filter-pill" type="button" data-filter="chemistry">Chemistry <span>20</span></button>
             <button class="filter-pill" type="button" data-filter="physics">Physics <span>17</span></button>
+            <button class="filter-pill" type="button" data-filter="english">English</button>
+            <button class="filter-pill" type="button" data-filter="logical">Logical Reasoning</button>
+          </div>
+          <div class="search-box">
+            <i data-lucide="search"></i>
+            <input id="testSearch" type="search" placeholder="Search tests by chapter name…" aria-label="Search tests by chapter name" autocomplete="off" />
           </div>
         </div>
         <p class="tests-count" id="testsCount">Showing 54 of 54 tests</p>
