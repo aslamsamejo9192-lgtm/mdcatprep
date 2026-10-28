@@ -496,6 +496,42 @@
         font-size:13.5px; color:var(--muted-2);
       }
 
+      /* view-all row + all-tests listing view */
+      .view-all-row{ display:flex; justify-content:center; margin-top:28px; }
+      .view-all-row .btn{ padding:14px 30px; font-size:15.5px; border-radius:13px; }
+      .tests-listing-wrap{ max-width:1180px; margin:0 auto; padding:26px 20px 56px; }
+      .tests-controls{ display:grid; gap:14px; }
+      @media (min-width:820px){ .tests-controls{ grid-template-columns:1fr auto; align-items:center; } }
+      .search-box{ position:relative; }
+      .search-box svg{ position:absolute; left:15px; top:50%; transform:translateY(-50%); width:19px; height:19px; color:var(--muted-2); pointer-events:none; }
+      .search-box input{
+        width:100%; padding:13px 16px 13px 46px; border-radius:13px; border:1.5px solid var(--line-strong);
+        background:rgba(148,180,255,.05); color:var(--text); font-size:15.5px; font-family:inherit;
+        transition:border-color .16s ease, box-shadow .16s ease;
+      }
+      .search-box input::placeholder{ color:var(--muted-2); }
+      .search-box input:focus{ outline:none; border-color:var(--blue-bright); box-shadow:0 0 0 3px rgba(59,130,246,.18); }
+      [data-theme="light"] .search-box input{ background:#F7F9FC; }
+      .filter-pills{ display:flex; flex-wrap:wrap; gap:8px; }
+      .filter-pill{
+        display:inline-flex; align-items:center; gap:8px; padding:9px 16px; border-radius:999px;
+        border:1.5px solid var(--line-strong); background:rgba(148,180,255,.05); color:var(--muted);
+        font-size:14px; font-weight:650; transition:background .16s ease, color .16s ease, border-color .16s ease;
+      }
+      .filter-pill span{ font-size:12px; font-weight:800; background:rgba(148,180,255,.14); padding:2px 8px; border-radius:999px; }
+      .filter-pill:hover{ color:var(--text); border-color:var(--blue-bright); }
+      .filter-pill.active{ background:var(--blue); border-color:var(--blue); color:#fff; box-shadow:var(--shadow-btn); }
+      .filter-pill.active span{ background:rgba(255,255,255,.22); }
+      .tests-count{ font-size:13.5px; color:var(--muted-2); font-weight:600; margin-top:20px; }
+      #allTestsGrid{ margin-top:16px; }
+      .no-results{
+        margin-top:16px; text-align:center;
+        background:linear-gradient(180deg, var(--surface-2), var(--surface));
+        border:1.5px dashed var(--line-strong); border-radius:22px; padding:40px 24px;
+      }
+      .no-results svg{ width:32px; height:32px; color:var(--muted-2); margin:0 auto 12px; }
+      .no-results p{ font-size:15.5px; font-weight:600; color:var(--muted); }
+
       /* ---------- Working preview exam ---------- */
       .exam-back{ position:fixed; inset:0; z-index:90; background:var(--bg); overflow-y:auto; display:none; }
       .exam-back.open{ display:block; }
@@ -919,9 +955,213 @@
           <h2>Recently Uploaded Tests</h2>
           <p>Explore the latest uploaded tests and practice important MDCAT questions to strengthen your concepts, assess your preparation, and improve your performance.</p>
         </div>
-        <div class="subject-group">
-          <div class="subject-group-head"><h3>Biology</h3><span class="sg-count">17 Tests</span><span class="sg-line" aria-hidden="true"></span></div>
-          <div class="chapter-grid">
+        <div class="chapter-grid" id="recentGrid">
+          <article class="chapter-box">
+            <div class="tc-top"><span class="chip">Biology</span><span class="chip amber">Chapter Test</span></div>
+            <h4>Bioenergetics</h4>
+            <div class="tc-meta">
+              <span><i data-lucide="help-circle"></i>50 Questions</span>
+              <span><i data-lucide="clock"></i>50 Minutes</span>
+              <span><i data-lucide="award"></i>50 Marks</span>
+            </div>
+            <button class="btn btn-primary btn-sm" type="button" data-preview>Attempt Test <i data-lucide="arrow-right"></i></button>
+          </article>
+          <article class="chapter-box">
+            <div class="tc-top"><span class="chip">Biology</span><span class="chip amber">Chapter Test</span></div>
+            <h4>Biological Molecules</h4>
+            <div class="tc-meta">
+              <span><i data-lucide="help-circle"></i>50 Questions</span>
+              <span><i data-lucide="clock"></i>50 Minutes</span>
+              <span><i data-lucide="award"></i>50 Marks</span>
+            </div>
+            <button class="btn btn-primary btn-sm" type="button" data-preview>Attempt Test <i data-lucide="arrow-right"></i></button>
+          </article>
+          <article class="chapter-box">
+            <div class="tc-top"><span class="chip">Biology</span><span class="chip amber">Chapter Test</span></div>
+            <h4>Biotechnology</h4>
+            <div class="tc-meta">
+              <span><i data-lucide="help-circle"></i>50 Questions</span>
+              <span><i data-lucide="clock"></i>50 Minutes</span>
+              <span><i data-lucide="award"></i>50 Marks</span>
+            </div>
+            <button class="btn btn-primary btn-sm" type="button" data-preview>Attempt Test <i data-lucide="arrow-right"></i></button>
+          </article>
+          <article class="chapter-box">
+            <div class="tc-top"><span class="chip">Biology</span><span class="chip amber">Chapter Test</span></div>
+            <h4>Chemical Coordination</h4>
+            <div class="tc-meta">
+              <span><i data-lucide="help-circle"></i>50 Questions</span>
+              <span><i data-lucide="clock"></i>50 Minutes</span>
+              <span><i data-lucide="award"></i>50 Marks</span>
+            </div>
+            <button class="btn btn-primary btn-sm" type="button" data-preview>Attempt Test <i data-lucide="arrow-right"></i></button>
+          </article>
+          <article class="chapter-box">
+            <div class="tc-top"><span class="chip">Biology</span><span class="chip amber">Chapter Test</span></div>
+            <h4>Circulation</h4>
+            <div class="tc-meta">
+              <span><i data-lucide="help-circle"></i>50 Questions</span>
+              <span><i data-lucide="clock"></i>50 Minutes</span>
+              <span><i data-lucide="award"></i>50 Marks</span>
+            </div>
+            <button class="btn btn-primary btn-sm" type="button" data-preview>Attempt Test <i data-lucide="arrow-right"></i></button>
+          </article>
+          <article class="chapter-box">
+            <div class="tc-top"><span class="chip">Biology</span><span class="chip amber">Chapter Test</span></div>
+            <h4>Digestion</h4>
+            <div class="tc-meta">
+              <span><i data-lucide="help-circle"></i>50 Questions</span>
+              <span><i data-lucide="clock"></i>50 Minutes</span>
+              <span><i data-lucide="award"></i>50 Marks</span>
+            </div>
+            <button class="btn btn-primary btn-sm" type="button" data-preview>Attempt Test <i data-lucide="arrow-right"></i></button>
+          </article>
+        </div>
+        <div class="view-all-row">
+          <button class="btn btn-primary" type="button" id="viewAllTests">View All 54 Tests <i data-lucide="arrow-right"></i></button>
+        </div>
+
+        <div class="sec-head steps-head">
+          <h2>How To Attempt Test</h2>
+        </div>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <h3>Choose Your Chapter</h3>
+            <p>Pick a subject and chapter from the directory — every test follows the PMDC syllabus for that chapter.</p>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <h3>Attempt the Timed Test</h3>
+            <p>Answer 50 MCQs in 50 minutes with the on-screen timer, question palette and mark-for-review options.</p>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <h3>Review Your Result</h3>
+            <p>See your score instantly and go through every question again to fix the concepts you missed.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider" aria-hidden="true"><span class="d-line"></span><span class="d-dot"></span><span class="d-gem"></span><span class="d-dot"></span><span class="d-line"></span></div>
+
+    <!-- ================= Resources ================= -->
+    <section class="alt" id="resources">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2>Study Resources &amp; Notes</h2>
+          <p>Explore quality study materials, high-yield notes, and essential resources to strengthen your concepts and prepare confidently for MDCAT 2027.</p>
+        </div>
+        <div class="res-empty">
+          <i data-lucide="folder-open"></i>
+          <p>Currently No Study Resources and Notes Uploaded.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider" aria-hidden="true"><span class="d-line"></span><span class="d-dot"></span><span class="d-gem"></span><span class="d-dot"></span><span class="d-line"></span></div>
+
+    <!-- ================= About & Contact ================= -->
+    <section id="about">
+      <div class="wrap two-col">
+        <div class="about-text">
+          <div class="sec-head">
+            <h2>About MdcatPrep</h2>
+          </div>
+          <p>MdcatPrep is an MDCAT preparation platform built for Pakistani students aiming for medical and dental college admission. It brings the complete PMDC syllabus together in one place — chapter-wise tests, detailed notes and structured revision material for all five subjects.</p>
+          <p>Instead of scattered material, you prepare chapter by chapter: read the notes, attempt the timed test for that chapter, review your result, and move on. That is how toppers revise — and it is the routine MdcatPrep is designed around.</p>
+          <ul class="check-list">
+            <li><i data-lucide="check-circle-2"></i>54 chapter-wise tests with 2,700 MCQs across Biology, Chemistry and Physics</li>
+            <li><i data-lucide="check-circle-2"></i>62 detailed chapter notes covering all five PMDC subjects</li>
+            <li><i data-lucide="check-circle-2"></i>Timed tests with result and per-question review</li>
+            <li><i data-lucide="check-circle-2"></i>Content aligned with the PMDC syllabus and FSc pre-medical coursework</li>
+          </ul>
+        </div>
+        <div id="contact">
+          <div class="contact-card">
+            <h3>Contact Us</h3>
+            <p>Questions about a test, a chapter's notes, or your preparation plan? Reach out and we will guide you.</p>
+            <div class="c-row">
+              <i data-lucide="message-circle"></i>
+              <div><b>WhatsApp Support</b><span>Chat with us for quick help with tests and notes.</span></div>
+            </div>
+            <div class="c-row">
+              <i data-lucide="clock"></i>
+              <div><b>Response Time</b><span>We usually reply within a few hours on working days.</span></div>
+            </div>
+            <div class="c-row">
+              <i data-lucide="map-pin"></i>
+              <div><b>For Students Across Pakistan</b><span>Built for MDCAT aspirants in every province, fully online.</span></div>
+            </div>
+            <button class="btn btn-primary" type="button" data-preview><i data-lucide="send"></i> Send a Message</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= Footer ================= -->
+    <footer>
+      <div class="wrap">
+        <div class="foot-grid">
+          <div class="foot-brand">
+            <a class="logo" href="#home">
+              <span class="logo-mark"><i data-lucide="graduation-cap"></i></span>
+              <span class="wordmark"><span class="a">Mdcat</span><span class="b">Prep</span></span>
+            </a>
+            <p>MDCAT preparation for Pakistani students — chapter-wise PMDC syllabi, timed tests, and detailed study notes for Biology, Chemistry, Physics, English and Logical Reasoning.</p>
+          </div>
+          <div>
+            <h4>Quick Links</h4>
+            <ul class="foot-links">
+              <li><a href="#home">Home</a></li>
+              <li><a href="#subjects">Subjects</a></li>
+              <li><a href="#tests">Tests</a></li>
+              <li><a href="#resources">Resources</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Platform</h4>
+            <ul class="foot-links">
+              <li><a href="#about">About MdcatPrep</a></li>
+              <li><a href="#contact">Contact Us</a></li>
+              <li><a href="#tests">How Tests Work</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="foot-bottom">
+          <span>© 2026 MdcatPrep — MDCAT Preparation for Pakistani Students.</span>
+          <span>Biology · Chemistry · Physics · English · Logical Reasoning</span>
+        </div>
+      </div>
+    </footer>
+
+    <!-- ================= All tests listing ================= -->
+    <div class="exam-back" id="allTestsView" role="dialog" aria-modal="true" aria-label="All practice tests">
+      <div class="exam-top">
+        <div class="exam-top-in">
+          <button class="exam-exit" type="button" id="allTestsCloseBtn"><i data-lucide="arrow-left"></i> Back to Home</button>
+          <div class="exam-title">
+            <b>MDCAT Practice Tests &amp; Quizzes</b>
+            <span>54 chapter-wise tests — Biology, Chemistry &amp; Physics</span>
+          </div>
+        </div>
+      </div>
+      <div class="tests-listing-wrap">
+        <div class="tests-controls">
+          <div class="search-box">
+            <i data-lucide="search"></i>
+            <input id="testSearch" type="search" placeholder="Search tests by chapter name…" aria-label="Search tests by chapter name" autocomplete="off" />
+          </div>
+          <div class="filter-pills" role="group" aria-label="Filter tests by subject">
+            <button class="filter-pill active" type="button" data-filter="all">All <span>54</span></button>
+            <button class="filter-pill" type="button" data-filter="biology">Biology <span>17</span></button>
+            <button class="filter-pill" type="button" data-filter="chemistry">Chemistry <span>20</span></button>
+            <button class="filter-pill" type="button" data-filter="physics">Physics <span>17</span></button>
+          </div>
+        </div>
+        <p class="tests-count" id="testsCount">Showing 54 of 54 tests</p>
+        <div class="chapter-grid" id="allTestsGrid">
           <article class="chapter-box">
             <div class="tc-top"><span class="chip">Biology</span><span class="chip amber">Chapter Test</span></div>
             <h4>Bioenergetics</h4>
@@ -1092,11 +1332,6 @@
             </div>
             <button class="btn btn-primary btn-sm" type="button" data-preview>Attempt Test <i data-lucide="arrow-right"></i></button>
           </article>
-          </div>
-        </div>
-        <div class="subject-group">
-          <div class="subject-group-head"><h3>Chemistry</h3><span class="sg-count">20 Tests</span><span class="sg-line" aria-hidden="true"></span></div>
-          <div class="chapter-grid">
           <article class="chapter-box">
             <div class="tc-top"><span class="chip">Chemistry</span><span class="chip amber">Chapter Test</span></div>
             <h4>Alcohol, Phenol and Ether</h4>
@@ -1297,11 +1532,6 @@
             </div>
             <button class="btn btn-primary btn-sm" type="button" data-preview>Attempt Test <i data-lucide="arrow-right"></i></button>
           </article>
-          </div>
-        </div>
-        <div class="subject-group">
-          <div class="subject-group-head"><h3>Physics</h3><span class="sg-count">17 Tests</span><span class="sg-line" aria-hidden="true"></span></div>
-          <div class="chapter-grid">
           <article class="chapter-box">
             <div class="tc-top"><span class="chip teal">Physics</span><span class="chip amber">Chapter Test</span></div>
             <h4>AC and Electronics</h4>
@@ -1472,123 +1702,13 @@
             </div>
             <button class="btn btn-primary btn-sm" type="button" data-preview>Attempt Test <i data-lucide="arrow-right"></i></button>
           </article>
-          </div>
         </div>
-
-        <div class="sec-head steps-head">
-          <h2>How To Attempt Test</h2>
-        </div>
-        <div class="steps">
-          <div class="step">
-            <div class="step-num">1</div>
-            <h3>Choose Your Chapter</h3>
-            <p>Pick a subject and chapter from the directory — every test follows the PMDC syllabus for that chapter.</p>
-          </div>
-          <div class="step">
-            <div class="step-num">2</div>
-            <h3>Attempt the Timed Test</h3>
-            <p>Answer 50 MCQs in 50 minutes with the on-screen timer, question palette and mark-for-review options.</p>
-          </div>
-          <div class="step">
-            <div class="step-num">3</div>
-            <h3>Review Your Result</h3>
-            <p>See your score instantly and go through every question again to fix the concepts you missed.</p>
-          </div>
+        <div class="no-results" id="noResults" style="display:none;">
+          <i data-lucide="search"></i>
+          <p>No tests match your search. Try a different chapter name or subject.</p>
         </div>
       </div>
-    </section>
-
-    <div class="divider" aria-hidden="true"><span class="d-line"></span><span class="d-dot"></span><span class="d-gem"></span><span class="d-dot"></span><span class="d-line"></span></div>
-
-    <!-- ================= Resources ================= -->
-    <section class="alt" id="resources">
-      <div class="wrap">
-        <div class="sec-head">
-          <h2>Study Resources &amp; Notes</h2>
-          <p>Explore quality study materials, high-yield notes, and essential resources to strengthen your concepts and prepare confidently for MDCAT 2027.</p>
-        </div>
-        <div class="res-empty">
-          <i data-lucide="folder-open"></i>
-          <p>Currently No Study Resources and Notes Uploaded.</p>
-        </div>
-      </div>
-    </section>
-
-    <div class="divider" aria-hidden="true"><span class="d-line"></span><span class="d-dot"></span><span class="d-gem"></span><span class="d-dot"></span><span class="d-line"></span></div>
-
-    <!-- ================= About & Contact ================= -->
-    <section id="about">
-      <div class="wrap two-col">
-        <div class="about-text">
-          <div class="sec-head">
-            <h2>About MdcatPrep</h2>
-          </div>
-          <p>MdcatPrep is an MDCAT preparation platform built for Pakistani students aiming for medical and dental college admission. It brings the complete PMDC syllabus together in one place — chapter-wise tests, detailed notes and structured revision material for all five subjects.</p>
-          <p>Instead of scattered material, you prepare chapter by chapter: read the notes, attempt the timed test for that chapter, review your result, and move on. That is how toppers revise — and it is the routine MdcatPrep is designed around.</p>
-          <ul class="check-list">
-            <li><i data-lucide="check-circle-2"></i>54 chapter-wise tests with 2,700 MCQs across Biology, Chemistry and Physics</li>
-            <li><i data-lucide="check-circle-2"></i>62 detailed chapter notes covering all five PMDC subjects</li>
-            <li><i data-lucide="check-circle-2"></i>Timed tests with result and per-question review</li>
-            <li><i data-lucide="check-circle-2"></i>Content aligned with the PMDC syllabus and FSc pre-medical coursework</li>
-          </ul>
-        </div>
-        <div id="contact">
-          <div class="contact-card">
-            <h3>Contact Us</h3>
-            <p>Questions about a test, a chapter's notes, or your preparation plan? Reach out and we will guide you.</p>
-            <div class="c-row">
-              <i data-lucide="message-circle"></i>
-              <div><b>WhatsApp Support</b><span>Chat with us for quick help with tests and notes.</span></div>
-            </div>
-            <div class="c-row">
-              <i data-lucide="clock"></i>
-              <div><b>Response Time</b><span>We usually reply within a few hours on working days.</span></div>
-            </div>
-            <div class="c-row">
-              <i data-lucide="map-pin"></i>
-              <div><b>For Students Across Pakistan</b><span>Built for MDCAT aspirants in every province, fully online.</span></div>
-            </div>
-            <button class="btn btn-primary" type="button" data-preview><i data-lucide="send"></i> Send a Message</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ================= Footer ================= -->
-    <footer>
-      <div class="wrap">
-        <div class="foot-grid">
-          <div class="foot-brand">
-            <a class="logo" href="#home">
-              <span class="logo-mark"><i data-lucide="graduation-cap"></i></span>
-              <span class="wordmark"><span class="a">Mdcat</span><span class="b">Prep</span></span>
-            </a>
-            <p>MDCAT preparation for Pakistani students — chapter-wise PMDC syllabi, timed tests, and detailed study notes for Biology, Chemistry, Physics, English and Logical Reasoning.</p>
-          </div>
-          <div>
-            <h4>Quick Links</h4>
-            <ul class="foot-links">
-              <li><a href="#home">Home</a></li>
-              <li><a href="#subjects">Subjects</a></li>
-              <li><a href="#tests">Tests</a></li>
-              <li><a href="#resources">Resources</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4>Platform</h4>
-            <ul class="foot-links">
-              <li><a href="#about">About MdcatPrep</a></li>
-              <li><a href="#contact">Contact Us</a></li>
-              <li><a href="#tests">How Tests Work</a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="foot-bottom">
-          <span>© 2026 MdcatPrep — MDCAT Preparation for Pakistani Students.</span>
-          <span>Biology · Chemistry · Physics · English · Logical Reasoning</span>
-        </div>
-      </div>
-    </footer>
+    </div>
 
     <!-- ================= Working preview exam ================= -->
     <div class="exam-back" id="examBack" role="dialog" aria-modal="true" aria-label="Preview test">
@@ -1823,6 +1943,49 @@
       modal.addEventListener('click', function (e) {
         if (e.target === modal) modal.classList.remove('open');
       });
+
+      /* All-tests listing view — subject filter pills + live search */
+      var allTestsView = document.getElementById('allTestsView');
+      var allTestsGrid = document.getElementById('allTestsGrid');
+      var testSearch = document.getElementById('testSearch');
+      var testsCount = document.getElementById('testsCount');
+      var noResults = document.getElementById('noResults');
+      var activeFilter = 'all';
+      function applyTestFilter() {
+        var q = testSearch.value.trim().toLowerCase();
+        var shown = 0;
+        allTestsGrid.querySelectorAll('.chapter-box').forEach(function (box) {
+          var chip = box.querySelector('.chip');
+          var subj = chip ? chip.textContent.trim().toLowerCase() : '';
+          var name = box.querySelector('h4').textContent.toLowerCase();
+          var ok = (activeFilter === 'all' || subj === activeFilter) && (!q || name.indexOf(q) !== -1 || subj.indexOf(q) !== -1);
+          box.style.display = ok ? '' : 'none';
+          if (ok) shown++;
+        });
+        testsCount.textContent = 'Showing ' + shown + ' of 54 tests';
+        noResults.style.display = shown ? 'none' : '';
+      }
+      function openAllTests() {
+        allTestsView.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        allTestsView.scrollTop = 0;
+        lucide.createIcons();
+      }
+      function closeAllTests() {
+        allTestsView.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+      document.getElementById('viewAllTests').addEventListener('click', openAllTests);
+      document.getElementById('allTestsCloseBtn').addEventListener('click', closeAllTests);
+      document.querySelectorAll('.filter-pill').forEach(function (pill) {
+        pill.addEventListener('click', function () {
+          document.querySelectorAll('.filter-pill').forEach(function (x) { x.classList.remove('active'); });
+          pill.classList.add('active');
+          activeFilter = pill.getAttribute('data-filter');
+          applyTestFilter();
+        });
+      });
+      testSearch.addEventListener('input', applyTestFilter);
 
       /* MDCAT 2027 countdown — expected exam: Sunday 19 Sep 2027, 8:00 AM PKT (UTC+5 = 03:00 UTC) */
       var cdTarget = Date.UTC(2027, 8, 19, 3, 0, 0);
