@@ -124,22 +124,45 @@
         .header-actions .btn-primary{ padding:8px 13px; font-size:13.5px; border-radius:10px; }
         .menu-btn{ width:40px; height:40px; }
       }
-      .mobile-menu{ display:none; border-top:1px solid var(--line); padding:10px 0 16px; }
-      .mobile-menu.open{ display:block; }
-      .mobile-menu a{
-        display:flex; align-items:center; gap:12px; padding:12px 4px;
-        font-size:16px; font-weight:500; color:var(--muted);
-        border-bottom:1px solid var(--line);
+      /* Side menu panel — full-width dropdown under the header (Hub-style) */
+      .side-menu{
+        display:none; position:absolute; top:100%; left:0; right:0; z-index:60;
+        background:var(--surface); border-bottom:1px solid var(--line-strong);
+        box-shadow:0 30px 50px rgba(0,0,0,.35);
+        padding:14px 20px 20px; max-height:calc(100dvh - 64px); overflow-y:auto;
       }
-      .mobile-menu a:last-of-type{ border-bottom:none; }
-      .mobile-menu a svg{ width:19px; height:19px; color:var(--sky); }
-      .mobile-menu .mm-actions{ display:flex; gap:10px; margin-top:14px; }
-      .mobile-menu .mm-actions .btn{ flex:1; }
+      .side-menu.open{ display:block; }
+      .sm-head{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:2px 0 12px; }
+      .sm-logo{ background:none; border:none; padding:0; text-align:left; }
+      .sm-close{
+        width:40px; height:40px; border-radius:11px; flex:none;
+        background:transparent; border:1px solid transparent; color:var(--text);
+        display:grid; place-items:center;
+      }
+      .sm-close:hover{ background:rgba(148,180,255,.07); }
+      .sm-close svg{ width:22px; height:22px; }
+      .sm-items{ display:grid; gap:4px; }
+      .sm-item{
+        display:flex; align-items:center; width:100%; text-align:left;
+        background:transparent; border:none; border-radius:13px; padding:13px 16px;
+        font-size:17px; font-weight:600; letter-spacing:-.01em; color:var(--text);
+        transition:background .16s ease, color .16s ease;
+      }
+      .sm-item:hover{ background:rgba(148,180,255,.07); }
+      .sm-item.active{
+        background:linear-gradient(180deg, #2F6BEE, #2563EB 55%, #1E56D6); color:#fff;
+        box-shadow:var(--shadow-btn), 0 1px 0 rgba(255,255,255,.18) inset;
+      }
+      .sm-actions{ display:flex; gap:10px; margin-top:16px; padding-top:16px; border-top:1px solid var(--line); }
+      .sm-actions .btn{ flex:1; padding:13px 16px; }
+      [data-theme="light"] .side-menu{ box-shadow:0 30px 50px rgba(13,45,95,.18); }
+      [data-theme="light"] .sm-item:hover{ background:rgba(13,38,76,.05); }
+      [data-theme="light"] .sm-close:hover{ background:rgba(13,38,76,.05); }
       @media (min-width:900px){
         nav.main{ display:flex; }
         .menu-btn{ display:none; }
         .btn-signin{ display:inline-flex; }
-        .mobile-menu{ display:none !important; }
+        .side-menu{ display:none !important; }
       }
 
       /* ---------- Hero ---------- */
@@ -329,7 +352,7 @@
       .steps-head{ margin-top:46px; }
 
       /* weightage */
-      .weight-list{ display:grid; gap:14px; margin-top:30px; }
+      .weight-list{ display:grid; gap:14px; margin-top:38px; }
       @media (min-width:760px){ .weight-list{ grid-template-columns:1fr 1fr; } }
       .weight-row{
         background:linear-gradient(180deg, var(--surface-2), var(--surface)); border:1px solid var(--line); border-radius:var(--radius);
@@ -346,7 +369,7 @@
       .weight-sub{ font-size:13.5px; color:var(--muted-2); margin-top:9px; }
 
       /* subjects */
-      .subj-grid{ display:grid; gap:14px; margin-top:28px; }
+      .subj-grid{ display:grid; gap:14px; margin-top:38px; }
       @media (min-width:640px){ .subj-grid{ grid-template-columns:1fr 1fr; } }
       @media (min-width:1020px){ .subj-grid{ grid-template-columns:repeat(3,1fr); } }
       .subj{
@@ -409,17 +432,31 @@
       .subject-group-head h3{ font-size:22px; font-weight:800; letter-spacing:-.02em; }
       .subject-group-head .sg-count{ font-size:13px; font-weight:700; color:var(--muted); background:rgba(148,180,255,.07); border:1px solid var(--line); padding:5px 11px; border-radius:999px; }
       .subject-group-head .sg-line{ flex:1; height:1px; background:var(--line); }
-      .chapter-grid{ display:grid; gap:12px; }
+      .chapter-grid{ display:grid; gap:12px; margin-top:38px; }
       @media (min-width:640px){ .chapter-grid{ grid-template-columns:1fr 1fr; } }
       @media (min-width:1020px){ .chapter-grid{ grid-template-columns:repeat(3,1fr); } }
       .chapter-box{ background:linear-gradient(180deg, var(--surface-2), var(--surface)); border:1px solid var(--line); border-radius:18px; padding:16px; display:flex; flex-direction:column; gap:9px; box-shadow:var(--shadow-card); transition:transform .22s ease, box-shadow .22s ease, border-color .22s ease; }
       .chapter-box:hover{ transform:translateY(-3px); box-shadow:var(--shadow-card-hover); border-color:var(--line-strong); }
       [data-theme="light"] .chapter-box{ background:#fff; }
-      .chapter-box .tc-top{ display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
+      .chapter-box .tc-top{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:nowrap; width:100%; }
+      .chapter-box .tc-top .chip{ flex:none; white-space:nowrap; }
       .chapter-box .chip{ padding:5px 11px; }
       .chapter-box h4{ font-family:"Sora","Inter",sans-serif; font-size:15.5px; font-weight:700; letter-spacing:-.015em; line-height:1.35; margin:0; flex:1; }
-      .chapter-box .tc-meta{ font-size:13px; gap:7px 16px; }
+      .chapter-box .tc-meta{ flex-wrap:nowrap; gap:12px; font-size:12.5px; width:100%; align-items:center; }
+      .chapter-box .tc-meta span{ gap:5px; white-space:nowrap; flex:none; }
+      .chapter-box .tc-meta svg{ width:14px; height:14px; flex:none; }
       .chapter-box .btn{ align-self:flex-start; margin-top:2px; padding:10px 17px; font-size:14px; }
+      /* Narrow phones: tighten the meta row slightly so Questions / Minutes / Marks always fit on one line inside the box */
+      @media (max-width:480px){
+        .chapter-box .tc-meta{ gap:10px; font-size:12px; }
+        .chapter-box .tc-meta span{ gap:4px; }
+        .chapter-box .tc-meta svg{ width:13px; height:13px; }
+        .chapter-box .chip{ padding:5px 9px; font-size:11px; }
+      }
+      @media (max-width:360px){
+        .chapter-box{ padding:14px; }
+        .chapter-box .tc-meta{ gap:8px; font-size:11.5px; }
+      }
 
       /* steps */
       .steps{ display:grid; gap:16px; margin-top:20px; }
@@ -454,7 +491,7 @@
       .res p{ color:var(--muted); font-size:14.5px; line-height:1.65; flex:1; }
       .res b.num{ font-family:"Sora",sans-serif; font-size:25px; font-weight:800; letter-spacing:-.02em; line-height:1; }
       .res-empty{
-        margin-top:30px; text-align:center;
+        margin-top:38px; text-align:center;
         background:linear-gradient(180deg, var(--surface-2), var(--surface));
         border:1.5px dashed var(--line-strong); border-radius:22px;
         padding:42px 24px; box-shadow:var(--shadow-card);
@@ -494,9 +531,18 @@
       .foot-links a:hover{ color:var(--text); }
       .foot-bottom{
         margin-top:40px; padding-top:22px; border-top:1px solid var(--line);
-        display:flex; flex-wrap:wrap; gap:8px 20px; justify-content:space-between;
+        display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px;
+        text-align:center;
         font-size:13.5px; color:var(--muted-2);
       }
+      .foot-credit-block{
+        display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px;
+        text-align:center; margin-top:8px; width:100%;
+      }
+      .foot-credit{ color:#FFFFFF; font-weight:700; font-size:16.5px; line-height:1.4; letter-spacing:-.01em; }
+      .foot-helpline{ color:#A9B8D4; font-weight:500; font-size:14.5px; line-height:1.45; }
+      [data-theme="light"] .foot-credit{ color:#000000; }
+      [data-theme="light"] .foot-helpline{ color:#64748B; }
 
       /* view-all row + all-tests listing view */
       .view-all-row{ display:flex; justify-content:center; margin-top:28px; }
@@ -510,7 +556,7 @@
       [data-theme="light"] .tests-page-title .tp-a{ color:#2563EB; }
       [data-theme="light"] .tests-page-title .tp-b{ color:#D97706; }
       .tests-page-desc{ color:var(--muted); font-size:16px; line-height:1.65; margin-top:12px; max-width:640px; }
-      .tests-controls{ display:grid; gap:14px; margin-top:26px; }
+      .tests-controls{ display:grid; gap:14px; margin-top:34px; }
       .search-box{ position:relative; }
       .search-box svg{ position:absolute; left:15px; top:50%; transform:translateY(-50%); width:19px; height:19px; color:var(--muted-2); pointer-events:none; }
       .search-box input{
@@ -560,7 +606,55 @@
       .chapters-title{ font-family:"Sora",sans-serif; font-size:36px; font-weight:800; letter-spacing:-.03em; line-height:1.1; margin-top:30px; }
       @media (min-width:640px){ .chapters-title{ font-size:42px; } }
       .chapters-sub{ color:var(--muted); font-size:16px; line-height:1.6; margin-top:9px; }
-      .chapters-search{ margin-top:22px; }
+      /* About view: brand card, value cards, legal sections */
+      .about-brand-card{
+        display:flex; gap:18px; align-items:center; margin-top:26px;
+        background:linear-gradient(180deg, var(--surface-2), var(--surface));
+        border:1px solid var(--line-strong); border-radius:22px; padding:24px;
+        box-shadow:var(--shadow-card);
+      }
+      [data-theme="light"] .about-brand-card{ background:#fff; }
+      .about-brand-card .logo-mark{ width:58px; height:58px; border-radius:16px; flex:none; }
+      .about-brand-card .logo-mark svg{ width:32px; height:32px; }
+      .about-brand-card h3{ font-family:"Sora",sans-serif; font-size:22px; font-weight:800; letter-spacing:-.02em; }
+      .about-brand-card p{ color:var(--muted); font-size:15.5px; line-height:1.65; margin-top:5px; }
+      @media (max-width:560px){
+        .about-brand-card{ flex-direction:column; align-items:flex-start; padding:20px; }
+      }
+      .value-grid{ display:grid; gap:14px; margin-top:20px; }
+      @media (min-width:640px){ .value-grid{ grid-template-columns:1fr 1fr; } }
+      .value-card{
+        background:linear-gradient(180deg, var(--surface-2), var(--surface));
+        border:1px solid var(--line); border-radius:20px; padding:20px;
+        box-shadow:var(--shadow-card);
+      }
+      [data-theme="light"] .value-card{ background:#fff; }
+      .value-card svg{ width:26px; height:26px; color:var(--sky); }
+      [data-theme="light"] .value-card svg{ color:#0284C7; }
+      .value-card h3{ font-size:17px; font-weight:750; letter-spacing:-.015em; margin-top:12px; }
+      .value-card p{ color:var(--muted); font-size:14.5px; line-height:1.65; margin-top:6px; }
+      .legal-sec{ margin-top:34px; }
+      .legal-sec h3{ font-family:"Sora",sans-serif; font-size:21px; font-weight:800; letter-spacing:-.02em; }
+      .legal-sec p{ color:var(--muted); font-size:15.5px; line-height:1.7; margin-top:10px; max-width:760px; }
+
+      /* Contact view: stacked cards + message form */
+      .contact-stack{ display:grid; gap:18px; margin-top:26px; max-width:760px; }
+      .contact-stack .contact-card .btn{ margin-top:6px; }
+      .field textarea{
+        width:100%; padding:12px 14px; border-radius:12px; border:1.5px solid var(--line-strong);
+        background:rgba(148,180,255,.05); color:var(--text); font-size:15.5px; font-family:inherit;
+        resize:vertical; min-height:120px; line-height:1.55;
+        transition:border-color .16s ease, box-shadow .16s ease;
+      }
+      .field textarea::placeholder{ color:var(--muted-2); }
+      .field textarea:focus{ outline:none; border-color:var(--blue-bright); box-shadow:0 0 0 3px rgba(59,130,246,.18); }
+      [data-theme="light"] .field textarea{ background:#F7F9FC; }
+      .contact-success{ display:none; text-align:center; padding:16px 0 8px; }
+      .contact-success.show{ display:block; }
+      .contact-success svg{ width:46px; height:46px; color:var(--green); margin:0 auto 12px; }
+      .contact-success h3{ font-size:21px; font-weight:800; letter-spacing:-.02em; }
+      .contact-success p{ color:var(--muted); font-size:15px; line-height:1.65; margin-top:8px; }
+      .chapters-search{ margin-top:28px; }
       .chapter-rows{ display:grid; gap:12px; margin-top:22px; }
       .chapter-row{
         display:flex; align-items:center; gap:16px; width:100%; text-align:left;
@@ -579,32 +673,24 @@
       }
       [data-theme="light"] .chapter-num{ color:#0284C7; border-color:rgba(2,132,199,.35); background:rgba(56,189,248,.10); }
       .chapter-name{ flex:1; min-width:0; font-size:17px; font-weight:700; line-height:1.35; letter-spacing:-.01em; }
-      .chapter-chevron{ width:20px; height:20px; flex:none; color:var(--muted-2); }
+      .chapter-chevron{ width:20px; height:20px; flex:none; color:var(--muted-2); transition:transform .22s ease; }
+      /* ---------- Chapter tests page (dedicated page per chapter) ---------- */
+      .page-back{
+        display:inline-flex; align-items:center; gap:8px;
+        background:rgba(148,180,255,.04); border:1.5px solid var(--line-strong); border-radius:999px;
+        color:var(--text); font-size:15.5px; font-weight:650; padding:9px 18px 9px 14px;
+        transition:background .16s ease, border-color .16s ease;
+      }
+      .page-back:hover{ background:var(--surface-2); }
+      .page-back svg{ width:19px; height:19px; flex:none; }
+      [data-theme="light"] .page-back{ background:#fff; }
+      .chapter-tests-grid{ display:grid; gap:14px; margin-top:26px; }
       @media (max-width:560px){
         .chapter-row{ padding:13px 14px; gap:13px; }
         .chapter-num{ width:46px; height:46px; font-size:15px; }
         .chapter-name{ font-size:16px; }
       }
       #chaptersNoResults{ margin-top:22px; }
-
-      /* chapter test card modal (opened from a chapter row) */
-      .chapter-modal-back{ z-index:95; }
-      .chapter-modal{ text-align:left; max-width:440px; padding:24px; position:relative; }
-      @media (max-width:560px){ .chapter-modal{ padding:20px 17px; } }
-      .chapter-modal .chapter-box{ background:transparent; border:none; box-shadow:none; padding:0; border-radius:0; }
-      .chapter-modal .chapter-box:hover{ transform:none; box-shadow:none; }
-      [data-theme="light"] .chapter-modal .chapter-box{ background:transparent; }
-      .chapter-modal-close{
-        position:absolute; top:14px; right:14px; z-index:2;
-        width:36px; height:36px; border-radius:10px; display:grid; place-items:center;
-        background:rgba(148,180,255,.06); border:1px solid var(--line-strong); color:var(--text);
-        transition:background .16s ease;
-      }
-      .chapter-modal-close:hover{ background:var(--surface-2); }
-      .chapter-modal-close svg{ width:18px; height:18px; }
-      /* The chapter card inside the modal keeps the test box's left-aligned, compact layout */
-      .modal.chapter-modal{ text-align:left; }
-      .modal.chapter-modal .btn{ width:auto; margin-top:2px; }
 
       /* ---------- Working preview exam ---------- */
       .exam-back{ position:fixed; inset:0; z-index:90; background:var(--bg); overflow-y:auto; display:none; }
@@ -724,20 +810,27 @@
       [data-theme="light"] .r-badge.no{ color:#B91C1C; }
       [data-theme="light"] .r-badge.ok{ color:#15803D; }
 
-      /* ---------- Account (register / login / dashboard) ---------- */
-      .account-wrap{ max-width:480px; margin:0 auto; padding:24px 20px 52px; }
+      /* ---------- Account (register / login / dashboard) — Hub-style centered card ---------- */
+      .account-wrap{ max-width:520px; margin:0 auto; padding:28px 20px 52px; }
       .auth-card{
-        background:linear-gradient(180deg, var(--surface-2), var(--surface)); border:1px solid var(--line-strong); border-radius:22px;
-        padding:24px; box-shadow:var(--shadow-card);
+        background:linear-gradient(180deg, var(--surface-2), var(--surface)); border:1px solid var(--line-strong); border-radius:24px;
+        padding:32px 28px 28px; box-shadow:var(--shadow-card);
       }
-      @media (max-width:560px){ .auth-card{ padding:20px 17px; } }
-      .auth-tabs{ display:grid; grid-template-columns:1fr 1fr; gap:6px; background:rgba(148,180,255,.06); border:1px solid var(--line); border-radius:13px; padding:5px; margin-bottom:22px; }
-      .auth-tabs button{ border:none; background:transparent; color:var(--muted); font-weight:700; font-size:14.5px; padding:10px 6px; border-radius:9px; transition:background .16s ease, color .16s ease; }
-      .auth-tabs button.active{ background:var(--blue); color:#fff; box-shadow:var(--shadow-btn); }
-      .field{ margin-bottom:15px; }
-      .field label{ display:block; font-size:14px; font-weight:650; margin-bottom:7px; }
+      @media (max-width:560px){ .auth-card{ padding:26px 20px 24px; } }
+      .auth-brand{ display:flex; align-items:center; justify-content:center; gap:11px; }
+      .auth-brand .logo-mark{ width:52px; height:52px; border-radius:15px; }
+      .auth-brand .logo-mark svg{ width:29px; height:29px; }
+      .auth-brand .wordmark{ font-size:27px; }
+      .auth-heading{ font-family:"Sora",sans-serif; font-size:28px; font-weight:800; letter-spacing:-.025em; line-height:1.15; text-align:center; margin-top:22px; }
+      @media (max-width:560px){ .auth-heading{ font-size:25px; } }
+      .auth-sub{ color:var(--muted); font-size:15.5px; line-height:1.6; text-align:center; margin-top:9px; }
+      .auth-form{ margin-top:26px; text-align:left; }
+      .field{ margin-bottom:16px; }
+      .field label{ display:block; font-size:14.5px; font-weight:650; margin-bottom:8px; }
+      .input-icon{ position:relative; }
+      .input-icon > svg, .input-icon > .lucide{ position:absolute; left:15px; top:50%; transform:translateY(-50%); width:19px; height:19px; color:var(--muted-2); pointer-events:none; }
       .field input{
-        width:100%; padding:12px 14px; border-radius:12px; border:1.5px solid var(--line-strong);
+        width:100%; padding:13px 14px 13px 46px; border-radius:12px; border:1.5px solid var(--line-strong);
         background:rgba(148,180,255,.05); color:var(--text); font-size:15.5px; font-family:inherit;
         transition:border-color .16s ease, box-shadow .16s ease;
       }
@@ -746,10 +839,21 @@
       .field.invalid input{ border-color:var(--red); }
       .field-err{ display:none; color:#FCA5A5; font-size:13.5px; font-weight:550; margin-top:6px; line-height:1.45; }
       .field.invalid .field-err{ display:block; }
-      .auth-submit{ width:100%; margin-top:2px; }
-      .auth-alt{ text-align:center; font-size:14.5px; color:var(--muted); margin-top:18px; }
-      .auth-alt button{ background:none; border:none; color:var(--sky); font-weight:700; font-size:14.5px; padding:0; }
+      .forgot-row{ display:flex; justify-content:flex-end; margin:-2px 0 14px; }
+      .forgot-link{ background:none; border:none; color:var(--sky); font-size:14.5px; font-weight:600; padding:2px 0; }
+      .forgot-link:hover{ text-decoration:underline; }
+      [data-theme="light"] .forgot-link{ color:#0284C7; }
+      .forgot-notice{ display:none; margin:0 0 16px; background:rgba(56,189,248,.08); border:1px solid rgba(56,189,248,.30); border-radius:12px; padding:12px 14px; font-size:14px; line-height:1.6; color:var(--muted); }
+      .forgot-notice.show{ display:block; }
+      .forgot-notice b{ color:var(--text); }
+      [data-theme="light"] .forgot-notice{ background:rgba(56,189,248,.10); }
+      .auth-submit{ width:100%; margin-top:4px; padding:14px 20px; font-size:15.5px; }
+      .auth-submit svg{ width:19px; height:19px; }
+      .auth-alt{ text-align:center; font-size:15px; color:var(--muted); margin-top:20px; }
+      .auth-alt button{ background:none; border:none; color:var(--sky); font-weight:700; font-size:15px; padding:0; }
       .auth-alt button:hover{ text-decoration:underline; }
+      [data-theme="light"] .auth-alt button{ color:#0284C7; }
+      [data-theme="light"] .auth-card{ background:#FFFFFF; }
       .user-chip{
         align-items:center; gap:9px; background:rgba(148,180,255,.06); border:1px solid var(--line-strong);
         color:var(--text); border-radius:999px; padding:5px 14px 5px 5px; font-weight:650; font-size:14px;
@@ -765,17 +869,66 @@
         .user-chip{ padding-right:11px; gap:7px; }
         #userChipName{ max-width:76px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
       }
-      .dash-card h2{ font-size:24px; font-weight:800; letter-spacing:-.02em; }
-      .dash-sub{ color:var(--muted); font-size:14.5px; margin-top:6px; }
-      .dash-results{ display:grid; gap:10px; margin-top:6px; text-align:left; }
-      .dash-results h3{ font-size:15.5px; font-weight:750; margin-bottom:2px; }
-      .dash-result-row{
-        display:flex; align-items:center; justify-content:space-between; gap:12px;
-        background:rgba(148,180,255,.05); border:1px solid var(--line); border-radius:13px; padding:12px 15px;
+      /* Dashboard — Hub-style page: greeting, action buttons, 2x2 stat cards, recent submissions */
+      .dash-wrap{ max-width:1180px; margin:0 auto; padding:24px 20px 44px; }
+      .dash-greeting{ font-size:29px; font-weight:800; letter-spacing:-.03em; line-height:1.1; }
+      @media (min-width:640px){ .dash-greeting{ font-size:35px; } }
+      .dash-sub{ color:var(--muted); font-size:14.5px; line-height:1.55; margin-top:8px; max-width:560px; }
+      .dash-actions{ display:flex; flex-wrap:wrap; gap:10px; margin-top:18px; }
+      .dash-actions .btn{ padding:10px 18px; font-size:13.5px; border-radius:11px; }
+      .dash-actions .btn svg{ width:16px; height:16px; }
+      .btn-mock{
+        background:linear-gradient(135deg, #8B5CF6, #7C3AED 55%, #6D28D9); color:#fff;
+        box-shadow:0 10px 24px rgba(124,58,237,.35), 0 1px 0 rgba(255,255,255,.18) inset;
       }
-      .dash-result-row b{ font-size:14.5px; font-weight:650; }
-      .dash-result-row span{ font-family:"Sora",sans-serif; font-weight:800; font-size:15px; color:var(--accent-soft); white-space:nowrap; }
-      .dash-empty{ font-size:14.5px; color:var(--muted); background:rgba(148,180,255,.05); border:1px dashed var(--line-strong); border-radius:13px; padding:14px 15px; text-align:center; }
+      .btn-mock:hover{ transform:translateY(-1px); box-shadow:0 14px 30px rgba(124,58,237,.42), 0 1px 0 rgba(255,255,255,.18) inset; }
+      .dash-divider{ border:none; border-top:1px solid var(--line); margin:24px 0 20px; }
+      .dash-stats{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+      @media (min-width:640px){ .dash-stats{ gap:12px; } }
+      @media (max-width:400px){ .dash-stats{ gap:10px; } .dash-stat{ padding:14px 13px; } }
+      .dash-stat{
+        background:linear-gradient(180deg, var(--surface-2), var(--surface)); border:1px solid var(--line); border-radius:18px;
+        padding:17px; box-shadow:var(--shadow-card);
+      }
+      .dash-stat-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:8px; }
+      .dash-stat-label{ font-size:13px; font-weight:600; color:var(--muted); line-height:1.35; }
+      .dash-stat-top svg{ width:18px; height:18px; flex:none; margin-top:1px; }
+      .ic-blue{ color:#60A5FA; }
+      .ic-green{ color:#4ADE80; }
+      .ic-violet{ color:#A78BFA; }
+      .ic-amber{ color:#FBBF24; }
+      .dash-stat b{ font-family:"Sora",sans-serif; font-size:31px; font-weight:800; line-height:1; letter-spacing:-.02em; display:block; margin-top:10px; }
+      .dash-stat-sub{ font-size:12.5px; color:var(--muted-2); margin-top:7px; line-height:1.4; }
+      .dash-stat-sub.green{ color:#4ADE80; }
+      .dash-stat-sub.amber{ color:var(--accent-soft); }
+      .dash-recent-head{ display:flex; align-items:flex-start; justify-content:space-between; gap:8px 14px; margin-top:28px; flex-wrap:wrap; }
+      .dash-recent-head h3{ font-size:20px; font-weight:800; letter-spacing:-.025em; line-height:1.2; }
+      @media (min-width:640px){ .dash-recent-head h3{ font-size:22px; } }
+      .dash-more{
+        background:none; border:none; color:var(--sky); font-size:13.5px; font-weight:650;
+        display:inline-flex; align-items:center; gap:6px; padding:4px 0; white-space:nowrap;
+      }
+      .dash-more:hover{ text-decoration:underline; }
+      .dash-more svg{ width:15px; height:15px; }
+      .dash-results{ display:grid; gap:8px; margin-top:12px; }
+      .dash-result-row{
+        display:flex; align-items:center; justify-content:space-between; gap:10px;
+        background:rgba(148,180,255,.05); border:1px solid var(--line); border-radius:11px; padding:10px 13px;
+      }
+      .dash-result-row b{ font-size:13px; font-weight:650; }
+      .dash-result-row span{ font-family:"Sora",sans-serif; font-weight:800; font-size:13.5px; color:var(--accent-soft); white-space:nowrap; }
+      .dash-empty{ font-size:13.5px; color:var(--muted); background:rgba(148,180,255,.04); border:1px dashed var(--line-strong); border-radius:13px; padding:17px 14px; text-align:center; }
+      .dash-signout{ margin-top:22px; }
+      .dash-signout .btn{ padding:10px 18px; font-size:13.5px; border-radius:11px; }
+      [data-theme="light"] .dash-stat{ background:#fff; }
+      [data-theme="light"] .ic-blue{ color:#2563EB; }
+      [data-theme="light"] .ic-green{ color:#16A34A; }
+      [data-theme="light"] .ic-violet{ color:#7C3AED; }
+      [data-theme="light"] .ic-amber{ color:#D97706; }
+      [data-theme="light"] .dash-stat-sub.green{ color:#16A34A; }
+      [data-theme="light"] .dash-stat-sub.amber{ color:#B45309; }
+      [data-theme="light"] .dash-more{ color:#0284C7; }
+      [data-theme="light"] .dash-empty{ background:rgba(13,38,76,.03); }
       [data-theme="light"] .field-err{ color:#B91C1C; }
       [data-theme="light"] .field input{ background:#F7F9FC; }
       [data-theme="light"] .dash-result-row span{ color:#B45309; }
@@ -839,8 +992,7 @@
       [data-theme="light"] .wordmark .a{ color:#2563EB; }
       [data-theme="light"] .wordmark .b{ color:#D97706; }
       [data-theme="light"] .logo-mark,
-      [data-theme="light"] .c-row svg,
-      [data-theme="light"] .mobile-menu a svg{ color:#0284C7; }
+      [data-theme="light"] .c-row svg{ color:#0284C7; }
       [data-theme="light"] .theme-btn{ color:#475569; }
       [data-theme="light"] .mcq-card{ box-shadow:0 18px 44px rgba(13,45,95,.14); }
       [data-theme="light"] .mcq-tag{ color:#0369A1; background:rgba(56,189,248,.14); }
@@ -896,8 +1048,8 @@
           <a href="#subjects">Subjects</a>
           <a href="#tests">Tests</a>
           <a href="#resources">Resources</a>
-          <a href="#about">About</a>
-          <a href="#contact">Contact</a>
+          <a href="#about" id="navAbout">About</a>
+          <a href="#contact" id="navContact">Contact</a>
         </nav>
         <div class="header-actions">
           <button class="theme-btn" type="button" id="themeBtn" aria-label="Switch to light theme">
@@ -912,16 +1064,25 @@
           </button>
         </div>
       </div>
-      <div class="wrap mobile-menu" id="mobileMenu">
-        <a href="#home"><i data-lucide="home"></i>Home</a>
-        <a href="#subjects"><i data-lucide="book-open"></i>Subjects</a>
-        <a href="#tests"><i data-lucide="clipboard-list"></i>Tests</a>
-        <a href="#resources"><i data-lucide="library"></i>Resources</a>
-        <a href="#about"><i data-lucide="info"></i>About</a>
-        <a href="#contact"><i data-lucide="mail"></i>Contact</a>
-        <div class="mm-actions">
-          <button class="btn btn-ghost auth-only" type="button" data-auth="login">Sign In</button>
-          <button class="btn btn-primary auth-only" type="button" data-auth="register">Register</button>
+      <div class="side-menu" id="mobileMenu">
+        <div class="sm-head">
+          <button class="logo sm-logo" type="button" id="menuLogo" aria-label="MdcatPrep — back to top">
+            <span class="logo-mark"><i data-lucide="graduation-cap"></i></span>
+            <span class="wordmark"><span class="a">Mdcat</span><span class="b">Prep</span></span>
+          </button>
+          <button class="sm-close" type="button" id="menuClose" aria-label="Close menu"><i data-lucide="x"></i></button>
+        </div>
+        <nav class="sm-items" aria-label="Menu">
+          <button class="sm-item active" type="button" data-nav="home">Home</button>
+          <button class="sm-item" type="button" data-nav="subjects">Subjects</button>
+          <button class="sm-item" type="button" data-nav="tests">Tests</button>
+          <button class="sm-item" type="button" data-nav="resources">Resources</button>
+          <button class="sm-item" type="button" data-nav="about">About</button>
+          <button class="sm-item" type="button" data-nav="contact">Contact</button>
+        </nav>
+        <div class="sm-actions">
+          <button class="btn btn-ghost auth-only" type="button" data-auth="login">Login</button>
+          <button class="btn btn-primary auth-only" type="button" data-auth="register">Get Started</button>
           <button class="btn btn-ghost user-only" type="button" id="mmDash">My Dashboard</button>
           <button class="btn btn-primary user-only" type="button" id="mmLogout">Log Out</button>
         </div>
@@ -1134,46 +1295,6 @@
       </div>
     </section>
 
-    <div class="divider" aria-hidden="true"><span class="d-line"></span><span class="d-dot"></span><span class="d-gem"></span><span class="d-dot"></span><span class="d-line"></span></div>
-
-    <!-- ================= About & Contact ================= -->
-    <section id="about">
-      <div class="wrap two-col">
-        <div class="about-text">
-          <div class="sec-head">
-            <h2>About MdcatPrep</h2>
-          </div>
-          <p>MdcatPrep is an MDCAT preparation platform built for Pakistani students aiming for medical and dental college admission. It brings the complete PMDC syllabus together in one place — chapter-wise tests, detailed notes and structured revision material for all five subjects.</p>
-          <p>Instead of scattered material, you prepare chapter by chapter: read the notes, attempt the timed test for that chapter, review your result, and move on. That is how toppers revise — and it is the routine MdcatPrep is designed around.</p>
-          <ul class="check-list">
-            <li><i data-lucide="check-circle-2"></i>54 chapter-wise tests with 2,700 MCQs across Biology, Chemistry and Physics</li>
-            <li><i data-lucide="check-circle-2"></i>62 detailed chapter notes covering all five PMDC subjects</li>
-            <li><i data-lucide="check-circle-2"></i>Timed tests with result and per-question review</li>
-            <li><i data-lucide="check-circle-2"></i>Content aligned with the PMDC syllabus and FSc pre-medical coursework</li>
-          </ul>
-        </div>
-        <div id="contact">
-          <div class="contact-card">
-            <h3>Contact Us</h3>
-            <p>Questions about a test, a chapter's notes, or your preparation plan? Reach out and we will guide you.</p>
-            <div class="c-row">
-              <i data-lucide="message-circle"></i>
-              <div><b>WhatsApp Support</b><span>Chat with us for quick help with tests and notes.</span></div>
-            </div>
-            <div class="c-row">
-              <i data-lucide="clock"></i>
-              <div><b>Response Time</b><span>We usually reply within a few hours on working days.</span></div>
-            </div>
-            <div class="c-row">
-              <i data-lucide="map-pin"></i>
-              <div><b>For Students Across Pakistan</b><span>Built for MDCAT aspirants in every province, fully online.</span></div>
-            </div>
-            <button class="btn btn-primary" type="button" data-preview><i data-lucide="send"></i> Send a Message</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- ================= Footer ================= -->
     <footer>
       <div class="wrap">
@@ -1183,7 +1304,7 @@
               <span class="logo-mark"><i data-lucide="graduation-cap"></i></span>
               <span class="wordmark"><span class="a">Mdcat</span><span class="b">Prep</span></span>
             </a>
-            <p>MDCAT preparation for Pakistani students — chapter-wise PMDC syllabi, timed tests, and detailed study notes for Biology, Chemistry, Physics, English and Logical Reasoning.</p>
+            <p>MDCAT preparation for Pakistani students — chapter-wise PMDC syllabi, Mock Tests, and detailed study notes for Biology, Chemistry, Physics, English and Logical Reasoning.</p>
           </div>
           <div>
             <h4>Quick Links</h4>
@@ -1197,15 +1318,20 @@
           <div>
             <h4>Platform</h4>
             <ul class="foot-links">
-              <li><a href="#about">About MdcatPrep</a></li>
-              <li><a href="#contact">Contact Us</a></li>
               <li><a href="#tests">How Tests Work</a></li>
+              <li><a href="#" id="footAbout">About</a></li>
+              <li><a href="#" id="footContact">Contact Us</a></li>
+              <li><a href="#" id="footPrivacy">Privacy Policy</a></li>
+              <li><a href="#" id="footTerms">Terms and Conditions</a></li>
             </ul>
           </div>
         </div>
         <div class="foot-bottom">
-          <span>© 2026 MdcatPrep — MDCAT Preparation for Pakistani Students.</span>
-          <span>Biology · Chemistry · Physics · English · Logical Reasoning</span>
+          <span>© 2027 MdcatPrep — All Rights Reserved</span>
+          <div class="foot-credit-block">
+            <span class="foot-credit">Designed and Developed by Aslam Samejo</span>
+            <span class="foot-helpline">Helpline : WhatsApp Only 03343759613</span>
+          </div>
         </div>
       </div>
     </footer>
@@ -1784,6 +1910,193 @@
       </div>
     </div>
 
+    <!-- ================= Subjects Directory view (side-menu page) ================= -->
+    <div class="exam-back" id="subjectsView" role="dialog" aria-modal="true" aria-label="Subjects directory">
+      <div class="exam-top">
+        <div class="exam-top-in">
+          <button class="exam-exit" type="button" id="subjectsCloseBtn"><i data-lucide="arrow-left"></i> Back to Home</button>
+        </div>
+      </div>
+      <div class="chapters-wrap">
+        <div class="sec-head">
+          <h2>Subjects Directory</h2>
+          <p>Select a subject to explore its chapters.</p>
+        </div>
+        <div class="subj-grid">
+          <article class="subj subj-bio" data-open-subject="biology" tabindex="0" role="button" aria-label="View Biology chapter tests">
+            <h3>Biology</h3>
+            <p class="subj-count">1,200+ MCQs</p>
+            <span class="subj-arrow" aria-hidden="true"><i data-lucide="arrow-right"></i></span>
+          </article>
+          <article class="subj subj-chem" data-open-subject="chemistry" tabindex="0" role="button" aria-label="View Chemistry chapter tests">
+            <h3>Chemistry</h3>
+            <p class="subj-count">900+ MCQs</p>
+            <span class="subj-arrow" aria-hidden="true"><i data-lucide="arrow-right"></i></span>
+          </article>
+          <article class="subj subj-phy" data-open-subject="physics" tabindex="0" role="button" aria-label="View Physics chapter tests">
+            <h3>Physics</h3>
+            <p class="subj-count">850+ MCQs</p>
+            <span class="subj-arrow" aria-hidden="true"><i data-lucide="arrow-right"></i></span>
+          </article>
+          <article class="subj subj-eng" data-open-subject="english" tabindex="0" role="button" aria-label="View English chapter tests">
+            <h3>English</h3>
+            <p class="subj-count">500+ MCQs</p>
+            <span class="subj-arrow" aria-hidden="true"><i data-lucide="arrow-right"></i></span>
+          </article>
+          <article class="subj subj-log" data-open-subject="logical" tabindex="0" role="button" aria-label="View Logical Reasoning chapter tests">
+            <h3>Logical Reasoning</h3>
+            <p class="subj-count">300+ MCQs</p>
+            <span class="subj-arrow" aria-hidden="true"><i data-lucide="arrow-right"></i></span>
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= Resources view (side-menu page) ================= -->
+    <div class="exam-back" id="resourcesView" role="dialog" aria-modal="true" aria-label="Study resources">
+      <div class="exam-top">
+        <div class="exam-top-in">
+          <button class="exam-exit" type="button" id="resourcesCloseBtn"><i data-lucide="arrow-left"></i> Back to Home</button>
+        </div>
+      </div>
+      <div class="chapters-wrap">
+        <div class="sec-head">
+          <h2>Study Resources &amp; Notes</h2>
+          <p>Explore quality study materials, high-yield notes, and essential resources to strengthen your concepts and prepare confidently for MDCAT 2027.</p>
+        </div>
+        <div class="res-empty">
+          <i data-lucide="folder-open"></i>
+          <p>Currently No Study Resources and Notes Uploaded.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= About view (side-menu page) ================= -->
+    <div class="exam-back" id="aboutView" role="dialog" aria-modal="true" aria-label="About MdcatPrep">
+      <div class="exam-top">
+        <div class="exam-top-in">
+          <button class="exam-exit" type="button" id="aboutCloseBtn"><i data-lucide="arrow-left"></i> Back to Home</button>
+        </div>
+      </div>
+      <div class="chapters-wrap">
+        <div class="sec-head">
+          <h2>About MdcatPrep</h2>
+        </div>
+        <div class="about-brand-card">
+          <span class="logo-mark"><i data-lucide="graduation-cap"></i></span>
+          <div>
+            <h3>MdcatPrep</h3>
+            <p>MdcatPrep is an online practice platform built for students preparing for medical and dental college entry tests in Pakistan. It brings chapter-wise practice for Biology, Chemistry, Physics, English and Logical Reasoning together in one simple place, so you can prepare with a clear routine instead of scattered material.</p>
+          </div>
+        </div>
+        <div class="value-grid">
+          <div class="value-card">
+            <i data-lucide="book-open"></i>
+            <h3>Chapter-Wise Practice</h3>
+            <p>Preparation is organised chapter by chapter, so you can focus on one topic at a time and build your understanding step by step.</p>
+          </div>
+          <div class="value-card">
+            <i data-lucide="timer"></i>
+            <h3>Mock Tests</h3>
+            <p>Complete exam-style papers that bring questions from every subject together, so you can sit a full practice exam in one go and review your performance afterwards.</p>
+          </div>
+          <div class="value-card">
+            <i data-lucide="clipboard-check"></i>
+            <h3>Instant Results &amp; Review</h3>
+            <p>As soon as you finish a test, you can see your result and review every question to learn from your mistakes.</p>
+          </div>
+          <div class="value-card">
+            <i data-lucide="target"></i>
+            <h3>Made for Students</h3>
+            <p>Everything here is designed around a student's routine — simple to use, easy to follow, and centred on steady, focused preparation.</p>
+          </div>
+        </div>
+        <div class="legal-sec">
+          <h3>Privacy Policy</h3>
+          <p>Your privacy matters to us. MdcatPrep only collects the basic account details you provide when you register, and uses them to run your account and keep your practice activity connected to you.</p>
+          <p>We do not sell your personal information to anyone. If this policy changes in the future, the updated version will be published on this page.</p>
+        </div>
+        <div class="legal-sec" id="aboutTermsSec">
+          <h3>Terms &amp; Conditions</h3>
+          <p>By using MdcatPrep, you agree to use the platform only for your own study and preparation. Please do not share your account with others, and do not misuse the tests and materials provided here.</p>
+          <p>The practice material on MdcatPrep is meant to support your preparation and does not replace your textbooks or classroom study. We may update these terms from time to time, and the latest version will always be available on this page.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= Contact view (side-menu page) ================= -->
+    <div class="exam-back" id="contactView" role="dialog" aria-modal="true" aria-label="Contact MdcatPrep">
+      <div class="exam-top">
+        <div class="exam-top-in">
+          <button class="exam-exit" type="button" id="contactCloseBtn"><i data-lucide="arrow-left"></i> Back to Home</button>
+        </div>
+      </div>
+      <div class="chapters-wrap">
+        <div class="sec-head">
+          <h2>Contact Us</h2>
+        </div>
+        <div class="contact-stack">
+          <div class="contact-card">
+            <h3>Contact Information</h3>
+            <p>Our phone number and email address will be published here soon. Until then, you can still reach us through the message form below.</p>
+            <div class="c-row">
+              <i data-lucide="phone"></i>
+              <div><b>Phone</b><span>Phone — Coming soon</span></div>
+            </div>
+            <div class="c-row">
+              <i data-lucide="mail"></i>
+              <div><b>Email</b><span>Email — Coming soon</span></div>
+            </div>
+          </div>
+          <div class="contact-card">
+            <h3>Response Time</h3>
+            <p>Response details will be added here together with the contact details.</p>
+          </div>
+          <div class="contact-card">
+            <h3>Send us a Message</h3>
+            <form id="contactForm">
+              <div class="field">
+                <label for="cfName">Full Name</label>
+                <input id="cfName" type="text" placeholder="Enter your full name" autocomplete="name" required />
+              </div>
+              <div class="field">
+                <label for="cfEmail">Email Address</label>
+                <input id="cfEmail" type="email" placeholder="Enter your email address" autocomplete="email" required />
+              </div>
+              <div class="field">
+                <label for="cfMessage">Message</label>
+                <textarea id="cfMessage" placeholder="Type your message here…" required></textarea>
+              </div>
+              <button class="btn btn-primary" type="submit"><i data-lucide="send"></i> Send Message</button>
+            </form>
+            <div class="contact-success" id="contactSuccess" role="status">
+              <i data-lucide="check-circle-2"></i>
+              <h3>Message Received!</h3>
+              <p>Thank you for getting in touch. Your message has been received.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= Privacy Policy view (footer page) ================= -->
+    <div class="exam-back" id="privacyView" role="dialog" aria-modal="true" aria-label="Privacy Policy">
+      <div class="exam-top">
+        <div class="exam-top-in">
+          <button class="exam-exit" type="button" id="privacyCloseBtn"><i data-lucide="arrow-left"></i> Back to Home</button>
+        </div>
+      </div>
+      <div class="chapters-wrap">
+        <div class="sec-head">
+          <h2>Privacy Policy</h2>
+        </div>
+        <div class="legal-sec">
+          <p>Your privacy matters to us. MdcatPrep only collects the basic account details you provide when you register, and uses them to run your account and keep your practice activity connected to you.</p>
+          <p>We do not sell your personal information to anyone. If this policy changes in the future, the updated version will be published on this page.</p>
+        </div>
+      </div>
+    </div>
+
     <!-- ================= Chapters view (Hub-style numbered list) ================= -->
     <div class="exam-back" id="chaptersView" role="dialog" aria-modal="true" aria-label="Subject chapters">
       <div class="chapters-wrap">
@@ -1802,6 +2115,17 @@
           <i data-lucide="search"></i>
           <p>No tests match your search. Try a different chapter name or subject.</p>
         </div>
+      </div>
+    </div>
+
+    <!-- ================= Chapter tests page (one chapter's tests) ================= -->
+    <div class="exam-back" id="chapterTestsView" role="dialog" aria-modal="true" aria-label="Chapter tests">
+      <div class="chapters-wrap">
+        <div class="chapters-toprow">
+          <button class="page-back" type="button" id="chapterTestsBackBtn"><i data-lucide="arrow-left"></i> Back</button>
+        </div>
+        <h2 class="chapters-title">Currently Available Tests</h2>
+        <div class="chapter-tests-grid" id="chapterTestsList"></div>
       </div>
     </div>
 
@@ -1909,90 +2233,112 @@
         <!-- Auth view -->
         <div id="authView">
           <div class="auth-card">
-            <div class="auth-tabs" role="tablist" aria-label="Account options">
-              <button type="button" id="tabRegister" class="active">Create Account</button>
-              <button type="button" id="tabLogin">Sign In</button>
+            <div class="auth-brand" aria-hidden="true">
+              <span class="logo-mark"><i data-lucide="graduation-cap"></i></span>
+              <span class="wordmark"><span class="a">Mdcat</span><span class="b">Prep</span></span>
             </div>
 
-            <form id="registerForm" novalidate>
+            <div id="registerHead">
+              <h2 class="auth-heading">Create Account</h2>
+              <p class="auth-sub">Join Pakistani pre-medical students preparing for MDCAT 2027.</p>
+            </div>
+            <div id="loginHead" style="display:none;">
+              <h2 class="auth-heading">Sign In to MdcatPrep</h2>
+              <p class="auth-sub">Sign in to continue your MDCAT preparation.</p>
+            </div>
+
+            <form id="registerForm" class="auth-form" novalidate>
               <div class="field" id="f-regName">
                 <label for="regName">Full Name</label>
-                <input id="regName" type="text" autocomplete="name" placeholder="e.g. Ahmed Khan" />
+                <div class="input-icon"><i data-lucide="user"></i><input id="regName" type="text" autocomplete="name" placeholder="e.g. Ayesha Khan" /></div>
                 <p class="field-err" id="err-regName"></p>
               </div>
               <div class="field" id="f-regEmail">
-                <label for="regEmail">Email</label>
-                <input id="regEmail" type="email" autocomplete="email" placeholder="you@example.com" />
+                <label for="regEmail">Email Address</label>
+                <div class="input-icon"><i data-lucide="mail"></i><input id="regEmail" type="email" autocomplete="email" placeholder="name@example.com" /></div>
                 <p class="field-err" id="err-regEmail"></p>
               </div>
               <div class="field" id="f-regPass">
-                <label for="regPass">Password</label>
-                <input id="regPass" type="password" autocomplete="new-password" placeholder="Minimum 6 characters" />
+                <label for="regPass">Password (min 6 chars)</label>
+                <div class="input-icon"><i data-lucide="lock"></i><input id="regPass" type="password" autocomplete="new-password" placeholder="••••••••" /></div>
                 <p class="field-err" id="err-regPass"></p>
               </div>
               <div class="field" id="f-regPass2">
                 <label for="regPass2">Confirm Password</label>
-                <input id="regPass2" type="password" autocomplete="new-password" placeholder="Repeat your password" />
+                <div class="input-icon"><i data-lucide="lock"></i><input id="regPass2" type="password" autocomplete="new-password" placeholder="••••••••" /></div>
                 <p class="field-err" id="err-regPass2"></p>
               </div>
-              <button class="btn btn-primary auth-submit" type="submit">Create Account <i data-lucide="arrow-right"></i></button>
-              <p class="auth-alt">Already have an account? <button type="button" id="goLogin">Sign in</button></p>
+              <button class="btn btn-primary auth-submit" type="submit"><i data-lucide="user-plus"></i> Complete Registration</button>
+              <p class="auth-alt">Already have an account? <button type="button" id="goLogin">Sign In</button></p>
             </form>
 
-            <form id="loginForm" novalidate style="display:none;">
+            <form id="loginForm" class="auth-form" novalidate style="display:none;">
               <div class="field" id="f-loginEmail">
-                <label for="loginEmail">Email</label>
-                <input id="loginEmail" type="email" autocomplete="email" placeholder="you@example.com" />
+                <label for="loginEmail">Email Address</label>
+                <div class="input-icon"><i data-lucide="mail"></i><input id="loginEmail" type="email" autocomplete="email" placeholder="name@example.com" /></div>
                 <p class="field-err" id="err-loginEmail"></p>
               </div>
               <div class="field" id="f-loginPass">
                 <label for="loginPass">Password</label>
-                <input id="loginPass" type="password" autocomplete="current-password" placeholder="Your password" />
+                <div class="input-icon"><i data-lucide="lock"></i><input id="loginPass" type="password" autocomplete="current-password" placeholder="••••••••" /></div>
                 <p class="field-err" id="err-loginPass"></p>
               </div>
-              <button class="btn btn-primary auth-submit" type="submit">Sign In <i data-lucide="arrow-right"></i></button>
-              <p class="auth-alt">New to MdcatPrep? <button type="button" id="goRegister">Create an account</button></p>
+              <div class="forgot-row">
+                <button class="forgot-link" type="button" id="forgotBtn">Forgot password?</button>
+              </div>
+              <div class="forgot-notice" id="forgotNotice" role="status">
+                <b>Password recovery is not available in this preview.</b> Accounts here are kept only for this session, so there is no reset link to send. If you have forgotten your password, please create a new account for this session.
+              </div>
+              <button class="btn btn-primary auth-submit" type="submit"><i data-lucide="log-in"></i> Sign In</button>
+              <p class="auth-alt">Don&rsquo;t have an account? <button type="button" id="goRegister">Sign up</button></p>
             </form>
           </div>
         </div>
 
-        <!-- Dashboard view -->
-        <div id="dashView" style="display:none;">
-          <div class="auth-card dash-card">
-            <h2 id="dashGreeting">Welcome</h2>
-            <p class="dash-sub" id="dashEmail"></p>
-            <div class="summary-grid">
-              <div><b id="dashAttempted">0</b><span>Tests Attempted</span></div>
-              <div><b id="dashBest">—</b><span>Best Score</span></div>
-              <div><b>54</b><span>Tests Available</span></div>
+      </div>
+
+      <!-- Dashboard view -->
+      <div id="dashView" style="display:none;">
+        <div class="dash-wrap">
+          <h2 class="dash-greeting" id="dashGreeting">Welcome</h2>
+          <p class="dash-sub" id="dashEmail"></p>
+          <div class="dash-actions">
+            <button class="btn btn-primary" type="button" id="dashStartPractice"><i data-lucide="play"></i> Start Practice</button>
+            <button class="btn btn-mock" type="button" id="dashMockTest"><i data-lucide="medal"></i> Take Mock Test</button>
+            <button class="btn btn-ghost" type="button" id="dashExploreSubjects">Explore Subjects</button>
+          </div>
+          <hr class="dash-divider" />
+          <div class="dash-stats">
+            <div class="dash-stat">
+              <div class="dash-stat-top"><span class="dash-stat-label">Tests Completed</span><i data-lucide="graduation-cap" class="ic-blue"></i></div>
+              <b id="dashCompleted">0</b>
+              <p class="dash-stat-sub">Timed exams &amp; chapter drills</p>
             </div>
-            <div class="dash-results">
-              <h3>Your Recent Results</h3>
-              <div id="dashResultsList"></div>
+            <div class="dash-stat">
+              <div class="dash-stat-top"><span class="dash-stat-label">Questions Attempted</span><i data-lucide="layers" class="ic-green"></i></div>
+              <b id="dashQuestions">0</b>
+              <p class="dash-stat-sub green">MCQs practiced</p>
             </div>
-            <div class="exam-controls center">
-              <button class="btn btn-primary" type="button" id="dashTests">Browse Tests <i data-lucide="arrow-right"></i></button>
-              <button class="btn btn-ghost" type="button" id="dashLogout">Sign Out</button>
+            <div class="dash-stat">
+              <div class="dash-stat-top"><span class="dash-stat-label">Average Score</span><i data-lucide="trending-up" class="ic-violet"></i></div>
+              <b id="dashAverage">—</b>
+              <p class="dash-stat-sub">Across all completed tests</p>
             </div>
+            <div class="dash-stat">
+              <div class="dash-stat-top"><span class="dash-stat-label">Best Score</span><i data-lucide="medal" class="ic-amber"></i></div>
+              <b id="dashBest">—</b>
+              <p class="dash-stat-sub amber">Personal record</p>
+            </div>
+          </div>
+          <div class="dash-recent-head">
+            <h3 id="dashRecentTitle">Recent Test Submissions (0)</h3>
+            <button class="dash-more" type="button" id="dashMoreTests">Take More Tests <i data-lucide="arrow-right"></i></button>
+          </div>
+          <div class="dash-results" id="dashResultsList"></div>
+          <div class="dash-signout">
+            <button class="btn btn-ghost" type="button" id="dashLogout">Sign Out</button>
           </div>
         </div>
-      </div>
-    </div>
-
-    <!-- ================= Chapter test card modal ================= -->
-    <div class="modal-back chapter-modal-back" id="chapterModal" role="dialog" aria-modal="true" aria-labelledby="cmTitle">
-      <div class="modal chapter-modal">
-        <button class="chapter-modal-close" type="button" id="chapterModalClose" aria-label="Close chapter test"><i data-lucide="x"></i></button>
-        <article class="chapter-box">
-          <div class="tc-top"><span class="chip" id="cmSubjectChip">Biology</span><span class="chip amber">Chapter Test</span></div>
-          <h4 id="cmTitle">Bioenergetics</h4>
-          <div class="tc-meta">
-            <span><i data-lucide="help-circle"></i>50 Questions</span>
-            <span><i data-lucide="clock"></i>50 Minutes</span>
-            <span><i data-lucide="award"></i>50 Marks</span>
-          </div>
-          <button class="btn btn-primary btn-sm" type="button" id="cmAttempt">Attempt Test <i data-lucide="arrow-right"></i></button>
-        </article>
       </div>
     </div>
 
@@ -2001,7 +2347,7 @@
       <div class="modal">
         <div class="m-icon"><i data-lucide="eye"></i></div>
         <h3 id="modalTitle">Preview Only</h3>
-        <p>This part of MdcatPrep is not active in this preview — it will work on the full website.</p>
+        <p id="modalText">This part of MdcatPrep is not active in this preview — it will work on the full website.</p>
         <button class="btn btn-primary" type="button" id="modalClose">Got It</button>
       </div>
     </div>
@@ -2026,28 +2372,79 @@
         lucide.createIcons();
       });
 
-      /* Mobile menu */
+      /* Side menu panel — Hub-style: each item opens its page/view, X or an item closes the panel */
       var menuBtn = document.getElementById('menuBtn');
       var mobileMenu = document.getElementById('mobileMenu');
-      menuBtn.addEventListener('click', function () {
-        var open = mobileMenu.classList.toggle('open');
+      function setMenu(open) {
+        mobileMenu.classList.toggle('open', open);
         menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
         menuBtn.innerHTML = '<i data-lucide="' + (open ? 'x' : 'menu') + '"></i>';
         lucide.createIcons();
+      }
+      function closeMenu() { if (mobileMenu.classList.contains('open')) setMenu(false); }
+      menuBtn.addEventListener('click', function () { setMenu(!mobileMenu.classList.contains('open')); });
+      document.getElementById('menuClose').addEventListener('click', closeMenu);
+      document.getElementById('menuLogo').addEventListener('click', function () {
+        setActiveMenuItem('home');
+        closeMenu();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       });
-      mobileMenu.querySelectorAll('a').forEach(function (a) {
-        a.addEventListener('click', function () {
-          mobileMenu.classList.remove('open');
-          menuBtn.setAttribute('aria-expanded', 'false');
-          menuBtn.innerHTML = '<i data-lucide="menu"></i>';
-          lucide.createIcons();
+      function setActiveMenuItem(key) {
+        mobileMenu.querySelectorAll('.sm-item').forEach(function (it) {
+          it.classList.toggle('active', it.getAttribute('data-nav') === key);
         });
+      }
+      mobileMenu.querySelectorAll('.sm-item').forEach(function (item) {
+        item.addEventListener('click', function () {
+          var key = item.getAttribute('data-nav');
+          closeMenu();
+          if (key === 'home') {
+            setActiveMenuItem('home');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          } else if (key === 'subjects') {
+            setActiveMenuItem('subjects');
+            openSubjectsView();
+          } else if (key === 'tests') {
+            setActiveMenuItem('tests');
+            openAllTests('all');
+          } else if (key === 'resources') {
+            setActiveMenuItem('resources');
+            openResourcesView();
+          } else if (key === 'about') {
+            setActiveMenuItem('about');
+            openAboutView();
+          } else if (key === 'contact') {
+            setActiveMenuItem('contact');
+            openContactView();
+          }
+        });
+      });
+      /* Desktop header nav: About / Contact open the same views as the side menu */
+      document.getElementById('navAbout').addEventListener('click', function (e) {
+        e.preventDefault();
+        setActiveMenuItem('about');
+        openAboutView();
+      });
+      document.getElementById('navContact').addEventListener('click', function (e) {
+        e.preventDefault();
+        setActiveMenuItem('contact');
+        openContactView();
       });
 
       /* Preview-only notice */
       var modal = document.getElementById('previewModal');
+      var modalTitle = document.getElementById('modalTitle');
+      var modalText = document.getElementById('modalText');
+      var MODAL_DEFAULT_TITLE = modalTitle.textContent;
+      var MODAL_DEFAULT_TEXT = modalText.textContent;
+      function showPreviewNotice() {
+        modalTitle.textContent = MODAL_DEFAULT_TITLE;
+        modalText.textContent = MODAL_DEFAULT_TEXT;
+        modal.classList.add('open');
+      }
       document.querySelectorAll('[data-preview]').forEach(function (el) {
-        el.addEventListener('click', function () { modal.classList.add('open'); });
+        el.addEventListener('click', function () { showPreviewNotice(); });
       });
       document.getElementById('modalClose').addEventListener('click', function () {
         modal.classList.remove('open');
@@ -2096,7 +2493,8 @@
       }
       function closeAllTests() {
         allTestsView.classList.remove('open');
-        document.body.style.overflow = '';
+        syncBodyScroll();
+        setActiveMenuItem('home');
       }
       document.getElementById('viewAllTests').addEventListener('click', function () { openAllTests('all'); });
       document.getElementById('allTestsCloseBtn').addEventListener('click', closeAllTests);
@@ -2107,27 +2505,182 @@
         });
       });
       testSearch.addEventListener('input', applyTestFilter);
+      /* ---------- Subjects Directory + Resources views (side-menu pages) ---------- */
+      var subjectsView = document.getElementById('subjectsView');
+      var resourcesView = document.getElementById('resourcesView');
+      /* Restore body scroll only when no full-screen view remains open underneath */
+      function syncBodyScroll() {
+        if (!document.querySelector('.exam-back.open')) document.body.style.overflow = '';
+      }
+      function openSubjectsView() {
+        subjectsView.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        subjectsView.scrollTop = 0;
+        lucide.createIcons();
+      }
+      function closeSubjectsView() {
+        subjectsView.classList.remove('open');
+        syncBodyScroll();
+        setActiveMenuItem('home');
+      }
+      function openResourcesView() {
+        resourcesView.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        resourcesView.scrollTop = 0;
+        lucide.createIcons();
+      }
+      function closeResourcesView() {
+        resourcesView.classList.remove('open');
+        syncBodyScroll();
+        setActiveMenuItem('home');
+      }
+      document.getElementById('subjectsCloseBtn').addEventListener('click', closeSubjectsView);
+      document.getElementById('resourcesCloseBtn').addEventListener('click', closeResourcesView);
+      /* ---------- About view (side-menu page) ---------- */
+      var aboutView = document.getElementById('aboutView');
+      function openAboutView() {
+        aboutView.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        aboutView.scrollTop = 0;
+        lucide.createIcons();
+      }
+      function closeAboutView() {
+        aboutView.classList.remove('open');
+        syncBodyScroll();
+        setActiveMenuItem('home');
+      }
+      document.getElementById('aboutCloseBtn').addEventListener('click', closeAboutView);
+      /* ---------- Contact view (side-menu page) ---------- */
+      var contactView = document.getElementById('contactView');
+      var contactForm = document.getElementById('contactForm');
+      var contactSuccess = document.getElementById('contactSuccess');
+      function openContactView() {
+        contactView.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        contactView.scrollTop = 0;
+        lucide.createIcons();
+      }
+      function closeContactView() {
+        contactView.classList.remove('open');
+        syncBodyScroll();
+        setActiveMenuItem('home');
+        /* Reset the form so the next visit starts fresh */
+        contactForm.reset();
+        contactForm.style.display = '';
+        contactSuccess.classList.remove('show');
+      }
+      document.getElementById('contactCloseBtn').addEventListener('click', closeContactView);
+      contactForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        contactForm.style.display = 'none';
+        contactSuccess.classList.add('show');
+        lucide.createIcons();
+      });
+      /* ---------- Privacy Policy view (footer page) ---------- */
+      var privacyView = document.getElementById('privacyView');
+      function openPrivacyView() {
+        privacyView.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        privacyView.scrollTop = 0;
+        lucide.createIcons();
+      }
+      function closePrivacyView() {
+        privacyView.classList.remove('open');
+        syncBodyScroll();
+        setActiveMenuItem('home');
+      }
+      document.getElementById('privacyCloseBtn').addEventListener('click', closePrivacyView);
+      /* ---------- Footer Platform links ---------- */
+      function openAboutAtTerms() {
+        openAboutView();
+        var termsEl = document.getElementById('aboutTermsSec');
+        if (termsEl) {
+          setTimeout(function () { termsEl.scrollIntoView({ block: 'start' }); }, 60);
+        }
+      }
+      document.getElementById('footAbout').addEventListener('click', function (e) {
+        e.preventDefault();
+        setActiveMenuItem('about');
+        openAboutView();
+      });
+      document.getElementById('footContact').addEventListener('click', function (e) {
+        e.preventDefault();
+        setActiveMenuItem('contact');
+        openContactView();
+      });
+      document.getElementById('footPrivacy').addEventListener('click', function (e) {
+        e.preventDefault();
+        openPrivacyView();
+      });
+      document.getElementById('footTerms').addEventListener('click', function (e) {
+        e.preventDefault();
+        setActiveMenuItem('about');
+        openAboutAtTerms();
+      });
       /* ---------- Chapters view — Hub-style numbered rows per subject ---------- */
       var chaptersView = document.getElementById('chaptersView');
       var chaptersBadge = document.getElementById('chaptersBadge');
       var chapterSearch = document.getElementById('chapterSearch');
       var chapterRows = document.getElementById('chapterRows');
       var chaptersNoResults = document.getElementById('chaptersNoResults');
-      var chapterModal = document.getElementById('chapterModal');
       var SUBJECT_LABELS = { biology: 'Biology', chemistry: 'Chemistry', physics: 'Physics', english: 'English', logical: 'Logical Reasoning', all: 'All Subjects' };
       var chaptersBySubject = { biology: [], chemistry: [], physics: [], english: [], logical: [], all: [] };
-      /* Build the chapter lists from the existing test catalogue, keeping its exact order */
+      /* Build the chapter lists from the existing test catalogue, keeping its exact order.
+         Each chapter holds a tests array, so a chapter can carry more than one test. */
+      function addChapterTest(list, test) {
+        for (var i = 0; i < list.length; i++) {
+          if (list[i].key === test.subjectKey + '|' + test.name) { list[i].tests.push(test); return; }
+        }
+        list.push({ key: test.subjectKey + '|' + test.name, name: test.name, tests: [test] });
+      }
       allTestsGrid.querySelectorAll('.chapter-box').forEach(function (box) {
         var chip = box.querySelector('.chip');
         var subjLabel = chip ? chip.textContent.trim() : '';
         var subjKey = subjLabel.toLowerCase();
         var nameEl = box.querySelector('h4');
-        var entry = { subjectLabel: subjLabel, subjectKey: subjKey, name: nameEl ? nameEl.textContent.trim() : '' };
-        if (chaptersBySubject[subjKey]) chaptersBySubject[subjKey].push(entry);
-        chaptersBySubject.all.push(entry);
+        var test = { subjectLabel: subjLabel, subjectKey: subjKey, name: nameEl ? nameEl.textContent.trim() : '' };
+        if (chaptersBySubject[subjKey]) addChapterTest(chaptersBySubject[subjKey], test);
+        addChapterTest(chaptersBySubject.all, test);
       });
       var currentChaptersSubject = 'biology';
       function padNum(n) { return (n < 10 ? '0' : '') + n; }
+      /* One chapter test box — the same component used across the test catalogue */
+      function buildTestBox(test) {
+        var box = document.createElement('article');
+        box.className = 'chapter-box';
+        var top = document.createElement('div');
+        top.className = 'tc-top';
+        var chip = document.createElement('span');
+        chip.className = 'chip' + (test.subjectKey === 'physics' ? ' teal' : '');
+        chip.textContent = test.subjectLabel;
+        var typeChip = document.createElement('span');
+        typeChip.className = 'chip amber';
+        typeChip.textContent = 'Chapter Test';
+        top.appendChild(chip);
+        top.appendChild(typeChip);
+        var title = document.createElement('h4');
+        title.textContent = test.name;
+        var meta = document.createElement('div');
+        meta.className = 'tc-meta';
+        [['help-circle', '50 Questions'], ['clock', '50 Minutes'], ['award', '50 Marks']].forEach(function (m) {
+          var s = document.createElement('span');
+          var ic = document.createElement('i');
+          ic.setAttribute('data-lucide', m[0]);
+          s.appendChild(ic);
+          s.appendChild(document.createTextNode(m[1]));
+          meta.appendChild(s);
+        });
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'btn btn-primary btn-sm';
+        btn.innerHTML = 'Attempt Test <i data-lucide="arrow-right"></i>';
+        btn.addEventListener('click', function () { showPreviewNotice(); });
+        box.appendChild(top);
+        box.appendChild(title);
+        box.appendChild(meta);
+        box.appendChild(btn);
+        return box;
+      }
       function renderChapterRows() {
         var q = chapterSearch.value.trim().toLowerCase();
         var list = chaptersBySubject[currentChaptersSubject] || [];
@@ -2139,7 +2692,7 @@
           var row = document.createElement('button');
           row.type = 'button';
           row.className = 'chapter-row';
-          row.setAttribute('aria-label', 'Open test for ' + entry.name);
+          row.setAttribute('aria-label', 'View tests for ' + entry.name);
           var num = document.createElement('span');
           num.className = 'chapter-num';
           num.textContent = padNum(idx + 1);
@@ -2152,9 +2705,8 @@
           row.appendChild(num);
           row.appendChild(nm);
           row.appendChild(chev);
-          (function (e) {
-            row.addEventListener('click', function () { openChapterModal(e); });
-          })(entry);
+          /* Tapping a chapter opens its dedicated tests page */
+          row.addEventListener('click', function () { openChapterTests(entry); });
           chapterRows.appendChild(row);
         });
         chaptersNoResults.style.display = shown ? 'none' : '';
@@ -2173,22 +2725,26 @@
       }
       function closeChapters() {
         chaptersView.classList.remove('open');
-        document.body.style.overflow = '';
+        syncBodyScroll();
       }
-      function openChapterModal(entry) {
-        var chipEl = document.getElementById('cmSubjectChip');
-        chipEl.textContent = entry.subjectLabel;
-        chipEl.className = 'chip' + (entry.subjectKey === 'physics' ? ' teal' : '');
-        document.getElementById('cmTitle').textContent = entry.name;
-        chapterModal.classList.add('open');
+      document.getElementById('chaptersBackBtn').addEventListener('click', closeChapters);
+      /* ---------- Chapter tests page — opened by tapping a chapter row ---------- */
+      var chapterTestsView = document.getElementById('chapterTestsView');
+      var chapterTestsList = document.getElementById('chapterTestsList');
+      function openChapterTests(entry) {
+        chapterTestsList.innerHTML = '';
+        entry.tests.forEach(function (t) { chapterTestsList.appendChild(buildTestBox(t)); });
+        chapterTestsView.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        chapterTestsView.scrollTop = 0;
         lucide.createIcons();
       }
-      function closeChapterModal() { chapterModal.classList.remove('open'); }
-      document.getElementById('chaptersBackBtn').addEventListener('click', closeChapters);
+      function closeChapterTests() {
+        chapterTestsView.classList.remove('open');
+        syncBodyScroll();
+      }
+      document.getElementById('chapterTestsBackBtn').addEventListener('click', closeChapterTests);
       chapterSearch.addEventListener('input', renderChapterRows);
-      document.getElementById('chapterModalClose').addEventListener('click', closeChapterModal);
-      chapterModal.addEventListener('click', function (e) { if (e.target === chapterModal) closeChapterModal(); });
-      document.getElementById('cmAttempt').addEventListener('click', function () { modal.classList.add('open'); });
       /* Subject boxes — like MDCAT Hub: open that subject's Chapters list (numbered rows) */
       document.querySelectorAll('[data-open-subject]').forEach(function (box) {
         function openSubject() { openChapters(box.getAttribute('data-open-subject')); }
@@ -2445,9 +3001,12 @@
         var reg = which === 'register';
         document.getElementById('registerForm').style.display = reg ? '' : 'none';
         document.getElementById('loginForm').style.display = reg ? 'none' : '';
-        document.getElementById('tabRegister').classList.toggle('active', reg);
-        document.getElementById('tabLogin').classList.toggle('active', !reg);
+        document.getElementById('registerHead').style.display = reg ? '' : 'none';
+        document.getElementById('loginHead').style.display = reg ? 'none' : '';
+        var fn = document.getElementById('forgotNotice');
+        if (fn) fn.classList.remove('show');
         accountTitle.textContent = reg ? 'Create Account' : 'Sign In';
+        lucide.createIcons();
       }
       function openAccount(which) {
         accountBack.classList.add('open');
@@ -2469,18 +3028,24 @@
         accountTitle.textContent = 'Student Dashboard';
         var first = currentUser.name.split(' ')[0];
         document.getElementById('dashGreeting').textContent = 'Welcome, ' + first + '!';
-        document.getElementById('dashEmail').textContent = 'Signed in as ' + currentUser.email + ' — pick a chapter test and keep your preparation on track.';
+        document.getElementById('dashEmail').textContent = 'Signed in as ' + currentUser.email + '. Your practice activity for this session is summarised below.';
         var res = currentUser.results;
-        document.getElementById('dashAttempted').textContent = res.length;
-        var best = null;
-        res.forEach(function (r) { if (best === null || r.pct > best) best = r.pct; });
+        var questions = 0, pctSum = 0, best = null;
+        res.forEach(function (r) {
+          questions += r.total; pctSum += r.pct;
+          if (best === null || r.pct > best) best = r.pct;
+        });
+        document.getElementById('dashCompleted').textContent = res.length;
+        document.getElementById('dashQuestions').textContent = questions;
+        document.getElementById('dashAverage').textContent = res.length ? Math.round(pctSum / res.length) + '%' : '—';
         document.getElementById('dashBest').textContent = best === null ? '—' : best + '%';
+        document.getElementById('dashRecentTitle').textContent = 'Recent Test Submissions (' + res.length + ')';
         var list = document.getElementById('dashResultsList');
         list.innerHTML = '';
         if (!res.length) {
           var d = document.createElement('p');
           d.className = 'dash-empty';
-          d.textContent = 'No tests attempted yet. Start your first chapter test from the Tests section.';
+          d.textContent = 'No test submissions yet.';
           list.appendChild(d);
         } else {
           res.slice().reverse().forEach(function (r) {
@@ -2544,29 +3109,40 @@
       });
 
       document.querySelectorAll('[data-auth]').forEach(function (btn) {
-        btn.addEventListener('click', function () { openAccount(btn.getAttribute('data-auth')); });
+        btn.addEventListener('click', function () { closeMenu(); openAccount(btn.getAttribute('data-auth')); });
       });
-      document.getElementById('tabRegister').addEventListener('click', function () { showAuthTab('register'); });
-      document.getElementById('tabLogin').addEventListener('click', function () { showAuthTab('login'); });
       document.getElementById('goLogin').addEventListener('click', function () { showAuthTab('login'); });
       document.getElementById('goRegister').addEventListener('click', function () { showAuthTab('register'); });
+      document.getElementById('forgotBtn').addEventListener('click', function () {
+        document.getElementById('forgotNotice').classList.toggle('show');
+      });
       document.getElementById('accountClose').addEventListener('click', closeAccount);
       document.getElementById('userChip').addEventListener('click', function () { openAccount('dashboard'); });
       document.getElementById('logoutBtn').addEventListener('click', signOut);
       document.getElementById('dashLogout').addEventListener('click', signOut);
       document.getElementById('mmLogout').addEventListener('click', function () {
-        mobileMenu.classList.remove('open');
+        closeMenu();
         signOut();
       });
       document.getElementById('mmDash').addEventListener('click', function () {
-        mobileMenu.classList.remove('open');
-        menuBtn.setAttribute('aria-expanded', 'false');
-        menuBtn.innerHTML = '<i data-lucide="menu"></i>';
+        closeMenu();
         openAccount('dashboard');
       });
-      document.getElementById('dashTests').addEventListener('click', function () {
+      document.getElementById('dashStartPractice').addEventListener('click', function () {
         closeAccount();
-        document.getElementById('tests').scrollIntoView({ behavior: 'smooth' });
+        setActiveMenuItem('tests');
+        openAllTests('all');
+      });
+      document.getElementById('dashMockTest').addEventListener('click', function () { showPreviewNotice(); });
+      document.getElementById('dashExploreSubjects').addEventListener('click', function () {
+        closeAccount();
+        setActiveMenuItem('subjects');
+        openSubjectsView();
+      });
+      document.getElementById('dashMoreTests').addEventListener('click', function () {
+        closeAccount();
+        setActiveMenuItem('tests');
+        openAllTests('all');
       });
     </script>
   </body>
