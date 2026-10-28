@@ -510,6 +510,20 @@
       .res a.res-open, .res a.res-download{ text-decoration:none; }
       .res .res-download{ display:inline-flex; align-items:center; gap:6px; font-size:14px; font-weight:700; color:var(--sky); margin-top:2px; }
       .res .res-download svg{ width:16px; height:16px; }
+      .res a.res-download[aria-disabled="true"]{ opacity:.6; pointer-events:none; }
+
+      /* ---------- In-page PDF viewer ---------- */
+      #pdfView.open{ display:flex; flex-direction:column; overflow:hidden; }
+      #pdfView .exam-top{ flex:none; position:relative; }
+      #pdfView .exam-top-in{ flex-wrap:nowrap; }
+      .pdf-title{ flex:1; min-width:0; font-family:"Sora",sans-serif; font-weight:700; font-size:15.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+      .pdf-dl-btn{ flex:none; display:inline-flex; align-items:center; gap:7px; background:var(--blue); color:#fff; border:none; border-radius:11px; padding:10px 14px; font-weight:700; font-size:14px; cursor:pointer; font-family:inherit; }
+      .pdf-dl-btn svg{ width:16px; height:16px; }
+      .pdf-dl-btn[disabled]{ opacity:.65; cursor:default; }
+      .pdf-frame-wrap{ flex:1 1 auto; min-height:0; position:relative; background:var(--surface-2); }
+      .pdf-frame{ position:absolute; inset:0; width:100%; height:100%; border:0; background:#fff; }
+      .pdf-status{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; text-align:center; padding:24px; color:var(--muted); font-size:15px; font-weight:600; }
+      .pdf-status.hide{ display:none; }
       .res-empty{
         margin-top:38px; text-align:center;
         background:linear-gradient(180deg, var(--surface-2), var(--surface));
@@ -1377,8 +1391,8 @@
             <h3>Sindh MDCAT Paper 2025 — Version A</h3>
             <p>MdcatPrep · 47 pages · PDF</p>
             <div class="res-actions">
-              <a class="res-open" href="resources/sindh-mdcat-2025-paper-a.pdf" target="_blank" rel="noopener">Open PDF <i data-lucide="arrow-up-right"></i></a>
-              <a class="res-download" href="resources/sindh-mdcat-2025-paper-a.pdf" download>Download <i data-lucide="download"></i></a>
+              <a class="res-open" href="resources/sindh-mdcat-2025-paper-a.pdf" data-open-pdf>Open PDF <i data-lucide="arrow-up-right"></i></a>
+              <a class="res-download" href="resources/sindh-mdcat-2025-paper-a.pdf" download data-download-pdf>Download <i data-lucide="download"></i></a>
             </div>
           </div>
         </div>
@@ -2060,11 +2074,26 @@
             <h3>Sindh MDCAT Paper 2025 — Version A</h3>
             <p>MdcatPrep · 47 pages · PDF</p>
             <div class="res-actions">
-              <a class="res-open" href="resources/sindh-mdcat-2025-paper-a.pdf" target="_blank" rel="noopener">Open PDF <i data-lucide="arrow-up-right"></i></a>
-              <a class="res-download" href="resources/sindh-mdcat-2025-paper-a.pdf" download>Download <i data-lucide="download"></i></a>
+              <a class="res-open" href="resources/sindh-mdcat-2025-paper-a.pdf" data-open-pdf>Open PDF <i data-lucide="arrow-up-right"></i></a>
+              <a class="res-download" href="resources/sindh-mdcat-2025-paper-a.pdf" download data-download-pdf>Download <i data-lucide="download"></i></a>
             </div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- ================= PDF viewer (in-page — no blank new tab) ================= -->
+    <div class="exam-back" id="pdfView" role="dialog" aria-modal="true" aria-label="Sindh MDCAT Paper 2025 — Version A">
+      <div class="exam-top">
+        <div class="exam-top-in">
+          <button class="exam-exit" type="button" id="pdfCloseBtn"><i data-lucide="arrow-left"></i> Back</button>
+          <span class="pdf-title">Sindh MDCAT Paper 2025 — Version A</span>
+          <button class="pdf-dl-btn" type="button" data-download-pdf><i data-lucide="download"></i> Download</button>
+        </div>
+      </div>
+      <div class="pdf-frame-wrap">
+        <div class="pdf-status" id="pdfStatus">Loading paper…</div>
+        <iframe class="pdf-frame" id="pdfFrame" title="Sindh MDCAT Paper 2025 — Version A (PDF)"></iframe>
       </div>
     </div>
 
@@ -2644,6 +2673,69 @@
       }
       document.getElementById('subjectsCloseBtn').addEventListener('click', closeSubjectsView);
       document.getElementById('resourcesCloseBtn').addEventListener('click', closeResourcesView);
+      /* ---------- Paper PDF: in-page viewer + direct download ---------- */
+      var PDF_URL = 'resources/sindh-mdcat-2025-paper-a.pdf';
+      var PDF_NAME = 'Sindh-MDCAT-Paper-2025-Version-A.pdf';
+      var pdfView = document.getElementById('pdfView');
+      var pdfFrame = document.getElementById('pdfFrame');
+      var pdfStatus = document.getElementById('pdfStatus');
+      pdfFrame.addEventListener('load', function () {
+        if (pdfFrame.getAttribute('src')) pdfStatus.classList.add('hide');
+      });
+      function openPdfView() {
+        pdfStatus.classList.remove('hide');
+        pdfFrame.setAttribute('src', PDF_URL);
+        pdfView.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        lucide.createIcons();
+      }
+      function closePdfView() {
+        pdfView.classList.remove('open');
+        pdfFrame.removeAttribute('src');
+        syncBodyScroll();
+      }
+      document.getElementById('pdfCloseBtn').addEventListener('click', closePdfView);
+      document.querySelectorAll('[data-open-pdf]').forEach(function (el) {
+        el.addEventListener('click', function (e) { e.preventDefault(); openPdfView(); });
+      });
+      /* Direct download: fetch the file the moment Download is tapped and hand
+         the browser a ready blob, so saving starts immediately instead of
+         waiting on a fresh navigation to the PDF. Falls back to a plain
+         download link if the fetch fails. */
+      function savePdfBlob(blob) {
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url; a.download = PDF_NAME;
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(function () { URL.revokeObjectURL(url); }, 30000);
+      }
+      function nativePdfDownload() {
+        var a = document.createElement('a');
+        a.href = PDF_URL; a.setAttribute('download', PDF_NAME);
+        document.body.appendChild(a); a.click(); a.remove();
+      }
+      document.querySelectorAll('[data-download-pdf]').forEach(function (el) {
+        el.addEventListener('click', function (e) {
+          e.preventDefault();
+          if (el.getAttribute('data-busy') === '1') return;
+          el.setAttribute('data-busy', '1');
+          el.setAttribute('aria-disabled', 'true');
+          if (el.tagName === 'BUTTON') el.disabled = true;
+          var label = el.innerHTML;
+          el.innerHTML = 'Preparing…';
+          fetch(PDF_URL)
+            .then(function (r) { if (!r.ok) throw new Error('fetch failed'); return r.blob(); })
+            .then(function (blob) { savePdfBlob(blob); })
+            .catch(function () { nativePdfDownload(); })
+            .then(function () {
+              el.innerHTML = label;
+              el.removeAttribute('data-busy');
+              el.removeAttribute('aria-disabled');
+              if (el.tagName === 'BUTTON') el.disabled = false;
+              lucide.createIcons();
+            });
+        });
+      });
       /* ---------- About view (side-menu page) ---------- */
       var aboutView = document.getElementById('aboutView');
       function openAboutView() {
