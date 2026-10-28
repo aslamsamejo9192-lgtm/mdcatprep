@@ -883,12 +883,12 @@
       }
       .btn-mock:hover{ transform:translateY(-1px); box-shadow:0 14px 30px rgba(124,58,237,.42), 0 1px 0 rgba(255,255,255,.18) inset; }
       .dash-divider{ border:none; border-top:1px solid var(--line); margin:24px 0 20px; }
-      .dash-stats{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+      .dash-stats{ display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:12px; }
       @media (min-width:640px){ .dash-stats{ gap:12px; } }
       @media (max-width:400px){ .dash-stats{ gap:10px; } .dash-stat{ padding:14px 13px; } }
       .dash-stat{
         background:linear-gradient(180deg, var(--surface-2), var(--surface)); border:1px solid var(--line); border-radius:18px;
-        padding:17px; box-shadow:var(--shadow-card);
+        padding:17px; box-shadow:var(--shadow-card); min-width:0; overflow:hidden;
       }
       .dash-stat-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:8px; }
       .dash-stat-label{ font-size:13px; font-weight:600; color:var(--muted); line-height:1.35; }
@@ -920,6 +920,13 @@
       .dash-empty{ font-size:13.5px; color:var(--muted); background:rgba(148,180,255,.04); border:1px dashed var(--line-strong); border-radius:13px; padding:17px 14px; text-align:center; }
       .dash-signout{ margin-top:22px; }
       .dash-signout .btn{ padding:10px 18px; font-size:13.5px; border-radius:11px; }
+      /* Dashboard mobile containment: nothing inside the dashboard may widen it past the screen */
+      #dashView{ overflow-x:clip; }
+      .dash-stat-label, .dash-stat-sub, .dash-sub{ overflow-wrap:break-word; }
+      /* Dashboard keeps the site header strip (logo / menu / Hi, Name / Log out) visible above the overlay */
+      #accountBack.dash-mode{ top:72px; }
+      @media (max-width:640px){ #accountBack.dash-mode{ top:64px; } }
+      body:has(#accountBack.dash-mode) header{ z-index:96; }
       [data-theme="light"] .dash-stat{ background:#fff; }
       [data-theme="light"] .ic-blue{ color:#2563EB; }
       [data-theme="light"] .ic-green{ color:#16A34A; }
@@ -3083,11 +3090,13 @@
         if (currentUser && which === 'dashboard') { showDashboard(); return; }
         authView.style.display = '';
         dashView.style.display = 'none';
+        accountBack.classList.remove('dash-mode');
         showAuthTab(which === 'login' ? 'login' : 'register');
         lucide.createIcons();
       }
       function closeAccount() {
         accountBack.classList.remove('open');
+        accountBack.classList.remove('dash-mode');
         document.body.style.overflow = '';
       }
       function renderDashboardStats(res) {
@@ -3124,6 +3133,7 @@
         if (!currentUser) return;
         authView.style.display = 'none';
         dashView.style.display = '';
+        accountBack.classList.add('dash-mode');
         accountTitle.textContent = 'Student Dashboard';
         var displayName = currentUser.name || currentUser.fullName || '';
         var first = displayName.split(' ')[0];
