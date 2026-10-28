@@ -155,6 +155,19 @@
       }
       .sm-actions{ display:flex; gap:10px; margin-top:16px; padding-top:16px; border-top:1px solid var(--line); }
       .sm-actions .btn{ flex:1; padding:13px 16px; }
+      /* Signed-in menu: user card + Dashboard / Logout buttons (Hub pattern) */
+      .sm-user{ display:none; margin-top:16px; padding:14px 16px; background:rgba(148,180,255,.06); border:1px solid var(--line); border-radius:14px; min-width:0; }
+      body.signed-in .sm-user{ display:block; }
+      .sm-user-name{ font-size:16px; font-weight:700; letter-spacing:-.01em; overflow-wrap:break-word; }
+      .sm-user-email{ font-size:13.5px; color:var(--muted); margin-top:2px; overflow-wrap:anywhere; }
+      .sm-user-actions{ display:none; margin-top:12px; }
+      body.signed-in .sm-user-actions{ display:grid; gap:10px; }
+      .sm-user-actions .btn{ width:100%; padding:13px 16px; }
+      .btn-logout{ background:rgba(239,68,68,.07); color:#F87171; border-color:rgba(239,68,68,.45); }
+      .btn-logout:hover{ background:rgba(239,68,68,.14); }
+      [data-theme="light"] .sm-user{ background:rgba(13,38,76,.04); }
+      [data-theme="light"] .btn-logout{ color:#DC2626; border-color:rgba(220,38,38,.45); background:rgba(220,38,38,.05); }
+      [data-theme="light"] .btn-logout:hover{ background:rgba(220,38,38,.10); }
       [data-theme="light"] .side-menu{ box-shadow:0 30px 50px rgba(13,45,95,.18); }
       [data-theme="light"] .sm-item:hover{ background:rgba(13,38,76,.05); }
       [data-theme="light"] .sm-close:hover{ background:rgba(13,38,76,.05); }
@@ -854,21 +867,9 @@
       .auth-alt button:hover{ text-decoration:underline; }
       [data-theme="light"] .auth-alt button{ color:#0284C7; }
       [data-theme="light"] .auth-card{ background:#FFFFFF; }
-      .user-chip{
-        align-items:center; gap:9px; background:rgba(148,180,255,.06); border:1px solid var(--line-strong);
-        color:var(--text); border-radius:999px; padding:5px 14px 5px 5px; font-weight:650; font-size:14px;
-        transition:background .16s ease;
-      }
-      .user-chip:hover{ background:var(--surface-2); }
-      .user-chip .avatar{ width:30px; height:30px; border-radius:50%; background:var(--blue); color:#fff; display:grid; place-items:center; font-weight:800; font-size:14px; flex:none; }
       .user-only{ display:none !important; }
       body.signed-in .user-only{ display:inline-flex !important; }
       body.signed-in .auth-only{ display:none !important; }
-      @media (max-width:640px){
-        body.signed-in #logoutBtn{ display:none !important; }
-        .user-chip{ padding-right:11px; gap:7px; }
-        #userChipName{ max-width:76px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-      }
       /* Dashboard — Hub-style page: greeting, action buttons, 2x2 stat cards, recent submissions */
       .dash-wrap{ max-width:1180px; margin:0 auto; padding:24px 20px 44px; }
       .dash-greeting{ font-size:29px; font-weight:800; letter-spacing:-.03em; line-height:1.1; }
@@ -923,7 +924,7 @@
       /* Dashboard mobile containment: nothing inside the dashboard may widen it past the screen */
       #dashView{ overflow-x:clip; }
       .dash-stat-label, .dash-stat-sub, .dash-sub{ overflow-wrap:break-word; }
-      /* Dashboard keeps the site header strip (logo / menu / Hi, Name / Log out) visible above the overlay */
+      /* Dashboard keeps the site header strip (logo / theme / menu) visible above the overlay */
       #accountBack.dash-mode{ top:72px; }
       @media (max-width:640px){ #accountBack.dash-mode{ top:64px; } }
       body:has(#accountBack.dash-mode) header{ z-index:96; }
@@ -1128,8 +1129,6 @@
             <i data-lucide="sun"></i>
           </button>
           <button class="btn btn-ghost btn-sm btn-signin auth-only" type="button" data-auth="login">Sign In</button>
-          <button class="user-chip user-only" type="button" id="userChip" aria-label="Open your dashboard"><span class="avatar" id="userAvatar">?</span><span id="userChipName">Account</span></button>
-          <button class="btn btn-ghost btn-sm user-only" type="button" id="logoutBtn">Log Out</button>
           <button class="menu-btn" type="button" id="menuBtn" aria-label="Open menu" aria-expanded="false">
             <i data-lucide="menu"></i>
           </button>
@@ -1151,11 +1150,17 @@
           <button class="sm-item" type="button" data-nav="about">About</button>
           <button class="sm-item" type="button" data-nav="contact">Contact</button>
         </nav>
-        <div class="sm-actions">
-          <button class="btn btn-ghost auth-only" type="button" data-auth="login">Login</button>
-          <button class="btn btn-primary auth-only" type="button" data-auth="register">Get Started</button>
-          <button class="btn btn-ghost user-only" type="button" id="mmDash">My Dashboard</button>
-          <button class="btn btn-primary user-only" type="button" id="mmLogout">Log Out</button>
+        <div class="sm-actions auth-only">
+          <button class="btn btn-ghost" type="button" data-auth="login">Login</button>
+          <button class="btn btn-primary" type="button" data-auth="register">Get Started</button>
+        </div>
+        <div class="sm-user" id="mmUserCard">
+          <div class="sm-user-name" id="mmUserName">Account</div>
+          <div class="sm-user-email" id="mmUserEmail"></div>
+        </div>
+        <div class="sm-user-actions">
+          <button class="btn btn-primary user-only" type="button" id="mmDash"><i data-lucide="layout-grid"></i>Dashboard</button>
+          <button class="btn btn-logout user-only" type="button" id="mmLogout"><i data-lucide="log-out"></i>Logout</button>
         </div>
       </div>
     </header>
@@ -3124,8 +3129,8 @@
           if (!s || !s.email || !s.fullName) return;
           currentUser = { name: s.fullName, fullName: s.fullName, email: s.email, results: [] };
           document.body.classList.add('signed-in');
-          document.getElementById('userChipName').textContent = 'Hi, ' + s.fullName.split(' ')[0];
-          document.getElementById('userAvatar').textContent = s.fullName.trim().charAt(0).toUpperCase();
+          document.getElementById('mmUserName').textContent = s.fullName;
+          document.getElementById('mmUserEmail').textContent = s.email;
         } catch (e) { /* no saved session */ }
       }
 
@@ -3219,13 +3224,12 @@
         currentUser = { name: user.fullName || user.name, fullName: user.fullName || user.name, email: user.email, results: [] };
         try { sessionStorage.setItem(SESSION_KEY, JSON.stringify({ email: currentUser.email, fullName: currentUser.fullName })); } catch (e) {}
         document.body.classList.add('signed-in');
-        var first = currentUser.fullName.split(' ')[0];
-        document.getElementById('userChipName').textContent = 'Hi, ' + first;
-        document.getElementById('userAvatar').textContent = currentUser.fullName.trim().charAt(0).toUpperCase();
-        accountBack.classList.add('open');
-        document.body.style.overflow = 'hidden';
-        accountBack.scrollTop = 0;
-        showDashboard();
+        document.getElementById('mmUserName').textContent = currentUser.fullName;
+        document.getElementById('mmUserEmail').textContent = currentUser.email;
+        /* Land on the home screen after sign-in; the dashboard opens from the menu's Dashboard button. */
+        closeAccount();
+        setActiveMenuItem('home');
+        window.scrollTo(0, 0);
       }
       function signOut() {
         currentUser = null;
@@ -3320,8 +3324,6 @@
         document.getElementById('forgotNotice').classList.toggle('show');
       });
       document.getElementById('accountClose').addEventListener('click', closeAccount);
-      document.getElementById('userChip').addEventListener('click', function () { openAccount('dashboard'); });
-      document.getElementById('logoutBtn').addEventListener('click', signOut);
       document.getElementById('dashLogout').addEventListener('click', signOut);
       document.getElementById('mmLogout').addEventListener('click', function () {
         closeMenu();
