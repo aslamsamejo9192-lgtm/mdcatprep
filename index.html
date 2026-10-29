@@ -513,6 +513,17 @@
       .res a.res-download[aria-disabled="true"]{ opacity:.6; pointer-events:none; }
 
       /* why choose us — home, above Recently Uploaded Tests */
+      .why-panel{
+        min-width:0;
+        background:linear-gradient(180deg, #0D1B33, #0A1428);
+        border:1px solid var(--line-strong);
+        border-radius:26px;
+        padding:32px 24px;
+        box-shadow:var(--shadow-card);
+      }
+      @media (min-width:640px){ .why-panel{ padding:40px 32px; border-radius:28px; } }
+      @media (min-width:1020px){ .why-panel{ padding:48px 40px; } }
+      [data-theme="light"] .why-panel{ background:#F1F5F9; border-color:rgba(13,38,76,.14); box-shadow:0 2px 6px rgba(13,45,95,.05), 0 20px 40px rgba(13,45,95,.06); }
       .why-grid{ display:grid; gap:16px; margin-top:38px; grid-template-columns:minmax(0,1fr); }
       @media (min-width:640px){ .why-grid{ grid-template-columns:repeat(2, minmax(0,1fr)); } }
       @media (min-width:1020px){ .why-grid{ grid-template-columns:repeat(4, minmax(0,1fr)); } }
@@ -1314,6 +1325,7 @@
     <!-- ================= Why Choose Us ================= -->
     <section id="why">
       <div class="wrap">
+        <div class="why-panel">
         <div class="sec-head">
           <h2>🏆 Why Choose Us?</h2>
           <p>Everything you need to prepare smarter, practice better, and score higher in MDCAT.</p>
@@ -1339,6 +1351,7 @@
             <h3>Concept-Based Learning</h3>
             <p>Focus on understanding concepts instead of memorizing answers, with concise and exam-focused material.</p>
           </article>
+        </div>
         </div>
       </div>
     </section>
