@@ -562,6 +562,58 @@
       .pdf-page-num{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:#8A94A6; font-size:13.5px; font-weight:600; }
       .pdf-status{ position:absolute; inset:0; z-index:3; display:flex; align-items:center; justify-content:center; text-align:center; padding:24px; background:var(--surface-2); color:var(--muted); font-size:15px; font-weight:600; }
       .pdf-status.hide{ display:none; }
+
+      /* flashcards resource card action (button styled like the PDF open link) */
+      .res .res-open-btn{
+        display:inline-flex; align-items:center; gap:6px;
+        font-size:14px; font-weight:700; color:var(--sky); margin-top:2px;
+        background:none; border:none; padding:0; font-family:inherit; cursor:pointer; text-align:left;
+      }
+      .res .res-open-btn svg{ width:16px; height:16px; }
+      .res .res-open-btn:hover{ text-decoration:underline; }
+
+      /* ---------- In-page flashcard viewer ---------- */
+      #flashcardsView .exam-top{ position:sticky; }
+      #flashcardsView .exam-top-in{ flex-wrap:nowrap; }
+      .fc-wrap{ width:100%; max-width:720px; margin:0 auto; padding:28px 20px 52px; min-width:0; }
+      .fc-deck-label{ text-align:center; font-size:13px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--sky); }
+      .fc-counter{ text-align:center; font-family:"Sora",sans-serif; font-size:17px; font-weight:800; letter-spacing:-.01em; margin-top:8px; }
+      .fc-scene{ perspective:1400px; margin-top:20px; cursor:pointer; border-radius:24px; }
+      .fc-scene:focus-visible{ outline:2px solid var(--sky); outline-offset:3px; }
+      .fc-inner{ position:relative; width:100%; min-height:340px; transform-style:preserve-3d; transition:transform .55s cubic-bezier(.22,1,.36,1); }
+      .fc-inner.flipped{ transform:rotateY(180deg); }
+      @media (max-width:560px){ .fc-inner{ min-height:400px; } }
+      .fc-face{
+        position:absolute; inset:0; min-width:0; overflow-y:auto;
+        display:flex; flex-direction:column; align-items:center; text-align:center;
+        padding:24px 22px 20px; border-radius:24px;
+        border:1px solid var(--line-strong);
+        background:linear-gradient(180deg, var(--surface-2), var(--surface));
+        box-shadow:var(--shadow-card);
+        backface-visibility:hidden; -webkit-backface-visibility:hidden;
+      }
+      .fc-face.fc-back{ transform:rotateY(180deg); background:linear-gradient(180deg, rgba(59,130,246,.16), var(--surface)); }
+      [data-theme="light"] .fc-face{ background:#FFFFFF; }
+      [data-theme="light"] .fc-face.fc-back{ background:#EEF4FF; }
+      .fc-side-label{
+        flex:none; font-size:11.5px; font-weight:750; letter-spacing:.07em; text-transform:uppercase;
+        color:#7DD3FC; background:rgba(56,189,248,.12); border:1px solid rgba(56,189,248,.35);
+        padding:5px 12px; border-radius:999px;
+      }
+      [data-theme="light"] .fc-side-label{ color:#0369A1; background:rgba(56,189,248,.14); }
+      .fc-text{ flex:0 1 auto; margin-top:auto; margin-bottom:auto; width:100%; min-width:0; padding:18px 2px; overflow-wrap:break-word; }
+      .fc-front .fc-text{ font-family:"Sora","Inter",sans-serif; font-size:21px; font-weight:750; line-height:1.4; letter-spacing:-.015em; }
+      .fc-back .fc-text{ font-size:17px; font-weight:550; line-height:1.65; }
+      @media (max-width:560px){
+        .fc-front .fc-text{ font-size:19.5px; }
+        .fc-back .fc-text{ font-size:16.5px; }
+      }
+      .fc-text sub{ font-size:.68em; }
+      .fc-hint{ flex:none; font-size:13px; font-weight:600; color:var(--muted-2); }
+      .fc-nav{ display:flex; gap:12px; margin-top:22px; }
+      .fc-nav .btn{ flex:1 1 0; min-width:0; padding:13px 10px; white-space:nowrap; }
+      .fc-nav .btn:disabled{ opacity:.45; cursor:default; transform:none; box-shadow:none; }
+      @media (prefers-reduced-motion: reduce){ .fc-inner{ transition:none; } }
       .res-empty{
         margin-top:38px; text-align:center;
         background:linear-gradient(180deg, var(--surface-2), var(--surface));
@@ -1539,6 +1591,14 @@
               <a class="res-download" href="resources/sindh-mdcat-2025-paper-a.pdf" download data-download-pdf>Download <i data-lucide="download"></i></a>
             </div>
           </div>
+          <div class="res" data-category="flashcards">
+            <i data-lucide="layers"></i>
+            <h3>AC and Electronics — Flashcards</h3>
+            <p>Physics · 25 flashcards</p>
+            <div class="res-actions">
+              <button class="res-open-btn" type="button" data-open-flashcards>Open Flashcards <i data-lucide="arrow-up-right"></i></button>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -2236,6 +2296,14 @@
               <a class="res-download" href="resources/sindh-mdcat-2025-paper-a.pdf" download data-download-pdf>Download <i data-lucide="download"></i></a>
             </div>
           </div>
+          <div class="res" data-category="flashcards">
+            <i data-lucide="layers"></i>
+            <h3>AC and Electronics — Flashcards</h3>
+            <p>Physics · 25 flashcards</p>
+            <div class="res-actions">
+              <button class="res-open-btn" type="button" data-open-flashcards>Open Flashcards <i data-lucide="arrow-up-right"></i></button>
+            </div>
+          </div>
         </div>
         <div class="no-results" id="resNoResults" style="display:none">
           <i data-lucide="file-search"></i>
@@ -2257,6 +2325,38 @@
         <div class="pdf-status" id="pdfStatus">Loading paper…</div>
         <div class="pdf-pages" id="pdfPages"></div>
         <iframe class="pdf-frame" id="pdfFrame" title="Sindh MDCAT Paper 2025 — Version A (PDF)" style="display:none"></iframe>
+      </div>
+    </div>
+
+    <!-- ================= Flashcards viewer (in-page) ================= -->
+    <div class="exam-back" id="flashcardsView" role="dialog" aria-modal="true" aria-label="AC and Electronics — Flashcards">
+      <div class="exam-top">
+        <div class="exam-top-in">
+          <button class="exam-exit" type="button" id="flashcardsCloseBtn"><i data-lucide="arrow-left"></i> Back to Resources</button>
+          <span class="pdf-title">AC and Electronics — Flashcards</span>
+        </div>
+      </div>
+      <div class="fc-wrap">
+        <p class="fc-deck-label">Physics · AC and Electronics</p>
+        <p class="fc-counter" id="fcCounter">Card 1 of 25</p>
+        <div class="fc-scene" id="fcScene" role="button" tabindex="0" aria-label="Flashcard — tap to flip">
+          <div class="fc-inner" id="fcInner">
+            <div class="fc-face fc-front">
+              <span class="fc-side-label">Question</span>
+              <div class="fc-text" id="fcFront"></div>
+              <span class="fc-hint">Tap the card to flip</span>
+            </div>
+            <div class="fc-face fc-back">
+              <span class="fc-side-label">Answer</span>
+              <div class="fc-text" id="fcBack"></div>
+              <span class="fc-hint">Tap the card to flip back</span>
+            </div>
+          </div>
+        </div>
+        <div class="fc-nav">
+          <button class="btn btn-ghost" type="button" id="fcPrevBtn"><i data-lucide="chevron-left"></i> Previous</button>
+          <button class="btn btn-primary" type="button" id="fcNextBtn">Next <i data-lucide="chevron-right"></i></button>
+        </div>
       </div>
     </div>
 
@@ -3082,6 +3182,86 @@
       }
       document.querySelectorAll('[data-download-pdf]').forEach(function (el) {
         if (el.tagName === 'BUTTON') el.addEventListener('click', nativePdfDownload);
+      });
+      /* ---------- Flashcards viewer — Physics: AC and Electronics (25 cards) ---------- */
+      var FC_CARDS = [
+        { front: 'Alternating Current (AC)', back: 'An electric current whose magnitude changes continuously with time and whose direction reverses periodically.' },
+        { front: 'Formula for Root Mean Square (RMS) value of alternating current', back: 'I<sub>rms</sub> = I<sub>0</sub> / √2 ≈ 0.707 I<sub>0</sub>, where I<sub>0</sub> is the peak value of the current.' },
+        { front: 'Peak-to-Peak Value', back: 'The sum of the positive and negative peak values of an alternating quantity, equal to 2V<sub>0</sub> or 2I<sub>0</sub>.' },
+        { front: 'Phase relationship between voltage and current in a pure resistor', back: 'Voltage and current are in phase with each other (the phase difference φ = 0°).' },
+        { front: 'Phase relationship between voltage and current in a pure inductor', back: 'Alternating voltage leads the alternating current by a phase angle of 90° (or π/2 radians).' },
+        { front: 'Phase relationship between voltage and current in a pure capacitor', back: 'Alternating current leads the alternating voltage by a phase angle of 90° (or π/2 radians).' },
+        { front: 'Formula for Inductive Reactance (X<sub>L</sub>)', back: 'X<sub>L</sub> = ωL = 2πfL, where f is the frequency of AC and L is the inductance.' },
+        { front: 'Formula for Capacitive Reactance (X<sub>C</sub>)', back: 'X<sub>C</sub> = 1/(ωC) = 1/(2πfC), where f is the frequency of AC and C is the capacitance.' },
+        { front: 'Impedance (Z)', back: 'The combined opposition offered by resistance and reactance in an AC circuit, given by Z = √(R² + (X<sub>L</sub> − X<sub>C</sub>)²).' },
+        { front: 'Formula for Resonance Frequency (f<sub>r</sub>) in an RLC series circuit', back: 'f<sub>r</sub> = 1/(2π√(LC)), occurring when inductive reactance equals capacitive reactance (X<sub>L</sub> = X<sub>C</sub>).' },
+        { front: 'Power Factor in an AC circuit', back: 'The cosine of the phase angle (cos φ) between the alternating voltage and current, from the power formula P = V<sub>rms</sub> I<sub>rms</sub> cos φ.' },
+        { front: 'Choke Coil', back: 'An inductor with very high inductance and negligible resistance used to limit alternating current without significant power loss.' },
+        { front: 'Doping', back: 'The process of adding a controlled amount of trivalent or pentavalent impurity atoms to a pure (intrinsic) semiconductor to increase its conductivity.' },
+        { front: 'N-type Semiconductor', back: 'An extrinsic semiconductor formed by doping a pure semiconductor with pentavalent impurities (donor atoms), where free electrons are the majority carriers.' },
+        { front: 'P-type Semiconductor', back: 'An extrinsic semiconductor formed by doping a pure semiconductor with trivalent impurities (acceptor atoms), where holes are the majority carriers.' },
+        { front: 'Depletion Region', back: 'The charge-free region on either side of a p-n junction containing immobile positive and negative ions, depleted of mobile charge carriers.' },
+        { front: 'Potential Barrier values for Silicon and Germanium at room temperature', back: '0.7 V for Silicon (Si) and 0.3 V for Germanium (Ge).' },
+        { front: 'Forward Biasing of a p-n junction diode', back: 'Connecting the p-side to the positive terminal and the n-side to the negative terminal of a battery, which narrows the depletion region and allows current to flow.' },
+        { front: 'Reverse Biasing of a p-n junction diode', back: 'Connecting the p-side to the negative terminal and the n-side to the positive terminal of a battery, which widens the depletion region and blocks majority current flow.' },
+        { front: 'Rectification', back: 'The process of converting alternating current (AC) voltage into direct current (DC) voltage using semiconductor diodes.' },
+        { front: 'Zener Diode', back: 'A heavily doped p-n junction diode specially designed to operate continuously in the reverse breakdown region without being damaged, commonly used as a voltage regulator.' },
+        { front: 'Fundamental current equation for a Bipolar Junction Transistor (BJT)', back: 'I<sub>E</sub> = I<sub>B</sub> + I<sub>C</sub>, where I<sub>E</sub> is emitter current, I<sub>B</sub> is base current, and I<sub>C</sub> is collector current.' },
+        { front: 'Formula for Current Gain (β) in Common-Emitter configuration', back: 'β = I<sub>C</sub> / I<sub>B</sub>, the ratio of collector current (I<sub>C</sub>) to base current (I<sub>B</sub>).' },
+        { front: 'Formula for Current Gain (α) in Common-Base configuration', back: 'α = I<sub>C</sub> / I<sub>E</sub>, the ratio of collector current (I<sub>C</sub>) to emitter current (I<sub>E</sub>).' },
+        { front: 'Universal Logic Gates', back: 'NAND and NOR gates, because any basic logic gate (AND, OR, NOT) or boolean function can be constructed using only NAND or only NOR gates.' }
+      ];
+      var flashcardsView = document.getElementById('flashcardsView');
+      var fcInner = document.getElementById('fcInner');
+      var fcFront = document.getElementById('fcFront');
+      var fcBack = document.getElementById('fcBack');
+      var fcCounter = document.getElementById('fcCounter');
+      var fcPrevBtn = document.getElementById('fcPrevBtn');
+      var fcNextBtn = document.getElementById('fcNextBtn');
+      var fcIndex = 0;
+      var fcFlipped = false;
+      function renderFlashcard() {
+        var card = FC_CARDS[fcIndex];
+        fcFront.innerHTML = card.front;
+        fcBack.innerHTML = card.back;
+        fcCounter.textContent = 'Card ' + (fcIndex + 1) + ' of ' + FC_CARDS.length;
+        fcInner.classList.toggle('flipped', fcFlipped);
+        fcPrevBtn.disabled = fcIndex === 0;
+        fcNextBtn.disabled = fcIndex === FC_CARDS.length - 1;
+      }
+      function openFlashcards() {
+        fcIndex = 0;
+        fcFlipped = false;
+        renderFlashcard();
+        flashcardsView.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        flashcardsView.scrollTop = 0;
+        lucide.createIcons();
+      }
+      function closeFlashcards() {
+        flashcardsView.classList.remove('open');
+        syncBodyScroll();
+      }
+      document.querySelectorAll('[data-open-flashcards]').forEach(function (el) {
+        el.addEventListener('click', openFlashcards);
+      });
+      document.getElementById('flashcardsCloseBtn').addEventListener('click', closeFlashcards);
+      document.getElementById('fcScene').addEventListener('click', function () {
+        fcFlipped = !fcFlipped;
+        fcInner.classList.toggle('flipped', fcFlipped);
+      });
+      document.getElementById('fcScene').addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          fcFlipped = !fcFlipped;
+          fcInner.classList.toggle('flipped', fcFlipped);
+        }
+      });
+      fcPrevBtn.addEventListener('click', function () {
+        if (fcIndex > 0) { fcIndex--; fcFlipped = false; renderFlashcard(); }
+      });
+      fcNextBtn.addEventListener('click', function () {
+        if (fcIndex < FC_CARDS.length - 1) { fcIndex++; fcFlipped = false; renderFlashcard(); }
       });
       /* ---------- About view (side-menu page) ---------- */
       var aboutView = document.getElementById('aboutView');
