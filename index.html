@@ -710,6 +710,27 @@
       .legal-sec p{ color:var(--muted); font-size:15.5px; line-height:1.7; margin-top:10px; max-width:760px; }
       .privacy-updated{ color:var(--muted-2); font-size:13.5px; font-weight:600; letter-spacing:.01em; margin-top:14px; }
       .privacy-body .legal-sec p{ overflow-wrap:break-word; }
+      /* Privacy Policy: all sections inside one large rounded panel (Hub-style) */
+      .privacy-panel{
+        min-width:0; margin-top:26px;
+        background:linear-gradient(180deg, var(--surface-2), var(--surface));
+        border:1px solid var(--line-strong); border-radius:24px;
+        padding:28px 22px; box-shadow:var(--shadow-card);
+      }
+      @media (min-width:640px){ .privacy-panel{ padding:36px 32px; } }
+      [data-theme="light"] .privacy-panel{ background:#fff; border-color:rgba(13,38,76,.14); }
+      .privacy-panel .legal-sec{ margin-top:30px; }
+      .privacy-panel .legal-sec:first-child{ margin-top:0; }
+      /* Contact view: "Get in Touch" hero header (Hub-style, MdcatPrep wording) */
+      .contact-hero{ max-width:700px; min-width:0; }
+      .contact-title{
+        font-family:"Sora","Inter",sans-serif; font-size:40px; font-weight:800;
+        letter-spacing:-.03em; line-height:1.08; margin:0; overflow-wrap:break-word;
+      }
+      @media (min-width:640px){ .contact-title{ font-size:48px; } }
+      .contact-title .contact-accent{ color:var(--blue-bright); }
+      [data-theme="light"] .contact-title .contact-accent{ color:#2563EB; }
+      .contact-sub{ color:var(--muted); font-size:16.5px; line-height:1.65; margin-top:14px; max-width:640px; overflow-wrap:break-word; }
 
       /* Contact view: stacked cards + message form */
       .contact-stack{ display:grid; gap:18px; margin-top:26px; max-width:760px; }
@@ -2241,8 +2262,9 @@
         </div>
       </div>
       <div class="chapters-wrap">
-        <div class="sec-head">
-          <h2>Contact Us</h2>
+        <div class="contact-hero">
+          <h2 class="contact-title">Get in <span class="contact-accent">Touch</span></h2>
+          <p class="contact-sub">Have questions or need help with your MDCAT preparation? Contact us for support, feedback, or any queries. We're here to help you succeed!</p>
         </div>
         <div class="contact-stack">
           <div class="contact-card">
@@ -2301,6 +2323,7 @@
           <p>MdcatPrep (mdcatprep-seven.vercel.app) respects your privacy. This policy explains what information we collect, how we use it, and the choices you have. By using MdcatPrep, you agree to the practices described below.</p>
         </div>
         <p class="privacy-updated">Last updated: 29 October 2026</p>
+        <div class="privacy-panel">
         <div class="legal-sec">
           <h3>1. Information We Collect</h3>
           <p>When you register or take a test, we collect your name, email address, and test responses. We also collect basic technical information automatically when you visit the site, such as your device type, browser type, and pages you visit, which helps us keep the platform working and improve it.</p>
@@ -2332,6 +2355,7 @@
         <div class="legal-sec">
           <h3>8. Contact Us</h3>
           <p>If you have questions about this policy or want your data removed, contact us through the Contact page.</p>
+        </div>
         </div>
       </div>
     </div>
