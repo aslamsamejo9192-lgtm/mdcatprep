@@ -737,6 +737,17 @@
       .about-privacy-link{ color:var(--sky); font-weight:700; text-decoration:none; }
       .about-privacy-link:hover{ text-decoration:underline; }
       [data-theme="light"] .about-privacy-link{ color:#0284C7; }
+      /* About view: hero header (Hub-style) + Hub-like 48px top space */
+      #aboutView .chapters-wrap{ padding-top:48px; }
+      .about-hero{ max-width:700px; min-width:0; }
+      .about-title{
+        font-family:"Sora","Inter",sans-serif; font-size:40px; font-weight:800;
+        letter-spacing:-.03em; line-height:1.08; margin:0; overflow-wrap:break-word;
+      }
+      @media (min-width:640px){ .about-title{ font-size:48px; } }
+      .about-title .about-accent{ color:var(--blue-bright); }
+      [data-theme="light"] .about-title .about-accent{ color:#2563EB; }
+      .about-desc{ color:var(--muted); font-size:16.5px; line-height:1.65; margin-top:14px; max-width:640px; overflow-wrap:break-word; }
       /* Contact view: "Get in Touch" hero header (Hub-style, MdcatPrep wording) */
       .contact-hero{ max-width:700px; min-width:0; }
       .contact-title{
@@ -2225,8 +2236,9 @@
         </div>
       </div>
       <div class="chapters-wrap">
-        <div class="sec-head">
-          <h2>About MdcatPrep</h2>
+        <div class="about-hero">
+          <h2 class="about-title">About <span class="about-accent">MdcatPrep</span></h2>
+          <p class="about-desc">MdcatPrep is a student-focused educational platform created to make MDCAT preparation structured, accessible, and effective for Pakistani pre-medical students.</p>
         </div>
         <div class="about-brand-card">
           <span class="logo-mark"><i data-lucide="graduation-cap"></i></span>
