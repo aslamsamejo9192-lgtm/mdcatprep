@@ -721,6 +721,22 @@
       [data-theme="light"] .privacy-panel{ background:#fff; border-color:rgba(13,38,76,.14); }
       .privacy-panel .legal-sec{ margin-top:30px; }
       .privacy-panel .legal-sec:first-child{ margin-top:0; }
+      /* About view: Privacy Policy + Terms as large rounded boxes (Hub-style) */
+      .about-legal-box{
+        min-width:0; margin-top:24px;
+        background:linear-gradient(180deg, var(--surface-2), var(--surface));
+        border:1px solid var(--line-strong); border-radius:24px;
+        padding:28px 22px; box-shadow:var(--shadow-card);
+      }
+      @media (min-width:640px){ .about-legal-box{ padding:36px 32px; } }
+      [data-theme="light"] .about-legal-box{ background:#fff; border-color:rgba(13,38,76,.14); }
+      .about-legal-box .legal-sec{ margin-top:0; }
+      .about-legal-box .legal-sec h3{ font-size:26px; }
+      @media (min-width:640px){ .about-legal-box .legal-sec h3{ font-size:30px; } }
+      .about-legal-box .legal-sec p strong{ color:var(--text); font-weight:700; }
+      .about-privacy-link{ color:var(--sky); font-weight:700; text-decoration:none; }
+      .about-privacy-link:hover{ text-decoration:underline; }
+      [data-theme="light"] .about-privacy-link{ color:#0284C7; }
       /* Contact view: "Get in Touch" hero header (Hub-style, MdcatPrep wording) */
       .contact-hero{ max-width:700px; min-width:0; }
       .contact-title{
@@ -2241,15 +2257,23 @@
             <p>Everything here is designed around a student's routine — simple to use, easy to follow, and centred on steady, focused preparation.</p>
           </div>
         </div>
-        <div class="legal-sec">
-          <h3>Privacy Policy</h3>
-          <p>Your privacy matters to us. MdcatPrep only collects the basic account details you provide when you register, and uses them to run your account and keep your practice activity connected to you.</p>
-          <p>We do not sell your personal information to anyone. If this policy changes in the future, the updated version will be published on this page.</p>
+        <div class="about-legal-box">
+          <div class="legal-sec">
+            <h3>Privacy Policy</h3>
+            <p>Your privacy matters to us. MdcatPrep only collects the basic account details you provide when you register, and uses them to run your account and keep your practice activity connected to you.</p>
+            <p>We do not sell your personal information to anyone. If this policy changes in the future, the updated version will be published on this page.</p>
+            <p><a href="#" class="about-privacy-link" id="aboutPrivacyLink">Read the full Privacy Policy →</a></p>
+          </div>
         </div>
-        <div class="legal-sec" id="aboutTermsSec">
-          <h3>Terms &amp; Conditions</h3>
-          <p>By using MdcatPrep, you agree to use the platform only for your own study and preparation. Please do not share your account with others, and do not misuse the tests and materials provided here.</p>
-          <p>The practice material on MdcatPrep is meant to support your preparation and does not replace your textbooks or classroom study. We may update these terms from time to time, and the latest version will always be available on this page.</p>
+        <div class="about-legal-box" id="aboutTermsSec">
+          <div class="legal-sec">
+            <h3>Terms &amp; Conditions</h3>
+            <p>By using MdcatPrep, you agree to the following terms:</p>
+            <p><strong>Educational purpose:</strong> All tests and materials are provided for educational and practice purposes only. While we strive for accuracy, we do not guarantee that all questions reflect the exact MDCAT exam.</p>
+            <p><strong>Acceptable use:</strong> You agree to use the platform for personal educational purposes. You may not scrape, copy, or redistribute test content without permission.</p>
+            <p><strong>Accounts:</strong> You are responsible for maintaining the confidentiality of your account. Provide accurate information when registering.</p>
+            <p><strong>Changes:</strong> We may update these terms from time to time. Continued use of the platform constitutes acceptance of the updated terms.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -3041,6 +3065,10 @@
         setActiveMenuItem('home');
       }
       document.getElementById('privacyCloseBtn').addEventListener('click', closePrivacyView);
+      document.getElementById('aboutPrivacyLink').addEventListener('click', function (e) {
+        e.preventDefault();
+        openPrivacyView();
+      });
       /* ---------- Footer Platform links ---------- */
       function openAboutAtTerms() {
         openAboutView();
