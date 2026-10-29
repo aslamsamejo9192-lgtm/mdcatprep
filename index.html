@@ -1599,6 +1599,30 @@
               <button class="res-open-btn" type="button" data-open-flashcards>Open Flashcards <i data-lucide="arrow-up-right"></i></button>
             </div>
           </div>
+          <div class="res" data-category="flashcards">
+            <i data-lucide="layers"></i>
+            <h3>Bioenergetics — Flashcards</h3>
+            <p>Biology · 25 flashcards</p>
+            <div class="res-actions">
+              <button class="res-open-btn" type="button" data-open-flashcards="bioenergetics">Open Flashcards <i data-lucide="arrow-up-right"></i></button>
+            </div>
+          </div>
+          <div class="res" data-category="flashcards">
+            <i data-lucide="layers"></i>
+            <h3>Biological Molecules — Flashcards</h3>
+            <p>Biology · 25 flashcards</p>
+            <div class="res-actions">
+              <button class="res-open-btn" type="button" data-open-flashcards="biomolecules">Open Flashcards <i data-lucide="arrow-up-right"></i></button>
+            </div>
+          </div>
+          <div class="res" data-category="flashcards">
+            <i data-lucide="layers"></i>
+            <h3>Chemical Coordination — Flashcards</h3>
+            <p>Biology · 25 flashcards</p>
+            <div class="res-actions">
+              <button class="res-open-btn" type="button" data-open-flashcards="coordination">Open Flashcards <i data-lucide="arrow-up-right"></i></button>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -2304,6 +2328,30 @@
               <button class="res-open-btn" type="button" data-open-flashcards>Open Flashcards <i data-lucide="arrow-up-right"></i></button>
             </div>
           </div>
+          <div class="res" data-category="flashcards">
+            <i data-lucide="layers"></i>
+            <h3>Bioenergetics — Flashcards</h3>
+            <p>Biology · 25 flashcards</p>
+            <div class="res-actions">
+              <button class="res-open-btn" type="button" data-open-flashcards="bioenergetics">Open Flashcards <i data-lucide="arrow-up-right"></i></button>
+            </div>
+          </div>
+          <div class="res" data-category="flashcards">
+            <i data-lucide="layers"></i>
+            <h3>Biological Molecules — Flashcards</h3>
+            <p>Biology · 25 flashcards</p>
+            <div class="res-actions">
+              <button class="res-open-btn" type="button" data-open-flashcards="biomolecules">Open Flashcards <i data-lucide="arrow-up-right"></i></button>
+            </div>
+          </div>
+          <div class="res" data-category="flashcards">
+            <i data-lucide="layers"></i>
+            <h3>Chemical Coordination — Flashcards</h3>
+            <p>Biology · 25 flashcards</p>
+            <div class="res-actions">
+              <button class="res-open-btn" type="button" data-open-flashcards="coordination">Open Flashcards <i data-lucide="arrow-up-right"></i></button>
+            </div>
+          </div>
         </div>
         <div class="no-results" id="resNoResults" style="display:none">
           <i data-lucide="file-search"></i>
@@ -2333,11 +2381,11 @@
       <div class="exam-top">
         <div class="exam-top-in">
           <button class="exam-exit" type="button" id="flashcardsCloseBtn"><i data-lucide="arrow-left"></i> Back to Resources</button>
-          <span class="pdf-title">AC and Electronics — Flashcards</span>
+          <span class="pdf-title" id="fcDeckTitle">AC and Electronics — Flashcards</span>
         </div>
       </div>
       <div class="fc-wrap">
-        <p class="fc-deck-label">Physics · AC and Electronics</p>
+        <p class="fc-deck-label" id="fcDeckLabel">Physics · AC and Electronics</p>
         <p class="fc-counter" id="fcCounter">Card 1 of 25</p>
         <div class="fc-scene" id="fcScene" role="button" tabindex="0" aria-label="Flashcard — tap to flip">
           <div class="fc-inner" id="fcInner">
@@ -3211,7 +3259,99 @@
         { front: 'Formula for Current Gain (α) in Common-Base configuration', back: 'α = I<sub>C</sub> / I<sub>E</sub>, the ratio of collector current (I<sub>C</sub>) to emitter current (I<sub>E</sub>).' },
         { front: 'Universal Logic Gates', back: 'NAND and NOR gates, because any basic logic gate (AND, OR, NOT) or boolean function can be constructed using only NAND or only NOR gates.' }
       ];
+      /* ---------- Flashcards — Biology: Bioenergetics (25 cards) ---------- */
+      var FC_CARDS_BIOENERGETICS = [
+        { front: 'Bioenergetics', back: 'The study of energy relationships and energy transformations (conversions) in living organisms.' },
+        { front: 'ATP structure', back: 'A nucleotide composed of the nitrogenous base adenine, a ribose sugar, and a chain of three phosphate groups.' },
+        { front: 'Mechanism of ATP energy release', back: 'Hydrolysis of the terminal high-energy phosphate bond of ATP yields ADP, an inorganic phosphate, and approximately 7.3 kcal/mol of free energy.' },
+        { front: 'Oxidation-reduction (redox) reactions', back: 'Coupled chemical reactions where oxidation involves the loss of electrons (or hydrogen atoms) and reduction involves the gain of electrons.' },
+        { front: 'Overall equation of photosynthesis', back: '6CO<sub>2</sub> + 12H<sub>2</sub>O → (Light &amp; Chlorophyll) C<sub>6</sub>H<sub>12</sub>O<sub>6</sub> + 6O<sub>2</sub> + 6H<sub>2</sub>O' },
+        { front: 'Primary photosynthetic pigments', back: 'Chlorophyll a is the primary pigment, while accessory pigments include chlorophyll b, carotenoids, and xanthophylls.' },
+        { front: 'Action spectrum vs. absorption spectrum', back: 'An absorption spectrum shows light absorption at various wavelengths by a pigment, whereas an action spectrum measures the rate of photosynthesis driven by different wavelengths.' },
+        { front: 'Location of light-dependent reactions', back: 'The thylakoid membranes (grana) of the chloroplast.' },
+        { front: 'Products of light-dependent reactions', back: 'ATP, NADPH, and oxygen gas (O<sub>2</sub>) derived from photolysis.' },
+        { front: 'Photolysis of water', back: 'The enzymatic splitting of water molecules in Photosystem II using light energy, producing protons, electrons, and oxygen.' },
+        { front: 'Non-cyclic photophosphorylation', back: 'A light-driven electron flow involving both Photosystem II and Photosystem I that produces both ATP and NADPH.' },
+        { front: 'Cyclic photophosphorylation', back: 'An electron pathway involving only Photosystem I where excited electrons cycle back to the reaction center to produce ATP without forming NADPH.' },
+        { front: 'Chemiosmosis', back: 'The process by which ATP is synthesized as protons (H<sup>+</sup>) flow down their electrochemical gradient through ATP synthase complexes across the thylakoid or inner mitochondrial membrane.' },
+        { front: 'Location of light-independent reactions (Calvin cycle)', back: 'The stroma of the chloroplast.' },
+        { front: 'First step of the Calvin cycle', back: 'Carbon fixation, where carbon dioxide is attached to ribulose bisphosphate (RuBP) by the enzyme RuBisCO.' },
+        { front: 'Limiting factors of photosynthesis', back: 'Light intensity, carbon dioxide concentration, temperature, and water availability.' },
+        { front: 'Overall equation of cellular respiration', back: 'C<sub>6</sub>H<sub>12</sub>O<sub>6</sub> + 6O<sub>2</sub> → 6CO<sub>2</sub> + 6H<sub>2</sub>O + Energy (ATP + Heat)' },
+        { front: 'Glycolysis location and oxygen requirement', back: 'Occurs in the cytoplasm (cytosol) and does not require oxygen (anaerobic process).' },
+        { front: 'Net yield of glycolysis per glucose molecule', back: '2 ATP (net) and 2 NADH molecules.' },
+        { front: 'Krebs cycle (Citric Acid Cycle) location', back: 'The mitochondrial matrix.' },
+        { front: 'Link reaction bridging glycolysis and Krebs cycle', back: 'Pyruvate is decarboxylated and oxidized, combining with coenzyme A to form Acetyl-CoA, releasing CO<sub>2</sub> and forming NADH.' },
+        { front: 'Products per turn of the Krebs cycle', back: '3 NADH, 1 FADH<sub>2</sub>, 1 ATP (or GTP), and 2 CO<sub>2</sub> released.' },
+        { front: 'Electron Transport Chain (ETC) location', back: 'The inner mitochondrial membrane (cristae).' },
+        { front: 'Final electron acceptor in aerobic respiration', back: 'Molecular oxygen (O<sub>2</sub>), which combines with protons to form water.' },
+        { front: 'Anaerobic respiration / Fermentation', back: 'A pathway that produces ATP without oxygen, leading to lactic acid fermentation in animals or alcoholic fermentation in plants and yeast.' }
+      ];
+      /* ---------- Flashcards — Biology: Biological Molecules (25 cards) ---------- */
+      var FC_CARDS_BIOMOLECULES = [
+        { front: 'Biological molecules', back: 'Organic and inorganic compounds that constitute living matter and participate in cellular structure and metabolic processes.' },
+        { front: 'Heat capacity of water', back: 'Water has a high specific heat capacity due to extensive hydrogen bonding, allowing it to act as a thermal buffer in living organisms.' },
+        { front: 'Heat of vaporization of water', back: 'Water absorbs a large amount of heat when changing from liquid to gas (ΔH<sub>vap</sub>), providing a significant cooling effect through perspiration or transpiration.' },
+        { front: 'Monosaccharides', back: 'Simple sugars with the general formula C<sub>n</sub>H<sub>2n</sub>O<sub>n</sub>, which cannot be hydrolyzed into simpler carbohydrates.' },
+        { front: 'Oligosaccharides', back: 'Carbohydrates yielding 2 to 10 monosaccharide units upon hydrolysis, linked together by glycosidic bonds.' },
+        { front: 'Glycosidic bond', back: 'A covalent bond formed between two monosaccharides through a condensation (dehydration synthesis) reaction.' },
+        { front: 'Starch', back: 'A storage polysaccharide in plants composed of amylose (linear α-1,4 linkages) and amylopectin (branched α-1,4 and α-1,6 linkages).' },
+        { front: 'Glycogen', back: 'A highly branched storage polysaccharide made of α-glucose units, stored primarily in the liver and skeletal muscles of animals.' },
+        { front: 'Cellulose', back: 'A structural polysaccharide composed of unbranched β-glucose chains linked by β-1,4 glycosidic bonds, forming rigid microfibrils in plant cell walls.' },
+        { front: 'Amino acid structure', back: 'Consists of a central alpha-carbon bonded to a hydrogen atom, an amino group (−NH<sub>2</sub>), a carboxyl group (−COOH), and a variable side chain (−R).' },
+        { front: 'Peptide bond', back: 'An amide-type covalent bond formed between the carboxyl group of one amino acid and the amino group of another with the release of water.' },
+        { front: 'Primary structure of proteins', back: 'The linear sequence of amino acids linked together by peptide bonds in a polypeptide chain.' },
+        { front: 'Secondary structure of proteins', back: 'The coiling or folding of the polypeptide backbone stabilized by hydrogen bonds, forming α-helices or β-pleated sheets.' },
+        { front: 'Tertiary structure of proteins', back: 'The overall three-dimensional conformation of a polypeptide chain resulting from interactions among R-groups (e.g., disulfide bridges, ionic bonds, hydrophobic interactions).' },
+        { front: 'Quaternary structure of proteins', back: 'The association of two or more polypeptide subunits into a single functional protein complex.' },
+        { front: 'Acylglycerols (Fats and oils)', back: 'Esters formed by the condensation of glycerol with one, two, or three fatty acid molecules (mono-, di-, or triglycerides).' },
+        { front: 'Phospholipids', back: 'Lipids containing a glycerol backbone, two fatty acid chains, a phosphate group, and a polar organic head group.' },
+        { front: 'Terpenes', back: 'A diverse class of lipids synthesized from five-carbon isoprenoid units, including important pigments like carotenoids and chlorophyll tails.' },
+        { front: 'Waxes', back: 'Esters of long-chain fatty acids with long-chain monohydric alcohols, providing hydrophobic protective coatings on leaves, fruits, and integuments.' },
+        { front: 'Nucleic acids', back: 'Macromolecules composed of nucleotide monomers that store and transmit genetic information (DNA and RNA).' },
+        { front: 'Nucleotide structure', back: 'Comprises a pentose sugar (ribose or deoxyribose), a nitrogenous base (purine or pyrimidine), and one to three phosphate groups.' },
+        { front: 'DNA double helix structure', back: 'Proposed by Watson and Crick, consisting of two antiparallel polynucleotide strands twisted around a common axis, held together by complementary base pairing (A-T, G-C).' },
+        { front: 'Types of RNA', back: 'Messenger RNA (mRNA), transfer RNA (tRNA), and ribosomal RNA (rRNA), all of which play key roles in protein synthesis.' },
+        { front: 'ATP as energy currency', back: 'Adenosine triphosphate acts as the primary immediate energy carrier coupling exergonic catabolic reactions to endergonic cellular processes.' },
+        { front: 'Conjugated molecules', back: 'Biomolecules formed by the covalent or non-covalent combination of two different classes of molecules, such as glycoproteins or lipoproteins.' }
+      ];
+      /* ---------- Flashcards — Biology: Chemical Coordination (25 cards) ---------- */
+      var FC_CARDS_COORDINATION = [
+        { front: 'Chemical coordination', back: 'A regulatory mechanism in multicellular organisms mediated by chemical messengers called hormones, which are secreted directly into the bloodstream to target specific organs.' },
+        { front: 'Hormone', back: 'An organic chemical messenger produced by an endocrine gland that travels via the blood to regulate physiological processes in target cells.' },
+        { front: 'Endocrine gland', back: 'A ductless gland that secretes hormones directly into the interstitial fluid or bloodstream.' },
+        { front: 'Master gland of the endocrine system', back: 'The pituitary gland, because its secretions control many other endocrine glands in the body.' },
+        { front: 'Hypothalamus-pituitary axis', back: 'The functional unit where the hypothalamus secretes releasing and inhibiting hormones that control the anterior pituitary gland.' },
+        { front: 'Somatotrophin (Growth Hormone)', back: 'An anterior pituitary hormone that stimulates general body growth, protein synthesis, and bone elongation.' },
+        { front: 'Thyroid-stimulating hormone (TSH)', back: 'A tropic hormone produced by the anterior pituitary that stimulates the thyroid gland to synthesize and release thyroid hormones.' },
+        { front: 'Oxytocin', back: 'A posterior pituitary hormone that stimulates uterine smooth muscle contractions during childbirth and milk ejection during lactation.' },
+        { front: 'Antidiuretic hormone (ADH) / Vasopressin', back: 'A posterior pituitary hormone that promotes water reabsorption in the kidney collecting ducts, reducing urine volume.' },
+        { front: 'Thyroxine (T<sub>4</sub>) and Triiodothyronine (T<sub>3</sub>)', back: 'Hormones produced by the thyroid gland containing iodine that regulate basal metabolic rate, oxygen consumption, and cellular growth.' },
+        { front: 'Calcitonin', back: 'A peptide hormone secreted by the thyroid gland\'s parafollicular cells that lowers blood calcium levels by inhibiting osteoclast activity.' },
+        { front: 'Parathyroid hormone (PTH)', back: 'A hormone secreted by the parathyroid glands that increases blood calcium levels by stimulating bone resorption, calcium reabsorption in kidneys, and vitamin D activation.' },
+        { front: 'Insulin', back: 'An anabolic peptide hormone produced by the β-cells of the Islets of Langerhans in the pancreas that lowers blood glucose levels.' },
+        { front: 'Glucagon', back: 'A peptide hormone produced by the α-cells of the pancreatic islets that raises blood glucose levels by promoting glycogenolysis and gluconeogenesis.' },
+        { front: 'Adrenal cortex hormones', back: 'Steroid hormones including mineralocorticoids (e.g., aldosterone), glucocorticoids (e.g., cortisol), and sex corticoids produced by the outer adrenal gland.' },
+        { front: 'Adrenal medulla hormones', back: "Epinephrine (adrenaline) and norepinephrine (noradrenaline), which mediate the rapid 'fight or flight' response to acute stress." },
+        { front: 'Negative feedback mechanism', back: 'A regulatory loop where the output of a pathway inhibits or reverses the initial stimulus, maintaining homeostasis.' },
+        { front: 'Positive feedback mechanism', back: 'A regulatory loop where the output amplifies or accelerates the original stimulus until a specific endpoint is reached.' },
+        { front: 'Mechanism of steroid hormone action', back: 'Lipid-soluble steroid hormones diffuse directly across the target cell membrane, bind to intracellular receptors, and alter gene transcription.' },
+        { front: 'Mechanism of protein hormone action', back: 'Water-soluble peptide hormones bind to specific receptors on the outer cell membrane, activating intracellular second messenger systems like cyclic AMP (cAMP).' },
+        { front: 'Diabetes mellitus', back: 'A metabolic disorder characterized by chronic hyperglycemia caused by insulin deficiency (Type 1) or cellular resistance to insulin (Type 2).' },
+        { front: 'Goiter', back: 'An abnormal enlargement of the thyroid gland resulting from iodine deficiency or hormonal imbalance.' },
+        { front: 'Nervous vs. endocrine coordination: Speed', back: 'Nervous coordination is extremely rapid via electrical impulses, whereas endocrine coordination is slower via circulating hormones.' },
+        { front: 'Nervous vs. endocrine coordination: Duration of effect', back: 'Nervous responses are short-lived, whereas endocrine responses are typically prolonged and sustained.' },
+        { front: 'Nervous vs. endocrine coordination: Pathway', back: 'Nervous impulses travel along specific neuronal pathways to precise targets, whereas hormones are distributed widely via the bloodstream to any cell with matching receptors.' }
+      ];
+      var FC_DECKS = {
+        ac: { title: 'AC and Electronics — Flashcards', label: 'Physics · AC and Electronics', cards: FC_CARDS },
+        bioenergetics: { title: 'Bioenergetics — Flashcards', label: 'Biology · Bioenergetics', cards: FC_CARDS_BIOENERGETICS },
+        biomolecules: { title: 'Biological Molecules — Flashcards', label: 'Biology · Biological Molecules', cards: FC_CARDS_BIOMOLECULES },
+        coordination: { title: 'Chemical Coordination — Flashcards', label: 'Biology · Chemical Coordination', cards: FC_CARDS_COORDINATION }
+      };
       var flashcardsView = document.getElementById('flashcardsView');
+      var fcDeckTitle = document.getElementById('fcDeckTitle');
+      var fcDeckLabel = document.getElementById('fcDeckLabel');
       var fcInner = document.getElementById('fcInner');
       var fcFront = document.getElementById('fcFront');
       var fcBack = document.getElementById('fcBack');
@@ -3229,7 +3369,12 @@
         fcPrevBtn.disabled = fcIndex === 0;
         fcNextBtn.disabled = fcIndex === FC_CARDS.length - 1;
       }
-      function openFlashcards() {
+      function openFlashcards(deckKey) {
+        var deck = FC_DECKS[deckKey] || FC_DECKS.ac;
+        FC_CARDS = deck.cards;
+        fcDeckTitle.textContent = deck.title;
+        fcDeckLabel.textContent = deck.label;
+        flashcardsView.setAttribute('aria-label', deck.title);
         fcIndex = 0;
         fcFlipped = false;
         renderFlashcard();
@@ -3243,7 +3388,7 @@
         syncBodyScroll();
       }
       document.querySelectorAll('[data-open-flashcards]').forEach(function (el) {
-        el.addEventListener('click', openFlashcards);
+        el.addEventListener('click', function () { openFlashcards(el.getAttribute('data-open-flashcards')); });
       });
       document.getElementById('flashcardsCloseBtn').addEventListener('click', closeFlashcards);
       document.getElementById('fcScene').addEventListener('click', function () {
