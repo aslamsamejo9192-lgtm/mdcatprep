@@ -1623,46 +1623,9 @@
               <button class="res-open-btn" type="button" data-open-flashcards="coordination">Open Flashcards <i data-lucide="arrow-up-right"></i></button>
             </div>
           </div>
-          <div class="res" data-category="flashcards">
-            <i data-lucide="layers"></i>
-            <h3>Hydrocarbons — Flashcards</h3>
-            <p>Chemistry · 25 flashcards</p>
-            <div class="res-actions">
-              <button class="res-open-btn" type="button" data-open-flashcards="hydrocarbons">Open Flashcards <i data-lucide="arrow-up-right"></i></button>
-            </div>
-          </div>
-          <div class="res" data-category="flashcards">
-            <i data-lucide="layers"></i>
-            <h3>Chemical Bond — Flashcards</h3>
-            <p>Chemistry · 25 flashcards</p>
-            <div class="res-actions">
-              <button class="res-open-btn" type="button" data-open-flashcards="chemicalbond">Open Flashcards <i data-lucide="arrow-up-right"></i></button>
-            </div>
-          </div>
-          <div class="res" data-category="flashcards">
-            <i data-lucide="layers"></i>
-            <h3>Chemical Equilibrium — Flashcards</h3>
-            <p>Chemistry · 25 flashcards</p>
-            <div class="res-actions">
-              <button class="res-open-btn" type="button" data-open-flashcards="equilibrium">Open Flashcards <i data-lucide="arrow-up-right"></i></button>
-            </div>
-          </div>
-          <div class="res" data-category="flashcards">
-            <i data-lucide="layers"></i>
-            <h3>Work Power and Energy — Flashcards</h3>
-            <p>Physics · 25 flashcards</p>
-            <div class="res-actions">
-              <button class="res-open-btn" type="button" data-open-flashcards="workenergy">Open Flashcards <i data-lucide="arrow-up-right"></i></button>
-            </div>
-          </div>
-          <div class="res" data-category="flashcards">
-            <i data-lucide="layers"></i>
-            <h3>Electrostatics — Flashcards</h3>
-            <p>Physics · 25 flashcards</p>
-            <div class="res-actions">
-              <button class="res-open-btn" type="button" data-open-flashcards="electrostatics">Open Flashcards <i data-lucide="arrow-up-right"></i></button>
-            </div>
-          </div>
+        </div>
+        <div class="view-all-row">
+          <button class="btn btn-primary" type="button" id="viewAllResources">View All Resources <i data-lucide="arrow-right"></i></button>
         </div>
       </div>
     </section>
@@ -3106,6 +3069,7 @@
       }
       document.getElementById('subjectsCloseBtn').addEventListener('click', closeSubjectsView);
       document.getElementById('resourcesCloseBtn').addEventListener('click', closeResourcesView);
+      document.getElementById('viewAllResources').addEventListener('click', openResourcesView);
       /* Resources view — category filter pills + live title search (combined) */
       var resSearch = document.getElementById('resSearch');
       var resNoResults = document.getElementById('resNoResults');
