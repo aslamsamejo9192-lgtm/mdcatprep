@@ -343,6 +343,8 @@
       .sec-head h2::after{ content:""; display:block; width:52px; height:4px; border-radius:99px; background:linear-gradient(90deg, var(--blue-bright), var(--sky)); margin-top:14px; }
       @media (min-width:640px){ .sec-head h2{ font-size:34px; } }
       .sec-head p{ color:var(--muted); font-size:15.5px; line-height:1.65; margin-top:12px; }
+      .sec-head-center{ margin-left:auto; margin-right:auto; text-align:center; }
+      .sec-head-center h2::after{ margin-left:auto; margin-right:auto; }
 
       /* section dividers — ornamental separator between main sections */
       .divider{
@@ -1361,7 +1363,7 @@
     <!-- ================= Tests ================= -->
     <section id="tests">
       <div class="wrap">
-        <div class="sec-head">
+        <div class="sec-head sec-head-center">
           <h2>Recently Uploaded Tests</h2>
           <p>Explore the latest uploaded tests and practice important MDCAT questions to strengthen your concepts, assess your preparation, and improve your performance.</p>
         </div>
@@ -1459,7 +1461,7 @@
     <!-- ================= Resources ================= -->
     <section class="alt" id="resources">
       <div class="wrap">
-        <div class="sec-head">
+        <div class="sec-head sec-head-center">
           <h2>Study Resources &amp; Notes</h2>
           <p>Explore quality study materials, high-yield notes, and essential resources to strengthen your concepts and prepare confidently for MDCAT 2027.</p>
         </div>
