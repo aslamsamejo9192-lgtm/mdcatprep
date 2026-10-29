@@ -571,6 +571,20 @@
       .res-empty svg{ width:34px; height:34px; color:var(--muted-2); margin:0 auto 14px; }
       .res-empty p{ font-size:16.5px; font-weight:600; color:var(--muted); letter-spacing:-.01em; }
 
+      /* resources view: category filter pills + search (Hub-style, pills first, search below) */
+      .res-controls{ display:grid; gap:14px; margin-top:26px; min-width:0; }
+      .res-filter-pills{ display:flex; flex-wrap:wrap; gap:8px; }
+      .res-filter-pill{
+        display:inline-flex; align-items:center; padding:9px 16px; border-radius:999px;
+        border:1.5px solid var(--line-strong); background:rgba(148,180,255,.05); color:var(--muted);
+        font-size:14px; font-weight:650; white-space:nowrap;
+        transition:background .16s ease, color .16s ease, border-color .16s ease;
+      }
+      .res-filter-pill:hover{ color:var(--text); border-color:var(--blue-bright); }
+      .res-filter-pill.active{ background:var(--blue); border-color:var(--blue); color:#fff; box-shadow:var(--shadow-btn); }
+      #resourcesView .res-grid{ margin-top:22px; }
+      #resourcesView .no-results{ margin-top:22px; }
+
       /* about / contact */
       .two-col{ display:grid; gap:34px; }
       @media (min-width:900px){ .two-col{ grid-template-columns:1.1fr .9fr; gap:52px; } }
@@ -2198,8 +2212,22 @@
           <h2>Study Resources &amp; Notes</h2>
           <p>Explore quality study materials, high-yield notes, and essential resources to strengthen your concepts and prepare confidently for MDCAT 2027.</p>
         </div>
+        <div class="res-controls">
+          <div class="res-filter-pills" role="group" aria-label="Filter resources by category">
+            <button class="res-filter-pill active" type="button" data-res-filter="all">All</button>
+            <button class="res-filter-pill" type="button" data-res-filter="pdf-notes">PDF Notes</button>
+            <button class="res-filter-pill" type="button" data-res-filter="formula-sheet">Formula Sheet</button>
+            <button class="res-filter-pill" type="button" data-res-filter="past-paper">Past Paper</button>
+            <button class="res-filter-pill" type="button" data-res-filter="flashcards">Flashcards</button>
+            <button class="res-filter-pill" type="button" data-res-filter="pdf-mcqs">PDF MCQs</button>
+          </div>
+          <div class="search-box">
+            <i data-lucide="search"></i>
+            <input id="resSearch" type="search" placeholder="Search notes, past papers..." aria-label="Search resources by title" autocomplete="off" />
+          </div>
+        </div>
         <div class="res-grid">
-          <div class="res">
+          <div class="res" data-category="past-paper">
             <i data-lucide="file-text"></i>
             <h3>Sindh MDCAT Paper 2025 — Version A</h3>
             <p>MdcatPrep · 47 pages · PDF</p>
@@ -2208,6 +2236,10 @@
               <a class="res-download" href="resources/sindh-mdcat-2025-paper-a.pdf" download data-download-pdf>Download <i data-lucide="download"></i></a>
             </div>
           </div>
+        </div>
+        <div class="no-results" id="resNoResults" style="display:none">
+          <i data-lucide="file-search"></i>
+          <p>No resources found.</p>
         </div>
       </div>
     </div>
@@ -2846,6 +2878,34 @@
       }
       document.getElementById('subjectsCloseBtn').addEventListener('click', closeSubjectsView);
       document.getElementById('resourcesCloseBtn').addEventListener('click', closeResourcesView);
+      /* Resources view — category filter pills + live title search (combined) */
+      var resSearch = document.getElementById('resSearch');
+      var resNoResults = document.getElementById('resNoResults');
+      var resCards = resourcesView.querySelectorAll('.res-grid .res');
+      var resActiveCat = 'all';
+      function applyResFilter() {
+        var q = resSearch.value.trim().toLowerCase();
+        var shown = 0;
+        resCards.forEach(function (card) {
+          var cat = card.getAttribute('data-category') || '';
+          var h = card.querySelector('h3');
+          var title = h ? h.textContent.toLowerCase() : '';
+          var ok = (resActiveCat === 'all' || cat === resActiveCat) && (!q || title.indexOf(q) !== -1);
+          card.style.display = ok ? '' : 'none';
+          if (ok) shown++;
+        });
+        resNoResults.style.display = shown ? 'none' : '';
+      }
+      resourcesView.querySelectorAll('.res-filter-pill').forEach(function (pill) {
+        pill.addEventListener('click', function () {
+          resActiveCat = pill.getAttribute('data-res-filter');
+          resourcesView.querySelectorAll('.res-filter-pill').forEach(function (x) {
+            x.classList.toggle('active', x === pill);
+          });
+          applyResFilter();
+        });
+      });
+      resSearch.addEventListener('input', applyResFilter);
       /* ---------- Paper PDF: fast progressive viewer + instant download ----------
          Speed rules (student limit: visible start within 3–4 seconds):
          - The viewer renders with PDF.js over HTTP range requests, so page 1
