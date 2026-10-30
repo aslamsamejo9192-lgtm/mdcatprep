@@ -546,6 +546,54 @@
       .why-card h3{ font-size:17px; font-weight:750; letter-spacing:-.015em; line-height:1.3; margin-top:14px; }
       .why-card p{ color:var(--muted); font-size:14.5px; line-height:1.65; margin-top:7px; }
 
+      /* journey banner — home, below Why Choose Us, above Recently Uploaded Tests.
+         Self-contained deep teal-to-emerald card: identical in dark and light mode. */
+      .journey-sec{ padding:26px 0 4px; }
+      .journey-card{
+        position:relative; overflow:hidden; min-width:0;
+        background:linear-gradient(150deg, #0B3D3A 0%, #065F46 48%, #047857 100%);
+        border:1px solid rgba(45,212,191,.38);
+        border-radius:26px;
+        padding:36px 22px 34px;
+        text-align:center;
+        color:#FFFFFF;
+        box-shadow:0 24px 54px rgba(3,38,33,.38);
+      }
+      .journey-card::before{
+        content:""; position:absolute; inset:0; pointer-events:none;
+        background:radial-gradient(560px 300px at 88% -60px, rgba(52,211,153,.30), transparent 65%);
+      }
+      .journey-card > *{ position:relative; }
+      @media (min-width:640px){ .journey-card{ padding:50px 40px 46px; border-radius:28px; } }
+      .journey-pill{
+        display:inline-flex; align-items:center; gap:8px; max-width:100%;
+        background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.30);
+        color:#ECFDF5; font-size:13.5px; font-weight:650; letter-spacing:.01em;
+        padding:9px 18px; border-radius:999px;
+      }
+      .journey-pill svg{ width:16px; height:16px; color:#FBBF24; flex:none; }
+      .journey-card h2{
+        font-size:31px; font-weight:800; letter-spacing:-.03em; line-height:1.14;
+        margin:24px auto 0; max-width:580px; color:#FFFFFF;
+      }
+      @media (min-width:640px){ .journey-card h2{ font-size:42px; } }
+      .journey-card p{
+        color:rgba(236,253,245,.90); font-size:16.5px; line-height:1.6;
+        margin:16px auto 0; max-width:480px;
+      }
+      .journey-btns{ display:grid; gap:12px; margin:28px auto 0; max-width:430px; }
+      .journey-btn{
+        width:100%; padding:16px 20px; border-radius:16px;
+        font-size:16.5px; font-weight:700; letter-spacing:-.01em;
+        border:1.5px solid transparent; font-family:inherit; cursor:pointer;
+        transition:transform .18s ease, background .18s ease, box-shadow .18s ease;
+      }
+      .journey-btn:active{ transform:scale(.98); }
+      .journey-btn-solid{ background:#FFFFFF; color:#064E3B; box-shadow:0 10px 24px rgba(2,32,26,.30); }
+      .journey-btn-solid:hover{ transform:translateY(-1px); box-shadow:0 14px 28px rgba(2,32,26,.34); }
+      .journey-btn-outline{ background:rgba(255,255,255,.10); color:#FFFFFF; border-color:rgba(255,255,255,.45); }
+      .journey-btn-outline:hover{ background:rgba(255,255,255,.18); }
+
       /* ---------- In-page PDF viewer ---------- */
       #pdfView.open{ display:flex; flex-direction:column; overflow:hidden; }
       #pdfView .exam-top{ flex:none; position:relative; }
@@ -1475,6 +1523,21 @@
     </section>
 
     <div class="divider" aria-hidden="true"><span class="d-line"></span><span class="d-dot"></span><span class="d-gem"></span><span class="d-dot"></span><span class="d-line"></span></div>
+
+    <!-- ================= Journey banner ================= -->
+    <section class="journey-sec" aria-label="Begin your MDCAT journey">
+      <div class="wrap">
+        <div class="journey-card">
+          <span class="journey-pill"><i data-lucide="sparkles"></i>Chapter-Wise MDCAT Preparation</span>
+          <h2>Begin Your Medical College Admission Journey Today</h2>
+          <p>Access chapter-wise tests, flashcards, and study resources for MDCAT 2027.</p>
+          <div class="journey-btns">
+            <button class="journey-btn journey-btn-solid" type="button" data-auth="register">Create Student Account</button>
+            <button class="journey-btn journey-btn-outline" type="button" id="bannerResourcesBtn">Explore Study Resources</button>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- ================= Tests ================= -->
     <section id="tests">
@@ -3070,6 +3133,7 @@
       document.getElementById('subjectsCloseBtn').addEventListener('click', closeSubjectsView);
       document.getElementById('resourcesCloseBtn').addEventListener('click', closeResourcesView);
       document.getElementById('viewAllResources').addEventListener('click', openResourcesView);
+      document.getElementById('bannerResourcesBtn').addEventListener('click', openResourcesView);
       /* Resources view — category filter pills + live title search (combined) */
       var resSearch = document.getElementById('resSearch');
       var resNoResults = document.getElementById('resNoResults');
