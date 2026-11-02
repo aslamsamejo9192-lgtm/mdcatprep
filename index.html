@@ -948,7 +948,9 @@
       .exam-back{ position:fixed; inset:0; z-index:90; background:var(--bg); overflow-y:auto; display:none; }
       .exam-back.open{ display:block; }
       /* Exam overlay: full-viewport column — header on top, scrolling middle, fixed bottom action bar */
-      #examBack.open{ display:flex; flex-direction:column; overflow:hidden; }
+      #examBack{ background:var(--bg); background-color:var(--bg); -webkit-tap-highlight-color:transparent; }
+      #examBack button, #examBack .e-opt, #examBack .pal-btn, #examBack .btn, #examBack .exam-exit{ -webkit-tap-highlight-color:transparent; }
+      #examBack.open{ display:flex; flex-direction:column; overflow:hidden; background:var(--bg); background-color:var(--bg); }
       #examBack .exam-top{ flex:none; position:relative; }
       /* Exam header: one slim row — timer on one side, Exit Test on the other, nothing else */
       #examBack .exam-top-in{ justify-content:space-between; flex-wrap:nowrap; }
@@ -3986,6 +3988,81 @@
         examBack.scrollTop = 0;
         examWrap.scrollTop = 0;
       }
+      function updateProgressInPlace() {
+        if (!cur) return false;
+        var t = EXAM_TESTS[cur.key];
+        if (!t) return false;
+        var bar = document.getElementById('examProgressBar');
+        var label = document.getElementById('examProgressLabel');
+        if (!bar || !label) return false;
+        var answered = 0;
+        cur.answers.forEach(function (a) { if (a !== null && a !== undefined) answered++; });
+        bar.style.width = (answered / t.questions.length * 100) + '%';
+        label.textContent = answered + ' of ' + t.questions.length + ' answered';
+        return true;
+      }
+      function updatePaletteInPlace() {
+        if (!cur) return false;
+        var t = EXAM_TESTS[cur.key];
+        if (!t) return false;
+        var pal = document.getElementById('examPalette');
+        if (!pal || !pal.children || pal.children.length !== t.questions.length) return false;
+        for (var i = 0; i < pal.children.length; i++) {
+          var b = pal.children[i];
+          b.classList.toggle('answered', cur.answers[i] !== null && cur.answers[i] !== undefined);
+          b.classList.toggle('marked', !!cur.marked[i]);
+          b.classList.toggle('current', i === cur.idx);
+        }
+        return true;
+      }
+      function updateMarkButtonInPlace() {
+        if (!cur) return false;
+        var markBtn = document.getElementById('examMark');
+        var badge = document.getElementById('examMarkedBadge');
+        if (!markBtn || !badge) return false;
+        var isMarked = !!cur.marked[cur.idx];
+        markBtn.classList.toggle('active', isMarked);
+        badge.classList.toggle('show', isMarked);
+        var label = isMarked ? 'Marked for Review' : 'Mark for Review';
+        var found = false;
+        for (var i = 0; i < markBtn.childNodes.length; i++) {
+          var node = markBtn.childNodes[i];
+          if (node.nodeType === 3 && node.textContent.trim().length > 0) { node.textContent = ' ' + label; found = true; break; }
+        }
+        if (!found) {
+          if (!markBtn.querySelector('svg, i')) return false;
+          markBtn.appendChild(document.createTextNode(' ' + label));
+        }
+        return true;
+      }
+      function applySelectionInPlace() {
+        if (!cur) return false;
+        var t = EXAM_TESTS[cur.key];
+        if (!t) return false;
+        var q = t.questions[cur.idx];
+        if (!q) return false;
+        var optsEl = document.getElementById('examOpts');
+        if (!optsEl || !optsEl.children || optsEl.children.length !== q.opts.length) return false;
+        for (var i = 0; i < optsEl.children.length; i++) {
+          optsEl.children[i].classList.toggle('selected', cur.answers[cur.idx] === i);
+        }
+        if (!updatePaletteInPlace()) return false;
+        if (!updateProgressInPlace()) return false;
+        return true;
+      }
+      function applyClearInPlace() {
+        if (!cur) return false;
+        var t = EXAM_TESTS[cur.key];
+        if (!t) return false;
+        var q = t.questions[cur.idx];
+        if (!q) return false;
+        var optsEl = document.getElementById('examOpts');
+        if (!optsEl || !optsEl.children || optsEl.children.length !== q.opts.length) return false;
+        for (var i = 0; i < optsEl.children.length; i++) { optsEl.children[i].classList.remove('selected'); }
+        if (!updatePaletteInPlace()) return false;
+        if (!updateProgressInPlace()) return false;
+        return true;
+      }
       function renderQuestion() {
         var t = EXAM_TESTS[cur.key];
         var q = t.questions[cur.idx];
@@ -4002,7 +4079,7 @@
           b.innerHTML = '<span class="letter">' + 'ABCD'[i] + '</span>' + txt;
           b.addEventListener('click', function () {
             cur.answers[cur.idx] = i;
-            renderQuestion();
+            if (!applySelectionInPlace()) renderQuestion();
           });
           optsEl.appendChild(b);
         });
@@ -4114,8 +4191,8 @@
         var t = EXAM_TESTS[cur.key];
         if (cur.idx < t.questions.length - 1) { cur.idx++; renderQuestion(); }
       });
-      document.getElementById('examMark').addEventListener('click', function () { if (cur) { cur.marked[cur.idx] = !cur.marked[cur.idx]; renderQuestion(); } });
-      document.getElementById('examClear').addEventListener('click', function () { if (cur) { cur.answers[cur.idx] = null; renderQuestion(); } });
+      document.getElementById('examMark').addEventListener('click', function () { if (cur) { cur.marked[cur.idx] = !cur.marked[cur.idx]; if (!updateMarkButtonInPlace() || !updatePaletteInPlace()) renderQuestion(); } });
+      document.getElementById('examClear').addEventListener('click', function () { if (cur) { cur.answers[cur.idx] = null; if (!applyClearInPlace()) renderQuestion(); } });
       document.getElementById('examSubmit').addEventListener('click', function () { if (cur) showSummary(); });
       document.getElementById('summaryBack').addEventListener('click', function () { showView('attempt'); });
       document.getElementById('summaryConfirm').addEventListener('click', function () { if (cur) showResult(); });
