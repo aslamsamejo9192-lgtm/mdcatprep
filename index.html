@@ -1102,6 +1102,10 @@
       .forgot-notice.show{ display:block; }
       .forgot-notice b{ color:var(--text); }
       [data-theme="light"] .forgot-notice{ background:rgba(56,189,248,.10); }
+      .save-notice{ display:none; margin:0 0 16px; background:rgba(56,189,248,.08); border:1px solid rgba(56,189,248,.30); border-radius:12px; padding:12px 14px; font-size:14px; line-height:1.6; color:var(--muted); text-align:left; }
+      .save-notice.show{ display:block; }
+      .save-notice b{ color:var(--text); }
+      [data-theme="light"] .save-notice{ background:rgba(56,189,248,.10); }
       .auth-submit{ width:100%; margin-top:4px; padding:14px 20px; font-size:15.5px; }
       .auth-submit svg{ width:19px; height:19px; }
       .auth-alt{ text-align:center; font-size:15px; color:var(--muted); margin-top:20px; }
@@ -2801,6 +2805,7 @@
             <div class="score-ring" id="scoreRing"><div class="score-ring-in"><div><b id="scoreText">0/10</b><span id="scorePct">0%</span></div></div></div>
             <h2 id="resultTitle">Your Result</h2>
             <p id="resultSub"></p>
+            <div class="save-notice" id="resultSaveNotice" role="status"><b>Not saved to your dashboard.</b> You took this test without signing in, so this result will not appear in your dashboard. To save your results, sign in before you start a test.</div>
             <div class="summary-grid">
               <div><b id="resCorrect" style="color:#4ADE80">0</b><span>Correct</span></div>
               <div><b id="resWrong" style="color:#F87171">0</b><span>Wrong</span></div>
@@ -4178,6 +4183,8 @@
         document.getElementById('resWrong').textContent = wrong;
         document.getElementById('resSkipped').textContent = skipped;
         if (currentUser) { saveResultToStore({ testName: t.title, subject: t.subject, score: correct, total: total, percentage: pct }); }
+        var sn = document.getElementById('resultSaveNotice');
+        if (sn) sn.classList.toggle('show', !currentUser);
         showView('result');
         lucide.createIcons();
       }
@@ -4268,7 +4275,7 @@
         if (!currentUser || !currentUser.email) return;
         sha256Hex(currentUser.email.toLowerCase()).then(function (userId) {
           var nowIso = new Date().toISOString();
-          var body = { fields: { userId: fsFieldStr(userId), userEmail: fsFieldStr(currentUser.email.toLowerCase()), testName: fsFieldStr(res.testName), subject: fsFieldStr(res.subject || ''), score: fsFieldInt(res.score), total: fsFieldInt(res.total), percentage: fsFieldInt(res.percentage), date: fsFieldTime(nowIso) } };
+          var body = { fields: { userId: fsFieldStr(userId), testName: fsFieldStr(res.testName), subject: fsFieldStr(res.subject || ''), score: fsFieldInt(res.score), total: fsFieldInt(res.total), percentage: fsFieldInt(res.percentage), date: fsFieldTime(nowIso) } };
           return fetch(FS_BASE + '/results?key=' + FS_KEY, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
         }).catch(function () { /* result display is already shown; saving is best-effort */ });
       }
