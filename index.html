@@ -1151,58 +1151,43 @@
       .user-only{ display:none !important; }
       body.signed-in .user-only{ display:inline-flex !important; }
       body.signed-in .auth-only{ display:none !important; }
-      /* Dashboard — EXAMFLOW-style light page: blue hero, white stat cards, recent attempts, updates */
-      #accountBack.dash-mode{ background:#F4F6FB; }
-      #accountBack.dash-mode .account-wrap{ max-width:1120px; }
-      #accountBack.dash-mode .exam-top{ background:#fff; border-bottom:1px solid #E8ECF5; box-shadow:0 2px 12px rgba(15,23,42,.05); }
-      #accountBack.dash-mode .exam-title b{ color:#0F172A; }
-      #accountBack.dash-mode .exam-title span{ color:#64748B; }
-      #accountBack.dash-mode .exam-exit{ color:#0F172A; border-color:#D8DEE9; background:#fff; }
-      .dash-wrap{ max-width:1120px; margin:0 auto; padding:16px 16px 44px; }
-      .dash-hero{
-        background:linear-gradient(135deg, #2563EB 0%, #4F46E5 55%, #7C3AED 100%);
-        border-radius:22px; padding:26px 22px 24px; color:#fff;
-        box-shadow:0 18px 40px rgba(37,99,235,.28);
-      }
-      .dash-hero-pill{
-        display:inline-flex; align-items:center; gap:6px; font-size:11.5px; font-weight:700; letter-spacing:.09em; text-transform:uppercase;
-        background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.28); color:#fff; border-radius:999px; padding:6px 12px;
-      }
-      .dash-greeting{ font-size:29px; font-weight:800; letter-spacing:-.03em; line-height:1.15; color:#fff; margin-top:14px; }
-      @media (min-width:640px){ .dash-greeting{ font-size:34px; } }
-      .dash-quote{ color:rgba(255,255,255,.88); font-size:14.5px; line-height:1.6; margin-top:8px; max-width:560px; }
-      .dash-actions{ display:flex; flex-wrap:wrap; gap:10px; margin-top:20px; }
-      .dash-actions .btn{ padding:11px 18px; font-size:13.5px; border-radius:12px; }
+      /* Dashboard — Hub-style page: greeting, action buttons, 2x2 stat cards, recent submissions */
+      .dash-wrap{ max-width:1180px; margin:0 auto; padding:24px 20px 44px; }
+      .dash-greeting{ font-size:29px; font-weight:800; letter-spacing:-.03em; line-height:1.1; }
+      @media (min-width:640px){ .dash-greeting{ font-size:35px; } }
+      .dash-sub{ color:var(--muted); font-size:14.5px; line-height:1.55; margin-top:8px; max-width:560px; }
+      .dash-actions{ display:flex; flex-wrap:wrap; gap:10px; margin-top:18px; }
+      .dash-actions .btn{ padding:10px 18px; font-size:13.5px; border-radius:11px; }
       .dash-actions .btn svg{ width:16px; height:16px; }
-      .dash-hero .btn-primary{ background:#fff; color:#1D4ED8; box-shadow:0 6px 16px rgba(0,0,0,.18); }
-      .dash-hero .btn-primary:hover{ background:#EFF6FF; }
-      .dash-hero .btn-mock{ background:rgba(255,255,255,.16); color:#fff; border:1px solid rgba(255,255,255,.42); box-shadow:none; }
-      .dash-hero .btn-mock:hover{ background:rgba(255,255,255,.26); transform:translateY(-1px); box-shadow:none; }
-      .dash-hero .btn-ghost{ background:rgba(255,255,255,.16); color:#fff; border:1px solid rgba(255,255,255,.42); box-shadow:none; }
-      .dash-hero .btn-ghost:hover{ background:rgba(255,255,255,.26); }
-      .dash-sub{ color:#64748B; font-size:13.5px; line-height:1.55; margin-top:14px; }
-      .dash-stats{ display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:12px; margin-top:16px; }
-      @media (min-width:900px){ .dash-stats{ grid-template-columns:repeat(4, minmax(0, 1fr)); } }
+      .btn-mock{
+        background:linear-gradient(135deg, #8B5CF6, #7C3AED 55%, #6D28D9); color:#fff;
+        box-shadow:0 10px 24px rgba(124,58,237,.35), 0 1px 0 rgba(255,255,255,.18) inset;
+      }
+      .btn-mock:hover{ transform:translateY(-1px); box-shadow:0 14px 30px rgba(124,58,237,.42), 0 1px 0 rgba(255,255,255,.18) inset; }
+      .dash-divider{ border:none; border-top:1px solid var(--line); margin:24px 0 20px; }
+      .dash-stats{ display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:12px; }
+      @media (min-width:640px){ .dash-stats{ gap:12px; } }
       @media (max-width:400px){ .dash-stats{ gap:10px; } .dash-stat{ padding:14px 13px; } }
       .dash-stat{
-        background:#fff; border:1px solid #E8ECF5; border-radius:18px;
-        padding:17px; box-shadow:0 2px 10px rgba(15,23,42,.05); min-width:0; overflow:hidden;
+        background:linear-gradient(180deg, var(--surface-2), var(--surface)); border:1px solid var(--line); border-radius:18px;
+        padding:17px; box-shadow:var(--shadow-card); min-width:0; overflow:hidden;
       }
       .dash-stat-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:8px; }
-      .dash-stat-label{ font-size:13px; font-weight:600; color:#64748B; line-height:1.35; }
-      .dash-ic{ width:40px; height:40px; border-radius:12px; display:flex; align-items:center; justify-content:center; flex:none; }
-      .dash-ic svg{ width:20px; height:20px; }
-      .ic-bg-blue{ background:#EAF1FE; color:#2563EB; }
-      .ic-bg-green{ background:#E7F8EE; color:#16A34A; }
-      .ic-bg-amber{ background:#FEF3C7; color:#D97706; }
-      .ic-bg-violet{ background:#F1EAFE; color:#7C3AED; }
-      .dash-stat b{ font-family:"Sora",sans-serif; font-size:30px; font-weight:800; line-height:1; letter-spacing:-.02em; display:block; margin-top:12px; color:#0F172A; }
-      .dash-stat-sub{ font-size:12.5px; color:#94A3B8; margin-top:7px; line-height:1.4; }
+      .dash-stat-label{ font-size:13px; font-weight:600; color:var(--muted); line-height:1.35; }
+      .dash-stat-top svg{ width:18px; height:18px; flex:none; margin-top:1px; }
+      .ic-blue{ color:#60A5FA; }
+      .ic-green{ color:#4ADE80; }
+      .ic-violet{ color:#A78BFA; }
+      .ic-amber{ color:#FBBF24; }
+      .dash-stat b{ font-family:"Sora",sans-serif; font-size:31px; font-weight:800; line-height:1; letter-spacing:-.02em; display:block; margin-top:10px; }
+      .dash-stat-sub{ font-size:12.5px; color:var(--muted-2); margin-top:7px; line-height:1.4; }
+      .dash-stat-sub.green{ color:#4ADE80; }
+      .dash-stat-sub.amber{ color:var(--accent-soft); }
       .dash-recent-head{ display:flex; align-items:flex-start; justify-content:space-between; gap:8px 14px; margin-top:28px; flex-wrap:wrap; }
-      .dash-recent-head h3{ font-size:20px; font-weight:800; letter-spacing:-.025em; line-height:1.2; color:#0F172A; }
+      .dash-recent-head h3{ font-size:20px; font-weight:800; letter-spacing:-.025em; line-height:1.2; }
       @media (min-width:640px){ .dash-recent-head h3{ font-size:22px; } }
       .dash-more{
-        background:none; border:none; color:#2563EB; font-size:13.5px; font-weight:650;
+        background:none; border:none; color:var(--sky); font-size:13.5px; font-weight:650;
         display:inline-flex; align-items:center; gap:6px; padding:4px 0; white-space:nowrap;
       }
       .dash-more:hover{ text-decoration:underline; }
@@ -1210,26 +1195,13 @@
       .dash-results{ display:grid; gap:8px; margin-top:12px; }
       .dash-result-row{
         display:flex; align-items:center; justify-content:space-between; gap:10px;
-        background:#fff; border:1px solid #E8ECF5; border-radius:12px; padding:12px 14px;
-        box-shadow:0 2px 8px rgba(15,23,42,.04);
+        background:rgba(148,180,255,.05); border:1px solid var(--line); border-radius:11px; padding:10px 13px;
       }
-      .dash-result-row b{ font-size:13.5px; font-weight:650; color:#0F172A; }
-      .dash-result-row span{ font-family:"Sora",sans-serif; font-weight:800; font-size:13.5px; color:#2563EB; white-space:nowrap; }
-      .dash-updates{ display:grid; gap:8px; margin-top:12px; }
-      .dash-update-row{
-        display:flex; align-items:center; gap:10px;
-        background:#fff; border:1px solid #E8ECF5; border-radius:12px; padding:12px 14px;
-        box-shadow:0 2px 8px rgba(15,23,42,.04);
-      }
-      .dash-update-badge{
-        flex:none; font-size:10.5px; font-weight:800; letter-spacing:.06em; color:#fff;
-        background:linear-gradient(135deg, #2563EB, #7C3AED); border-radius:999px; padding:4px 9px;
-      }
-      .dash-update-row b{ font-size:13.5px; font-weight:650; color:#0F172A; }
-      .dash-update-row span{ font-size:12.5px; color:#64748B; margin-left:auto; white-space:nowrap; }
-      .dash-empty{ font-size:13.5px; color:#64748B; background:#fff; border:1px dashed #D8DEE9; border-radius:13px; padding:17px 14px; text-align:center; }
-      .dash-signout{ margin-top:24px; }
-      .dash-signout .btn{ padding:10px 18px; font-size:13.5px; border-radius:11px; background:#fff; color:#0F172A; border-color:#D8DEE9; }
+      .dash-result-row b{ font-size:13px; font-weight:650; }
+      .dash-result-row span{ font-family:"Sora",sans-serif; font-weight:800; font-size:13.5px; color:var(--accent-soft); white-space:nowrap; }
+      .dash-empty{ font-size:13.5px; color:var(--muted); background:rgba(148,180,255,.04); border:1px dashed var(--line-strong); border-radius:13px; padding:17px 14px; text-align:center; }
+      .dash-signout{ margin-top:22px; }
+      .dash-signout .btn{ padding:10px 18px; font-size:13.5px; border-radius:11px; }
       /* Dashboard mobile containment: nothing inside the dashboard may widen it past the screen */
       #dashView{ overflow-x:clip; }
       .dash-stat-label, .dash-stat-sub, .dash-sub{ overflow-wrap:break-word; }
@@ -1237,60 +1209,15 @@
       #accountBack.dash-mode{ top:72px; }
       @media (max-width:640px){ #accountBack.dash-mode{ top:64px; } }
       body:has(#accountBack.dash-mode) header{ z-index:96; }
-      /* Tests + Resources pages — EXAMFLOW-style light pages (same look as the dashboard) */
-      #subjectsView, #chaptersView, #chapterTestsView, #resourcesView{ background:#F4F6FB; }
-      #subjectsView .sec-head h2, #resourcesView .sec-head h2, #chaptersView .chapters-title, #chapterTestsView .chapters-title{ color:#0F172A; }
-      #subjectsView .sec-head p, #resourcesView .sec-head p, #chaptersView .chapters-sub{ color:#64748B; }
-      #subjectsView .subj{ background:#fff; border-color:#E8ECF5; box-shadow:0 2px 10px rgba(15,23,42,.05); }
-      #subjectsView .subj:hover{ box-shadow:0 14px 30px rgba(15,23,42,.10); }
-      #subjectsView .subj h3{ color:#0F172A; }
-      #subjectsView .subj-count{ color:#64748B; }
-      #chaptersView .chapter-row{ background:#fff; border-color:#E8ECF5; box-shadow:0 2px 8px rgba(15,23,42,.04); }
-      #chaptersView .chapter-row:hover{ box-shadow:0 10px 22px rgba(15,23,42,.10); border-color:#D8DEE9; }
-      #chaptersView .chapter-name{ color:#0F172A; }
-      #chaptersView .chapter-num{ color:#0284C7; border-color:rgba(2,132,199,.35); background:rgba(56,189,248,.10); }
-      #chaptersView .chapter-chevron{ color:#94A3B8; }
-      #chaptersView .chapters-back, #chapterTestsView .page-back{ color:#334155; }
-      #chaptersView .chapters-back:hover{ color:#0F172A; }
-      #chapterTestsView .page-back{ background:#fff; border-color:#D8DEE9; }
-      #chapterTestsView .page-back:hover{ background:#EAF0F8; }
-      #chaptersView .chapters-badge{ color:#1D4ED8; border-color:rgba(37,99,235,.4); background:rgba(37,99,235,.08); }
-      #chapterTestsView .chapter-box{ background:#fff; border-color:#E8ECF5; box-shadow:0 2px 10px rgba(15,23,42,.05); color:#0F172A; }
-      #chapterTestsView .chapter-box h4{ color:#0F172A; }
-      #chapterTestsView .chapter-box .tc-meta{ color:#64748B; }
-      #chapterTestsView .chapter-box .chip{ color:#1D4ED8; background:rgba(37,99,235,.10); border-color:rgba(37,99,235,.35); }
-      #chapterTestsView .chapter-box .chip.amber{ color:#B45309; background:rgba(245,158,11,.14); border-color:rgba(245,158,11,.40); }
-      #resourcesView .no-results, #chaptersView .no-results{ background:#fff; border-color:#E8ECF5; box-shadow:0 2px 8px rgba(15,23,42,.04); }
-      /* All Tests listing page ("View All 55 Tests") — same light style */
-      #allTestsView{ background:#F4F6FB; }
-      #allTestsView .exam-top{ background:#fff; border-bottom:1px solid #E8ECF5; box-shadow:0 2px 12px rgba(15,23,42,.05); }
-      #allTestsView .exam-exit{ color:#0F172A; border-color:#D8DEE9; background:#fff; }
-      #allTestsView .tests-page-title .tp-a{ color:#2563EB; }
-      #allTestsView .tests-page-title .tp-b{ color:#D97706; }
-      #allTestsView .tests-page-desc, #allTestsView .tests-count{ color:#64748B; }
-      #allTestsView .filter-pill{ background:#fff; border-color:#D8DEE9; color:#334155; }
-      #allTestsView .filter-pill span{ background:#EAF1FE; color:#2563EB; }
-      #allTestsView .filter-pill:hover{ color:#0F172A; border-color:#2563EB; }
-      #allTestsView .search-box input{ background:#fff; border-color:#D8DEE9; color:#0F172A; }
-      #allTestsView .search-box input::placeholder{ color:#94A3B8; }
-      #allTestsView .search-box svg{ color:#94A3B8; }
-      #allTestsView .chapter-box{ background:#fff; border-color:#E8ECF5; box-shadow:0 2px 10px rgba(15,23,42,.05); color:#0F172A; }
-      #allTestsView .chapter-box h4{ color:#0F172A; }
-      #allTestsView .chapter-box .tc-meta{ color:#64748B; }
-      #allTestsView .chapter-box .chip{ color:#1D4ED8; background:rgba(37,99,235,.10); border-color:rgba(37,99,235,.35); }
-      #allTestsView .chapter-box .chip.amber{ color:#B45309; background:rgba(245,158,11,.14); border-color:rgba(245,158,11,.40); }
-      #allTestsView .no-results{ background:#fff; border-color:#E8ECF5; box-shadow:0 2px 8px rgba(15,23,42,.04); }
-      #resourcesView .res{ background:#fff; border-color:#E8ECF5; box-shadow:0 2px 10px rgba(15,23,42,.05); }
-      #resourcesView .res h3{ color:#0F172A; }
-      #resourcesView .res p{ color:#64748B; }
-      #resourcesView .res > svg{ color:#2563EB; }
-      #resourcesView .res .res-open, #resourcesView .res .res-download, #resourcesView .res .res-open-btn{ color:#2563EB; }
-      #resourcesView .res-filter-pill{ background:#fff; border-color:#D8DEE9; color:#334155; }
-      #resourcesView .res-filter-pill:hover{ color:#0F172A; border-color:#2563EB; }
-      #chaptersView .search-box input, #resourcesView .search-box input{ background:#fff; border-color:#D8DEE9; color:#0F172A; }
-      #chaptersView .search-box input::placeholder, #resourcesView .search-box input::placeholder{ color:#94A3B8; }
-      #chaptersView .search-box svg, #resourcesView .search-box svg{ color:#94A3B8; }
-      #chaptersView .no-results p, #resourcesView .no-results p{ color:#64748B; }
+      [data-theme="light"] .dash-stat{ background:#fff; }
+      [data-theme="light"] .ic-blue{ color:#2563EB; }
+      [data-theme="light"] .ic-green{ color:#16A34A; }
+      [data-theme="light"] .ic-violet{ color:#7C3AED; }
+      [data-theme="light"] .ic-amber{ color:#D97706; }
+      [data-theme="light"] .dash-stat-sub.green{ color:#16A34A; }
+      [data-theme="light"] .dash-stat-sub.amber{ color:#B45309; }
+      [data-theme="light"] .dash-more{ color:#0284C7; }
+      [data-theme="light"] .dash-empty{ background:rgba(13,38,76,.03); }
       [data-theme="light"] .field-err{ color:#B91C1C; }
       [data-theme="light"] .field input{ background:#F7F9FC; }
       [data-theme="light"] .dash-result-row span{ color:#B45309; }
@@ -3035,48 +2962,41 @@
       <!-- Dashboard view -->
       <div id="dashView" style="display:none;">
         <div class="dash-wrap">
-          <div class="dash-hero">
-            <span class="dash-hero-pill">MDCAT Prime · Student Dashboard</span>
-            <h2 class="dash-greeting" id="dashGreeting">Welcome Back!</h2>
-            <p class="dash-quote">Every question you practise today brings your white coat closer.</p>
-            <div class="dash-actions">
-              <button class="btn btn-primary" type="button" id="dashStartPractice"><i data-lucide="play"></i> Start Practice</button>
-              <button class="btn btn-mock" type="button" id="dashMockTest"><i data-lucide="medal"></i> Take Mock Test</button>
-              <button class="btn btn-ghost" type="button" id="dashExploreSubjects">Explore Subjects</button>
-            </div>
-          </div>
+          <h2 class="dash-greeting" id="dashGreeting">Welcome</h2>
           <p class="dash-sub" id="dashEmail"></p>
+          <div class="dash-actions">
+            <button class="btn btn-primary" type="button" id="dashStartPractice"><i data-lucide="play"></i> Start Practice</button>
+            <button class="btn btn-mock" type="button" id="dashMockTest"><i data-lucide="medal"></i> Take Mock Test</button>
+            <button class="btn btn-ghost" type="button" id="dashExploreSubjects">Explore Subjects</button>
+          </div>
+          <hr class="dash-divider" />
           <div class="dash-stats">
             <div class="dash-stat">
-              <div class="dash-stat-top"><span class="dash-stat-label">Available Tests</span><span class="dash-ic ic-bg-blue"><i data-lucide="file-text"></i></span></div>
-              <b id="dashAvailable">—</b>
-              <p class="dash-stat-sub">Chapter tests &amp; mocks</p>
+              <div class="dash-stat-top"><span class="dash-stat-label">Tests Completed</span><i data-lucide="graduation-cap" class="ic-blue"></i></div>
+              <b id="dashCompleted">0</b>
+              <p class="dash-stat-sub">Timed exams &amp; chapter drills</p>
             </div>
             <div class="dash-stat">
-              <div class="dash-stat-top"><span class="dash-stat-label">Tests Attempted</span><span class="dash-ic ic-bg-green"><i data-lucide="clipboard-check"></i></span></div>
-              <b id="dashAttempted">0</b>
-              <p class="dash-stat-sub">Submissions so far</p>
+              <div class="dash-stat-top"><span class="dash-stat-label">Questions Attempted</span><i data-lucide="layers" class="ic-green"></i></div>
+              <b id="dashQuestions">0</b>
+              <p class="dash-stat-sub green">MCQs practiced</p>
             </div>
             <div class="dash-stat">
-              <div class="dash-stat-top"><span class="dash-stat-label">High Score</span><span class="dash-ic ic-bg-amber"><i data-lucide="trophy"></i></span></div>
-              <b id="dashHigh">—</b>
-              <p class="dash-stat-sub">Your personal best</p>
+              <div class="dash-stat-top"><span class="dash-stat-label">Average Score</span><i data-lucide="trending-up" class="ic-violet"></i></div>
+              <b id="dashAverage">—</b>
+              <p class="dash-stat-sub">Across all completed tests</p>
             </div>
             <div class="dash-stat">
-              <div class="dash-stat-top"><span class="dash-stat-label">Accuracy</span><span class="dash-ic ic-bg-violet"><i data-lucide="target"></i></span></div>
-              <b id="dashAccuracy">—</b>
-              <p class="dash-stat-sub">Correct answers overall</p>
+              <div class="dash-stat-top"><span class="dash-stat-label">Best Score</span><i data-lucide="medal" class="ic-amber"></i></div>
+              <b id="dashBest">—</b>
+              <p class="dash-stat-sub amber">Personal record</p>
             </div>
           </div>
           <div class="dash-recent-head">
-            <h3 id="dashRecentTitle">Recently Attempted Tests (0)</h3>
+            <h3 id="dashRecentTitle">Recent Test Submissions (0)</h3>
             <button class="dash-more" type="button" id="dashMoreTests">Take More Tests <i data-lucide="arrow-right"></i></button>
           </div>
           <div class="dash-results" id="dashResultsList"></div>
-          <div class="dash-recent-head">
-            <h3>New Updates</h3>
-          </div>
-          <div class="dash-updates" id="dashUpdatesList"></div>
           <div class="dash-signout">
             <button class="btn btn-ghost" type="button" id="dashLogout">Sign Out</button>
           </div>
@@ -4462,18 +4382,16 @@
         document.body.style.overflow = '';
       }
       function renderDashboardStats(res) {
-        var questions = 0, correct = 0, best = null;
+        var questions = 0, pctSum = 0, best = null;
         res.forEach(function (r) {
-          questions += r.total; correct += (r.correct || 0);
+          questions += r.total; pctSum += r.pct;
           if (best === null || r.pct > best) best = r.pct;
         });
-        var available = 0;
-        try { available = Object.keys(EXAM_TESTS).length; } catch (e) { available = 0; }
-        document.getElementById('dashAvailable').textContent = available || '—';
-        document.getElementById('dashAttempted').textContent = res.length;
-        document.getElementById('dashHigh').textContent = best === null ? '—' : best + '%';
-        document.getElementById('dashAccuracy').textContent = questions ? Math.round(correct / questions * 100) + '%' : '—';
-        document.getElementById('dashRecentTitle').textContent = 'Recently Attempted Tests (' + res.length + ')';
+        document.getElementById('dashCompleted').textContent = res.length;
+        document.getElementById('dashQuestions').textContent = questions;
+        document.getElementById('dashAverage').textContent = res.length ? Math.round(pctSum / res.length) + '%' : '—';
+        document.getElementById('dashBest').textContent = best === null ? '—' : best + '%';
+        document.getElementById('dashRecentTitle').textContent = 'Recent Test Submissions (' + res.length + ')';
         var list = document.getElementById('dashResultsList');
         list.innerHTML = '';
         if (!res.length) {
@@ -4491,37 +4409,7 @@
             list.appendChild(row);
           });
         }
-        renderDashUpdates();
         lucide.createIcons();
-      }
-      /* New Updates — taken from the home page's own Recently Uploaded Tests list */
-      function renderDashUpdates() {
-        var list = document.getElementById('dashUpdatesList');
-        if (!list) return;
-        list.innerHTML = '';
-        var cards = document.querySelectorAll('#recentGrid .chapter-box');
-        var shown = 0;
-        cards.forEach(function (card) {
-          if (shown >= 4) return;
-          var h = card.querySelector('h4');
-          var chip = card.querySelector('.tc-top .chip');
-          var meta = card.querySelectorAll('.tc-meta span');
-          var row = document.createElement('div');
-          row.className = 'dash-update-row';
-          var badge = document.createElement('span'); badge.className = 'dash-update-badge'; badge.textContent = 'NEW';
-          var b = document.createElement('b'); b.textContent = h ? h.textContent : '';
-          var s = document.createElement('span');
-          s.textContent = (chip ? chip.textContent : '') + (meta.length ? ' · ' + meta[0].textContent.trim() : '');
-          row.appendChild(badge); row.appendChild(b); row.appendChild(s);
-          list.appendChild(row);
-          shown++;
-        });
-        if (!shown) {
-          var d = document.createElement('p');
-          d.className = 'dash-empty';
-          d.textContent = 'No new updates yet.';
-          list.appendChild(d);
-        }
       }
       function showDashboard() {
         if (!currentUser) return;
@@ -4531,7 +4419,7 @@
         accountTitle.textContent = 'Student Dashboard';
         var displayName = currentUser.name || currentUser.fullName || '';
         var first = displayName.split(' ')[0];
-        document.getElementById('dashGreeting').textContent = 'Welcome Back, ' + first + '!';
+        document.getElementById('dashGreeting').textContent = 'Welcome, ' + first + '!';
         document.getElementById('dashEmail').textContent = 'Signed in as ' + currentUser.email + '. Your practice activity is summarised below.';
         renderDashboardStats([]);
         sha256Hex(currentUser.email.toLowerCase()).then(function (userId) {
