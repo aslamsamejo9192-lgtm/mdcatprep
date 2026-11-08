@@ -1048,6 +1048,40 @@
       .score-ring-in{ width:118px; height:118px; border-radius:50%; background:var(--surface); display:grid; place-items:center; text-align:center; }
       .score-ring-in b{ font-family:"Sora",sans-serif; font-size:30px; line-height:1; display:block; }
       .score-ring-in span{ font-size:12.5px; color:var(--muted); font-weight:650; }
+      /* Hub-style confirm modal + result layout (Prime) */
+      .confirm-modal{ max-width:560px; margin:0 auto; text-align:left; }
+      .confirm-head{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; padding-bottom:16px; border-bottom:1px solid var(--line); }
+      .confirm-head h2{ font-size:24px; font-weight:800; letter-spacing:-.02em; text-align:left; }
+      .confirm-close{ flex:none; width:38px; height:38px; border-radius:50%; border:1px solid var(--line); background:transparent; color:var(--muted); cursor:pointer; display:grid; place-items:center; }
+      .confirm-close:hover{ background:var(--surface-2); color:var(--text); }
+      .confirm-close svg{ width:19px; height:19px; }
+      .confirm-body{ padding-top:18px; }
+      .confirm-body>p{ color:var(--muted); font-size:15.5px; line-height:1.6; text-align:left; }
+      .confirm-box{ background:rgba(148,180,255,.05); border:1px solid var(--line); border-radius:18px; padding:20px 10px; display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin:20px 0 16px; text-align:center; }
+      .confirm-box b{ font-family:"Sora",sans-serif; font-size:28px; display:block; line-height:1.1; }
+      .confirm-box span{ font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); font-weight:700; }
+      .confirm-warn{ display:flex; gap:10px; align-items:flex-start; color:#FBBF24; font-size:15px; font-weight:600; line-height:1.5; margin:0 0 20px; }
+      .confirm-warn svg{ flex:none; width:20px; height:20px; margin-top:2px; }
+      .confirm-actions{ display:flex; gap:12px; }
+      .confirm-actions .btn{ flex:1; border-radius:999px; padding:14px 10px; font-size:15.5px; }
+      @media (max-width:560px){ .confirm-head h2{ font-size:21px; } .confirm-box b{ font-size:24px; } }
+      .result-badge{ display:inline-flex; align-items:center; gap:8px; border:1px solid rgba(74,222,128,.45); background:rgba(74,222,128,.10); color:#4ADE80; border-radius:999px; padding:8px 16px; font-weight:700; font-size:14.5px; margin-bottom:20px; }
+      .result-badge svg{ width:18px; height:18px; }
+      .result-msg{ font-size:24px; font-weight:800; letter-spacing:-.01em; margin:18px 0 8px; }
+      .result-msg.bad{ color:#FB7185; }
+      .result-msg.good{ color:#4ADE80; }
+      .result-msg.mid{ color:#38BDF8; }
+      .score-ring.big{ width:200px; height:200px; background:conic-gradient(#38BDF8 var(--pct,0%), rgba(148,180,255,.13) 0); }
+      .score-ring.big .score-ring-in{ width:166px; height:166px; }
+      .score-ring.big .score-ring-in b{ font-size:46px; }
+      .score-ring.big .score-ring-in span{ font-size:13px; letter-spacing:.08em; text-transform:uppercase; }
+      .result-stats{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:24px 0; text-align:left; }
+      .stat-tile{ background:rgba(148,180,255,.05); border:1px solid var(--line); border-radius:16px; padding:18px; }
+      .stat-tile .stat-label{ display:flex; align-items:center; gap:8px; font-size:14px; font-weight:700; }
+      .stat-tile .stat-label svg{ width:19px; height:19px; }
+      .stat-tile b{ display:block; font-family:"Sora",sans-serif; font-size:30px; margin-top:8px; }
+      .result-actions{ display:grid; gap:12px; margin-top:8px; }
+      .result-actions .btn{ width:100%; border-radius:14px; padding:15px 10px; font-size:16px; }
       .review-list{ display:grid; gap:16px; margin-top:28px; text-align:left; }
       .review-card{ background:linear-gradient(180deg, var(--surface-2), var(--surface)); border:1px solid var(--line); border-radius:18px; padding:22px; }
       .review-card .r-head{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; }
@@ -2784,17 +2818,23 @@
 
         <!-- Submit summary view -->
         <div id="examSummary" style="display:none;">
-          <div class="exam-card exam-summary">
-            <h2>Submit this test?</h2>
-            <p>Review your attempt summary below. Once submitted, you will see your score and a full review of every question.</p>
-            <div class="summary-grid">
-              <div><b id="sumAnswered">0</b><span>Answered</span></div>
-              <div><b id="sumUnanswered">50</b><span>Not Answered</span></div>
-              <div><b id="sumMarked">0</b><span>Marked</span></div>
+          <div class="exam-card exam-summary confirm-modal">
+            <div class="confirm-head">
+              <h2>Confirm Test Submission</h2>
+              <button class="confirm-close" type="button" id="summaryClose" aria-label="Return to test"><i data-lucide="x"></i></button>
             </div>
-            <div class="exam-controls center">
-              <button class="btn btn-ghost" type="button" id="summaryBack">Back to Test</button>
-              <button class="btn btn-primary" type="button" id="summaryConfirm">Confirm Submit</button>
+            <div class="confirm-body">
+              <p>Are you sure you want to finish and submit your test? Here is your attempt summary:</p>
+              <div class="confirm-box">
+                <div><b id="sumAnswered" style="color:#60A5FA">0</b><span>Answered</span></div>
+                <div><b id="sumMarked" style="color:#FBBF24">0</b><span>Marked</span></div>
+                <div><b id="sumUnanswered" style="color:#FB7185">0</b><span>Unattempted</span></div>
+              </div>
+              <p class="confirm-warn" id="sumWarning" style="display:none;"><i data-lucide="alert-triangle"></i><span id="sumWarningText"></span></p>
+              <div class="confirm-actions">
+                <button class="btn btn-ghost" type="button" id="summaryBack">Return to Test</button>
+                <button class="btn btn-primary" type="button" id="summaryConfirm">Yes, Submit Test</button>
+              </div>
             </div>
           </div>
         </div>
@@ -2802,24 +2842,25 @@
         <!-- Result view -->
         <div id="examResult" style="display:none;">
           <div class="exam-card exam-summary">
-            <div class="score-ring" id="scoreRing"><div class="score-ring-in"><div><b id="scoreText">0/10</b><span id="scorePct">0%</span></div></div></div>
+            <span class="result-badge"><i data-lucide="check-circle-2"></i> Test Completed</span>
+            <div class="score-ring big" id="scoreRing"><div class="score-ring-in"><div><b id="scoreText">0%</b><span id="scorePct">0 / 0 MARKS</span></div></div></div>
             <h2 id="resultTitle">Your Result</h2>
+            <p class="result-msg bad" id="resultMsg"></p>
             <p id="resultSub"></p>
             <div class="save-notice" id="resultSaveNotice" role="status"><b>Not saved to your dashboard.</b> You took this test without signing in, so this result will not appear in your dashboard. To save your results, sign in before you start a test.</div>
-            <div class="summary-grid">
-              <div><b id="resCorrect" style="color:#4ADE80">0</b><span>Correct</span></div>
-              <div><b id="resWrong" style="color:#F87171">0</b><span>Wrong</span></div>
-              <div><b id="resSkipped">0</b><span>Not Attempted</span></div>
+            <div class="result-stats">
+              <div class="stat-tile"><span class="stat-label" style="color:#4ADE80"><i data-lucide="check-circle-2"></i> Correct</span><b id="resCorrect">0</b></div>
+              <div class="stat-tile"><span class="stat-label" style="color:#F87171"><i data-lucide="x-circle"></i> Wrong</span><b id="resWrong">0</b></div>
+              <div class="stat-tile"><span class="stat-label" style="color:#94A3B8"><i data-lucide="help-circle"></i> Unattempted</span><b id="resSkipped">0</b></div>
+              <div class="stat-tile"><span class="stat-label" style="color:#FBBF24"><i data-lucide="clock"></i> Time Taken</span><b id="resTime">0m 0s</b></div>
             </div>
-            <div class="exam-controls center">
+            <div class="result-actions">
+              <button class="btn btn-primary" type="button" id="resultReview"><i data-lucide="file-text"></i> Review Answers</button>
+              <button class="btn btn-ghost" type="button" id="resultRetake"><i data-lucide="rotate-ccw"></i> Retake Test</button>
               <button class="btn btn-ghost" type="button" id="resultClose">Back to Tests</button>
-              <button class="btn btn-primary" type="button" id="resultRetake"><i data-lucide="rotate-ccw"></i> Retake Test</button>
             </div>
           </div>
           <div class="review-list" id="reviewList"></div>
-          <div style="text-align:center; margin-top:28px;">
-            <button class="btn btn-primary" type="button" id="resultClose2">Back to Tests</button>
-          </div>
         </div>
       </div>
       <!-- Fixed bottom action bar (attempt view only) — always visible above the phone's system navigation -->
@@ -4142,9 +4183,15 @@
         var ans = 0, mrk = 0;
         cur.answers.forEach(function (a) { if (a !== null && a !== undefined) ans++; });
         cur.marked.forEach(function (m) { if (m) mrk++; });
+        var un = t.questions.length - ans;
         document.getElementById('sumAnswered').textContent = ans;
-        document.getElementById('sumUnanswered').textContent = t.questions.length - ans;
+        document.getElementById('sumUnanswered').textContent = un;
         document.getElementById('sumMarked').textContent = mrk;
+        var warn = document.getElementById('sumWarning');
+        if (warn) {
+          warn.style.display = un > 0 ? '' : 'none';
+          document.getElementById('sumWarningText').textContent = 'You still have ' + un + (un === 1 ? ' unattempted question' : ' unattempted questions') + ' remaining.';
+        }
         showView('summary');
       }
       function showResult() {
@@ -4174,14 +4221,20 @@
         });
         var total = t.questions.length;
         var pct = Math.round(correct / total * 100);
-        document.getElementById('scoreText').textContent = correct + '/' + total;
-        document.getElementById('scorePct').textContent = pct + '% Score';
+        var elapsed = Math.max(0, t.duration - cur.timeLeft);
+        document.getElementById('scoreText').textContent = pct + '%';
+        document.getElementById('scorePct').textContent = correct + ' / ' + total + ' MARKS';
         document.getElementById('scoreRing').style.setProperty('--pct', pct + '%');
-        document.getElementById('resultTitle').textContent = t.title + ' — Result';
-        document.getElementById('resultSub').textContent = (cur.timeLeft <= 0 ? 'Time ended, so the test was submitted automatically. ' : '') + 'Result: ' + (pct >= 50 ? 'PASS' : 'FAIL') + ' — you scored ' + correct + ' out of ' + total + '. Review every question below.';
+        document.getElementById('resultTitle').textContent = t.title + ' (' + t.subject + ')';
+        var msg = document.getElementById('resultMsg');
+        if (pct >= 80) { msg.textContent = 'Excellent! You are exam-ready!'; msg.className = 'result-msg good'; }
+        else if (pct >= 50) { msg.textContent = 'Good effort! Keep pushing higher!'; msg.className = 'result-msg mid'; }
+        else { msg.textContent = 'Keep practicing. You can improve!'; msg.className = 'result-msg bad'; }
+        document.getElementById('resultSub').textContent = (cur.timeLeft <= 0 ? 'Time ended, so the test was submitted automatically. ' : '') + (pct < 50 ? 'Revisit textbook concepts and try untimed practice mode first to build confidence.' : 'Review your mistakes below and retake the test to improve your score.');
         document.getElementById('resCorrect').textContent = correct;
         document.getElementById('resWrong').textContent = wrong;
         document.getElementById('resSkipped').textContent = skipped;
+        document.getElementById('resTime').textContent = Math.floor(elapsed / 60) + 'm ' + (elapsed % 60) + 's';
         if (currentUser) { saveResultToStore({ testName: t.title, subject: t.subject, score: correct, total: total, percentage: pct }); }
         var sn = document.getElementById('resultSaveNotice');
         if (sn) sn.classList.toggle('show', !currentUser);
@@ -4203,9 +4256,10 @@
       document.getElementById('examClear').addEventListener('click', function () { if (cur) { cur.answers[cur.idx] = null; if (!applyClearInPlace()) renderQuestion(); } });
       document.getElementById('examSubmit').addEventListener('click', function () { if (cur) showSummary(); });
       document.getElementById('summaryBack').addEventListener('click', function () { showView('attempt'); });
+      document.getElementById('summaryClose').addEventListener('click', function () { showView('attempt'); });
       document.getElementById('summaryConfirm').addEventListener('click', function () { if (cur) showResult(); });
       document.getElementById('resultClose').addEventListener('click', closeExam);
-      document.getElementById('resultClose2').addEventListener('click', closeExam);
+      document.getElementById('resultReview').addEventListener('click', function () { var rl = document.getElementById('reviewList'); if (rl) rl.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
       document.getElementById('resultRetake').addEventListener('click', function () { if (cur) startExam(cur.key); });
 
       /* ---------- Accounts & dashboard — real accounts + results ---------- */
