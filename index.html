@@ -1075,11 +1075,12 @@
       .score-ring.big .score-ring-in{ width:166px; height:166px; }
       .score-ring.big .score-ring-in b{ font-size:46px; }
       .score-ring.big .score-ring-in span{ font-size:13px; letter-spacing:.08em; text-transform:uppercase; }
-      .result-stats{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:24px 0; text-align:left; }
-      .stat-tile{ background:rgba(148,180,255,.05); border:1px solid var(--line); border-radius:16px; padding:18px; }
-      .stat-tile .stat-label{ display:flex; align-items:center; gap:8px; font-size:14px; font-weight:700; }
-      .stat-tile .stat-label svg{ width:19px; height:19px; }
-      .stat-tile b{ display:block; font-family:"Sora",sans-serif; font-size:30px; margin-top:8px; }
+      .exam-card.result-card{ padding:18px 20px 10px; }
+      .result-stats{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:20px 0; text-align:left; }
+      .stat-tile{ background:rgba(148,180,255,.05); border:1px solid var(--line); border-radius:14px; padding:10px 14px; }
+      .stat-tile .stat-label{ display:flex; align-items:center; gap:6px; font-size:12px; font-weight:700; }
+      .stat-tile .stat-label svg{ width:16px; height:16px; }
+      .stat-tile b{ display:block; font-family:"Sora",sans-serif; font-size:25px; margin-top:4px; }
       .result-actions{ display:grid; gap:12px; margin-top:8px; }
       .result-actions .btn{ width:100%; border-radius:14px; padding:15px 10px; font-size:16px; }
       .review-list{ display:grid; gap:16px; margin-top:28px; text-align:left; }
@@ -2841,7 +2842,7 @@
 
         <!-- Result view -->
         <div id="examResult" style="display:none;">
-          <div class="exam-card exam-summary">
+          <div class="exam-card exam-summary result-card">
             <span class="result-badge"><i data-lucide="check-circle-2"></i> Test Completed</span>
             <div class="score-ring big" id="scoreRing"><div class="score-ring-in"><div><b id="scoreText">0%</b><span id="scorePct">0 / 0 MARKS</span></div></div></div>
             <h2 id="resultTitle">Your Result</h2>
