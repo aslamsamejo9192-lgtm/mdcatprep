@@ -4441,10 +4441,9 @@
         document.body.classList.add('signed-in');
         document.getElementById('mmUserName').textContent = currentUser.fullName;
         document.getElementById('mmUserEmail').textContent = currentUser.email;
-        /* Land on the home screen after sign-in; the dashboard opens from the menu's Dashboard button. */
+        /* After sign-in (or creating an account), open the Student Portal instead of the dashboard. */
         closeAccount();
-        setActiveMenuItem('home');
-        window.scrollTo(0, 0);
+        window.location.href = STUDENT_PORTAL_URL;
       }
       function signOut() {
         currentUser = null;
@@ -4482,8 +4481,6 @@
         }).then(function () {
           signInSuccess({ fullName: name, email: email });
           form.reset();
-          /* After creating an account, open the Student Portal instead of the dashboard. */
-          window.location.href = STUDENT_PORTAL_URL;
         }).catch(function (err) {
           if (err && err.message !== 'exists') {
             setFieldErr('f-regEmail', 'err-regEmail', 'Something went wrong. Please check your connection and try again.');
