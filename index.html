@@ -4267,6 +4267,8 @@
       var FS_BASE = 'https://firestore.googleapis.com/v1/projects/mdcatprep-4ae3e/databases/(default)/documents';
       var FS_KEY = 'AIzaSyCthuUN4Uhn-gllqufLhP1cMfss8r6vFwM';
       var SESSION_KEY = 'mdcatprep-session';
+      /* Student Portal (shared preview page) — opens after a new account is created. */
+      var STUDENT_PORTAL_URL = 'https://muse.ai/s/mdcat-portal-hxr6xoxaxnxix0xqxrp/OCQO2yrtihmHaboLt_-WWoLrJ-CySzcq7Mt9QvC1mww';
       var currentUser = null;
       var accountBack = document.getElementById('accountBack');
       var authView = document.getElementById('authView');
@@ -4480,6 +4482,8 @@
         }).then(function () {
           signInSuccess({ fullName: name, email: email });
           form.reset();
+          /* After creating an account, open the Student Portal instead of the dashboard. */
+          window.location.href = STUDENT_PORTAL_URL;
         }).catch(function (err) {
           if (err && err.message !== 'exists') {
             setFieldErr('f-regEmail', 'err-regEmail', 'Something went wrong. Please check your connection and try again.');
