@@ -1200,45 +1200,214 @@
       .dash-result-row b{ font-size:13px; font-weight:650; }
       .dash-result-row span{ font-family:"Sora",sans-serif; font-weight:800; font-size:13.5px; color:var(--accent-soft); white-space:nowrap; }
       .dash-empty{ font-size:13.5px; color:var(--muted); background:rgba(148,180,255,.04); border:1px dashed var(--line-strong); border-radius:13px; padding:17px 14px; text-align:center; }
-      /* Student Portal — TayyariHub-style dashboard inside the website */
-      .portal-wrap{ max-width:1180px; margin:0 auto; padding:24px 20px 110px; }
-      .portal-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
-      .portal-greeting{ font-size:29px; font-weight:800; letter-spacing:-.03em; line-height:1.1; }
-      @media (min-width:640px){ .portal-greeting{ font-size:35px; } }
-      .portal-sub{ color:var(--muted); font-size:14.5px; line-height:1.55; margin-top:8px; }
-      .portal-signout{ flex:none; padding:9px 14px; font-size:13.5px; border-radius:11px; }
-      .portal-count{ margin-top:20px; background:linear-gradient(135deg, #1D4ED8, #2563EB 55%, #1E40AF); border-radius:20px; padding:18px; color:#fff; box-shadow:0 14px 30px rgba(37,99,235,.35); }
-      .portal-count-label{ font-family:"Sora",sans-serif; font-size:14px; font-weight:700; letter-spacing:.02em; }
-      .portal-count-row{ display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:10px; margin-top:14px; }
-      .portal-count-box{ background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.22); border-radius:14px; padding:12px 6px; text-align:center; min-width:0; }
-      .portal-count-box b{ display:block; font-family:"Sora",sans-serif; font-size:26px; font-weight:800; line-height:1; }
-      .portal-count-box span{ display:block; font-size:11.5px; font-weight:600; opacity:.85; margin-top:6px; }
-      .portal-hero{ margin-top:20px; }
-      .portal-hero h3{ font-size:21px; font-weight:800; letter-spacing:-.025em; line-height:1.25; }
-      .portal-hero p{ color:var(--muted); font-size:14.5px; line-height:1.6; margin-top:7px; max-width:560px; }
-      .portal-hub-label{ font-size:13px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--muted-2); margin:26px 0 12px; }
-      .portal-actions{ display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:12px; }
-      @media (max-width:560px){ .portal-actions{ grid-template-columns:1fr; } }
-      .portal-card{ display:flex; align-items:center; gap:14px; text-align:left; width:100%; background:linear-gradient(180deg, var(--surface-2), var(--surface)); border:1px solid var(--line); border-radius:18px; padding:18px; color:var(--text); font-family:inherit; box-shadow:var(--shadow-card); cursor:pointer; }
-      .portal-card:hover{ border-color:var(--blue-bright); }
-      .portal-card-ic{ flex:none; width:46px; height:46px; border-radius:13px; display:flex; align-items:center; justify-content:center; background:rgba(59,130,246,.14); color:#60A5FA; }
-      .portal-card-ic.gold{ background:rgba(245,158,11,.14); color:#FBBF24; }
-      .portal-card-ic svg{ width:23px; height:23px; }
-      .portal-card-text{ display:block; min-width:0; }
-      .portal-card-text b{ display:block; font-size:16.5px; font-weight:750; }
-      .portal-card-sub{ display:block; font-size:13px; color:var(--muted); margin-top:4px; line-height:1.45; }
-      .portal-builder{ margin-top:26px; background:linear-gradient(180deg, var(--surface-2), var(--surface)); border:1px solid var(--line); border-radius:18px; padding:20px; box-shadow:var(--shadow-card); }
-      .portal-builder h3{ font-size:19px; font-weight:800; letter-spacing:-.02em; }
-      .portal-builder p{ color:var(--muted); font-size:14px; line-height:1.6; margin-top:6px; }
-      .portal-chips{ display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
-      .portal-chip{ border:1.5px solid var(--line-strong); background:transparent; color:var(--text); font-family:inherit; font-size:14px; font-weight:650; padding:8px 16px; border-radius:999px; cursor:pointer; }
-      .portal-chip.active{ background:#2563EB; border-color:#2563EB; color:#fff; }
-      .portal-builder .btn{ margin-top:16px; }
-      .portal-stats{ margin-top:26px; }
-      .portal-bottomnav{ position:fixed; left:0; right:0; bottom:0; z-index:95; display:flex; background:var(--surface); border-top:1px solid var(--line-strong); padding:6px 4px calc(8px + env(safe-area-inset-bottom)); }
-      .portal-bottomnav button{ flex:1; min-width:0; background:none; border:none; color:var(--muted); font-family:inherit; font-size:11.5px; font-weight:650; padding:6px 2px 2px; display:flex; flex-direction:column; align-items:center; gap:3px; cursor:pointer; }
-      .portal-bottomnav button svg{ width:21px; height:21px; }
-      .portal-bottomnav button.active{ color:var(--sky); }
+      /* Student Portal — artifact port (scoped under #ptShell) */
+      #ptShell{
+        --bg:#081426; --bg2:#0a1a30; --panel:#0e2138; --panel2:#122a47;
+        --ink:#eef4fc; --ink2:#a9bcd4; --ink3:#7288a3;
+        --line:#1d3654; --line2:#2a4a73;
+        --navy:#0a1a30; --navy2:#0f2547;
+        --teal:#2dd4bf; --teal-bright:#2dd4bf; --teal-soft:#0d3038;
+        --gold:#f0b429; --gold-bright:#f0b429; --gold-soft:#33270a;
+        --red:#f0716c; --red-soft:#3a1d22;
+        --green:#4cc38a; --green-soft:#10301f;
+        --amber:#f5b83d; --amber-soft:#38300f;
+        --shadow:0 10px 30px rgba(0,0,0,.35);
+        --shadow-sm:0 2px 10px rgba(0,0,0,.3);
+        --r:14px;
+        display:flex; min-height:100dvh;
+        font-family:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+        background:var(--bg); color:var(--ink);
+        -webkit-font-smoothing:antialiased; line-height:1.5;
+      }
+      html[data-theme="light"] #ptShell{
+        --bg:#f2f5fa; --bg2:#e8edf5; --panel:#ffffff; --panel2:#eef2f8;
+        --ink:#0d1b2e; --ink2:#41546f; --ink3:#7c8ea8;
+        --line:#d8e0ec; --line2:#c3cfdf;
+        --teal:#0e7c6f; --teal-bright:#12a594; --teal-soft:#e0f4f1;
+        --gold:#c98f12; --gold-bright:#e8a90c; --gold-soft:#fdf3d7;
+        --red:#c23333; --red-soft:#fbe7e7;
+        --green:#1d8a4e; --green-soft:#e2f4e9;
+        --amber:#b97a0c; --amber-soft:#fdf0d5;
+        --shadow:0 10px 30px rgba(13,34,64,.10);
+        --shadow-sm:0 2px 10px rgba(13,34,64,.08);
+      }
+      #ptShell *{ box-sizing:border-box; }
+      #ptShell h1, #ptShell h2, #ptShell h3, #ptShell h4{ font-family:"Sora",sans-serif; margin:0; line-height:1.2; }
+      #ptShell button{ font-family:inherit; cursor:pointer; }
+      #ptShell input, #ptShell select{ font-family:inherit; }
+      #ptShell a{ color:var(--teal); }
+      #ptShell .hidden{ display:none !important; }
+      #ptShell .btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; border:0; border-radius:12px; padding:13px 20px; font-size:15px; font-weight:800; text-decoration:none; transition:transform .12s ease, opacity .12s; }
+      #ptShell .btn:active{ transform:scale(.98); }
+      #ptShell .btn-teal{ background:var(--teal); color:#fff; }
+      #ptShell .btn-gold{ background:var(--gold-bright); color:#231a02; }
+      #ptShell .btn-ghost{ background:var(--panel2); color:var(--ink); border:1px solid var(--line); }
+      #ptShell .btn-block{ width:100%; }
+      #ptShell .btn-sm{ padding:9px 15px; font-size:13.5px; border-radius:10px; }
+      /* ---------- PORTAL SHELL ---------- */
+      #ptShell .sidebar{ width:262px; flex:0 0 262px; background:var(--navy); color:#dbe7f5; display:flex; flex-direction:column; position:sticky; top:0; height:100dvh; z-index:40; }
+      #ptShell .side-brand{ display:flex; align-items:center; gap:11px; padding:20px 20px 16px; }
+      #ptShell .side-brand .mark{ width:42px; height:42px; border-radius:12px; background:rgba(255,255,255,.08); display:flex; align-items:center; justify-content:center; flex:0 0 42px; }
+      #ptShell .side-brand .mark svg{ width:25px; height:25px; }
+      #ptShell .side-brand b{ font-family:"Sora",sans-serif; font-size:16.5px; color:#fff; display:block; line-height:1.15; }
+      #ptShell .side-brand span{ font-size:12px; color:#8fa8c4; }
+      #ptShell .side-user{ margin:2px 16px 14px; padding:12px 13px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.08); border-radius:13px; display:flex; gap:11px; align-items:center; }
+      #ptShell .avatar{ width:40px; height:40px; border-radius:50%; background:var(--gold-bright); color:#231a02; font-weight:800; display:flex; align-items:center; justify-content:center; font-size:16px; flex:0 0 40px; }
+      #ptShell .side-user b{ color:#fff; font-size:14px; display:block; line-height:1.2; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:150px; }
+      #ptShell .side-user span{ font-size:12px; color:#8fa8c4; display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:150px; }
+      #ptShell .side-nav{ flex:1; overflow-y:auto; padding:2px 12px 12px; }
+      #ptShell .side-nav button{ display:flex; align-items:center; gap:11px; width:100%; text-align:left; border:0; background:transparent; color:#b9cadd; font-size:14.5px; font-weight:600; padding:11px 12px; border-radius:10px; margin-bottom:2px; }
+      #ptShell .side-nav button svg{ width:19px; height:19px; flex:0 0 19px; opacity:.85; }
+      #ptShell .side-nav button:hover{ background:rgba(255,255,255,.07); color:#fff; }
+      #ptShell .side-nav button.on{ background:var(--teal); color:#fff; }
+      #ptShell .side-nav button.on svg{ opacity:1; }
+      #ptShell .side-foot{ padding:14px 16px; border-top:1px solid rgba(255,255,255,.09); }
+      #ptShell .side-foot button{ display:flex; align-items:center; gap:10px; width:100%; border:0; background:transparent; color:#f0a3a0; font-size:14px; font-weight:700; padding:8px 6px; border-radius:8px; }
+      #ptShell .side-foot button svg{ width:18px; height:18px; }
+      #ptShell .main{ flex:1; min-width:0; display:flex; flex-direction:column; }
+      #ptShell .topbar{ display:none; align-items:center; gap:12px; background:var(--navy); color:#fff; padding:12px 16px; position:sticky; top:0; z-index:30; }
+      #ptShell .topbar b{ font-family:"Sora",sans-serif; font-size:16px; }
+      #ptShell .topbar button{ background:rgba(255,255,255,.1); border:0; color:#fff; width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; }
+      #ptShell .topbar button svg{ width:21px; height:21px; }
+      #ptShell .topbar .sp{ flex:1; }
+      #ptShell .content{ padding:26px 28px 60px; max-width:1080px; width:100%; margin:0 auto; }
+      #ptShell .scrim{ position:fixed; inset:0; background:rgba(4,10,20,.55); z-index:35; }
+      /* ---------- COMMON ---------- */
+      #ptShell .page-head{ margin-bottom:20px; }
+      #ptShell .page-head h2{ font-size:25px; font-weight:800; letter-spacing:-.01em; }
+      #ptShell .page-head p{ margin:5px 0 0; color:var(--ink2); font-size:14.5px; }
+      #ptShell .card{ background:var(--panel); border:1px solid var(--line); border-radius:var(--r); box-shadow:var(--shadow-sm); }
+      #ptShell .grid{ display:grid; gap:16px; }
+      #ptShell .chip{ display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:800; padding:4px 10px; border-radius:999px; letter-spacing:.02em; }
+      #ptShell .chip-bio{ background:var(--green-soft); color:var(--green); }
+      #ptShell .chip-chem{ background:var(--amber-soft); color:var(--amber); }
+      #ptShell .chip-phy{ background:var(--teal-soft); color:var(--teal); }
+      #ptShell .chip-mix{ background:var(--gold-soft); color:var(--gold); }
+      #ptShell .empty{ padding:44px 22px; text-align:center; color:var(--ink2); }
+      #ptShell .empty h3{ font-size:17px; color:var(--ink); margin-bottom:6px; }
+      #ptShell .empty p{ margin:0; font-size:14px; }
+      #ptShell .filter-row{ display:flex; flex-wrap:wrap; gap:9px; margin-bottom:18px; align-items:center; }
+      #ptShell .filter-row .fbtn{ border:1.5px solid var(--line2); background:var(--panel); color:var(--ink2); font-weight:700; font-size:13.5px; padding:8px 15px; border-radius:999px; }
+      #ptShell .filter-row .fbtn.on{ background:var(--navy); border-color:var(--navy); color:#fff; }
+      #ptShell .search-box{ flex:1; min-width:190px; }
+      #ptShell .search-box input{ width:100%; padding:10px 14px; border:1.5px solid var(--line2); border-radius:999px; background:var(--panel); color:var(--ink); font-size:14px; outline:none; }
+      #ptShell .search-box input:focus{ border-color:var(--teal-bright); }
+      /* ---------- DASHBOARD ---------- */
+      #ptShell .dash-hero{ background:linear-gradient(120deg,var(--navy) 0%,var(--navy2) 70%); color:#eaf2fc; border-radius:18px; padding:24px 26px; display:flex; gap:20px; align-items:center; flex-wrap:wrap; box-shadow:var(--shadow-sm); }
+      #ptShell .dash-hero .grow{ flex:1; min-width:230px; }
+      #ptShell .dash-hero h2{ color:#fff; font-size:23px; }
+      #ptShell .dash-hero p{ margin:6px 0 0; color:#a9c0da; font-size:14px; }
+      #ptShell .hero-quote{ flex:1 1 100%; margin:4px 0 0; font-family:"Sora",sans-serif; font-weight:800; font-size:16.5px; line-height:1.45; color:#4da3ff; text-align:center; }
+      #ptShell .pt-count{ margin-top:16px; background:linear-gradient(120deg,var(--navy) 0%,var(--navy2) 70%); border-radius:18px; padding:18px 20px; color:#eaf2fc; box-shadow:var(--shadow-sm); }
+      #ptShell .pt-count-label{ font-family:"Sora",sans-serif; font-size:14px; font-weight:700; letter-spacing:.02em; }
+      #ptShell .pt-count-row{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; margin-top:12px; }
+      #ptShell .pt-count-box{ background:rgba(255,255,255,.10); border:1px solid rgba(255,255,255,.18); border-radius:12px; padding:10px 6px; text-align:center; min-width:0; }
+      #ptShell .pt-count-box b{ display:block; font-family:"Sora",sans-serif; font-size:24px; font-weight:800; line-height:1; }
+      #ptShell .pt-count-box span{ display:block; font-size:11.5px; font-weight:600; opacity:.85; margin-top:5px; }
+      #ptShell .stat-grid{ grid-template-columns:repeat(4,1fr); }
+      #ptShell .stat-card{ padding:18px; }
+      #ptShell .stat-card .lbl{ font-size:12.5px; font-weight:800; color:var(--ink3); letter-spacing:.05em; text-transform:uppercase; }
+      #ptShell .stat-card .val{ font-family:"Sora",sans-serif; font-size:27px; font-weight:800; margin-top:5px; }
+      #ptShell .stat-card .sub{ font-size:13px; color:var(--ink2); margin-top:2px; }
+      #ptShell .quick-grid{ grid-template-columns:repeat(4,1fr); }
+      #ptShell .quick-card{ padding:18px; text-align:left; border:1px solid var(--line); background:var(--panel); border-radius:var(--r); box-shadow:var(--shadow-sm); color:var(--ink); }
+      #ptShell .quick-card .ic{ width:42px; height:42px; border-radius:11px; display:flex; align-items:center; justify-content:center; margin-bottom:11px; }
+      #ptShell .quick-card .ic svg{ width:22px; height:22px; }
+      #ptShell .quick-card b{ font-size:15px; display:block; }
+      #ptShell .quick-card span{ font-size:13px; color:var(--ink2); }
+      #ptShell .sec-title{ font-size:17px; font-weight:800; margin:26px 0 13px; }
+      /* ---------- TEST CARDS ---------- */
+      #ptShell .test-grid{ grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); }
+      #ptShell .test-card{ padding:19px; display:flex; flex-direction:column; gap:9px; }
+      #ptShell .test-card h3{ font-size:16px; font-weight:700; }
+      #ptShell .test-meta{ display:flex; flex-wrap:wrap; gap:7px 14px; color:var(--ink2); font-size:13px; font-weight:600; }
+      #ptShell .test-meta span{ display:inline-flex; align-items:center; gap:5px; }
+      #ptShell .test-meta svg{ width:14px; height:14px; }
+      #ptShell .test-card .row{ display:flex; align-items:center; gap:10px; margin-top:4px; }
+      #ptShell .test-card .row .sp{ flex:1; }
+      #ptShell .best-tag{ font-size:12.5px; font-weight:800; color:var(--green); }
+      #ptShell .subj-head{ display:flex; align-items:baseline; gap:10px; margin:24px 0 12px; }
+      #ptShell .subj-head h3{ font-size:18px; }
+      #ptShell .subj-head span{ color:var(--ink3); font-size:13.5px; font-weight:700; }
+      #ptShell .subj-cards{ grid-template-columns:repeat(3,1fr); }
+      #ptShell .subj-card{ padding:22px; text-align:left; border:1px solid var(--line); border-radius:var(--r); background:var(--panel); box-shadow:var(--shadow-sm); color:var(--ink); }
+      #ptShell .subj-card h3{ font-size:18px; margin-bottom:4px; }
+      #ptShell .subj-card p{ margin:0; color:var(--ink2); font-size:13.5px; }
+      #ptShell .subj-card .big{ font-family:"Sora",sans-serif; font-size:30px; font-weight:800; margin:10px 0 2px; }
+      /* ---------- STUDY RESOURCES ---------- */
+      #ptShell .resource-grid{ grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); }
+      #ptShell .resource-card{ padding:19px; display:flex; flex-direction:column; gap:9px; }
+      #ptShell .resource-card h3{ font-size:16px; font-weight:700; }
+      #ptShell .resource-card p{ margin:0; color:var(--ink2); font-size:13.5px; line-height:1.55; }
+      #ptShell .resource-meta{ display:flex; flex-wrap:wrap; gap:7px 14px; color:var(--ink2); font-size:13px; font-weight:600; }
+      #ptShell .chip-res{ background:var(--panel2); color:var(--ink2); border:1px solid var(--line); }
+      /* ---------- CUSTOM TEST ---------- */
+      #ptShell .custom-wrap{ max-width:760px; }
+      #ptShell .custom-card{ padding:24px; }
+      #ptShell .custom-group{ margin-bottom:22px; }
+      #ptShell .custom-group:last-of-type{ margin-bottom:8px; }
+      #ptShell .custom-group .cg-label{ font-size:13px; font-weight:800; color:var(--ink2); letter-spacing:.04em; text-transform:uppercase; margin-bottom:10px; display:block; }
+      #ptShell .custom-group .cg-hint{ font-size:13px; color:var(--ink3); margin-top:7px; }
+      #ptShell .opt-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+      #ptShell .opt-grid.cols4{ grid-template-columns:repeat(4,1fr); }
+      #ptShell .opt-grid.cols3{ grid-template-columns:repeat(3,1fr); }
+      #ptShell .pick{ border:1.5px solid var(--line2); background:var(--panel); color:var(--ink); border-radius:12px; padding:13px 14px; text-align:left; font-weight:700; font-size:14.5px; width:100%; }
+      #ptShell .pick small{ display:block; font-weight:600; color:var(--ink2); font-size:12.5px; margin-top:2px; }
+      #ptShell .pick.on{ border-color:var(--teal-bright); background:var(--teal-soft); color:var(--ink); }
+      #ptShell .pick.on small{ color:var(--ink2); }
+      #ptShell .avail-box{ background:var(--panel2); border:1px solid var(--line); border-radius:11px; padding:12px 14px; font-size:14px; color:var(--ink2); }
+      #ptShell .avail-box b{ color:var(--ink); }
+      #ptShell .avail-box.warn{ background:var(--amber-soft); border-color:var(--amber); color:var(--ink); }
+      #ptShell .custom-err{ background:var(--red-soft); color:var(--red); border-radius:10px; padding:11px 14px; font-size:14px; font-weight:700; margin-bottom:16px; }
+      #ptShell .custom-banner{ margin-top:18px; padding:20px 22px; display:flex; gap:16px; align-items:center; flex-wrap:wrap; }
+      #ptShell .custom-banner .grow{ flex:1; min-width:220px; }
+      #ptShell .custom-banner h3{ font-size:16.5px; margin-bottom:4px; }
+      #ptShell .custom-banner p{ margin:0; color:var(--ink2); font-size:14px; }
+      #ptShell .chip-custom{ background:var(--gold-soft); color:var(--gold); }
+      /* ---------- RESULTS / PERFORMANCE ---------- */
+      #ptShell table.tbl{ width:100%; border-collapse:collapse; font-size:14px; }
+      #ptShell table.tbl th{ text-align:left; padding:11px 14px; color:var(--ink3); font-size:12px; letter-spacing:.05em; text-transform:uppercase; border-bottom:1px solid var(--line); }
+      #ptShell table.tbl td{ padding:13px 14px; border-bottom:1px solid var(--line); vertical-align:top; }
+      #ptShell table.tbl tr:last-child td{ border-bottom:0; }
+      #ptShell .pct-pill{ font-weight:800; padding:3px 10px; border-radius:999px; font-size:13px; }
+      #ptShell .bar-track{ height:9px; background:var(--panel2); border-radius:99px; overflow:hidden; }
+      #ptShell .bar-fill{ height:100%; border-radius:99px; background:var(--teal-bright); }
+      #ptShell .perf-row{ padding:17px 19px; }
+      #ptShell .perf-row .top{ display:flex; justify-content:space-between; align-items:baseline; gap:10px; margin-bottom:9px; }
+      #ptShell .perf-row b{ font-size:15px; }
+      #ptShell .perf-row .nums{ color:var(--ink2); font-size:13px; font-weight:700; }
+      /* ---------- PROFILE / SETTINGS ---------- */
+      #ptShell .profile-card{ padding:24px; display:flex; gap:18px; align-items:center; flex-wrap:wrap; }
+      #ptShell .profile-card .avatar{ width:64px; height:64px; font-size:25px; flex-basis:64px; }
+      #ptShell .profile-card h3{ font-size:20px; }
+      #ptShell .profile-card p{ margin:2px 0 0; color:var(--ink2); font-size:14px; }
+      #ptShell .kv{ display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:14px; }
+      #ptShell .kv .item{ background:var(--panel); border:1px solid var(--line); border-radius:var(--r); padding:16px 18px; }
+      #ptShell .kv .item .k{ font-size:12px; font-weight:800; color:var(--ink3); letter-spacing:.05em; text-transform:uppercase; }
+      #ptShell .kv .item .v{ font-size:15.5px; font-weight:700; margin-top:4px; word-break:break-word; }
+      #ptShell .set-row{ display:flex; align-items:center; gap:14px; padding:17px 19px; border-bottom:1px solid var(--line); }
+      #ptShell .set-row:last-child{ border-bottom:0; }
+      #ptShell .set-row .grow{ flex:1; }
+      #ptShell .set-row b{ font-size:15px; display:block; }
+      #ptShell .set-row span{ font-size:13.5px; color:var(--ink2); }
+      #ptShell .seg{ display:flex; background:var(--panel2); border-radius:10px; padding:3px; }
+      #ptShell .seg button{ border:0; background:transparent; padding:7px 13px; border-radius:8px; font-weight:700; font-size:13px; color:var(--ink2); }
+      #ptShell .seg button.on{ background:var(--panel); color:var(--ink); box-shadow:var(--shadow-sm); }
+      @media (max-width:900px){
+        #ptShell .sidebar{ position:fixed; left:0; top:0; transform:translateX(-100%); transition:transform .22s ease; width:272px; flex-basis:272px; }
+        #ptShell .sidebar.open{ transform:translateX(0); box-shadow:var(--shadow); }
+        #ptShell .topbar{ display:flex; }
+        #ptShell .content{ padding:20px 16px 56px; }
+        #ptShell .stat-grid{ grid-template-columns:repeat(2,1fr); }
+        #ptShell .quick-grid{ grid-template-columns:repeat(2,1fr); }
+        #ptShell .subj-cards{ grid-template-columns:1fr; }
+        #ptShell table.tbl th:nth-child(4), #ptShell table.tbl td:nth-child(4){ display:none; }
+      }
+      @media (max-width:640px){
+        #ptShell .opt-grid.cols4{ grid-template-columns:repeat(2,1fr); }
+        #ptShell .opt-grid.cols3{ grid-template-columns:repeat(2,1fr); }
+        #ptShell .custom-card{ padding:19px; }
+      }
       .dash-signout{ margin-top:22px; }
       .dash-signout .btn{ padding:10px 18px; font-size:13.5px; border-radius:11px; }
       /* Dashboard mobile containment: nothing inside the dashboard may widen it past the screen */
@@ -3045,102 +3214,39 @@
 
     <!-- ================= Student Portal (in-site dashboard) ================= -->
     <div class="exam-back" id="portalView" role="dialog" aria-modal="true" aria-label="Student Portal">
-      <div class="portal-wrap">
-        <div class="portal-top">
-          <div>
-            <h2 class="portal-greeting" id="portalGreeting">Welcome</h2>
-            <p class="portal-sub" id="portalSub"></p>
+      <div id="ptShell">
+        <aside class="sidebar" id="ptSidebar">
+          <div class="side-brand">
+            <div class="mark" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 3L2.5 8.2 12 13.4 21.5 8.2 12 3Z" fill="#2dd4bf"/><path d="M6 10.8V16c0 1.7 2.7 3 6 3s6-1.3 6-3v-5.2l-6 3.3-6-3.3Z" fill="#f0b429"/><path d="M21.5 8.2V14" stroke="#2dd4bf" stroke-width="1.8" stroke-linecap="round"/></svg>
+            </div>
+            <div><b>MDCAT Prime</b><span>Student Portal</span></div>
           </div>
-          <button class="btn btn-ghost portal-signout" type="button" id="portalSignOut"><i data-lucide="log-out"></i> Sign Out</button>
-        </div>
-        <div class="portal-count">
-          <div class="portal-count-label">MDCAT 2027 · 1 August 2027</div>
-          <div class="portal-count-row">
-            <div class="portal-count-box"><b id="cdDays">—</b><span>Days</span></div>
-            <div class="portal-count-box"><b id="cdHours">—</b><span>Hours</span></div>
-            <div class="portal-count-box"><b id="cdMins">—</b><span>Mins</span></div>
-            <div class="portal-count-box"><b id="cdSecs">—</b><span>Secs</span></div>
+          <div class="side-user">
+            <div class="avatar" id="ptAvatar">S</div>
+            <div><b id="ptUserName">Student</b><span id="ptUserEmail"></span></div>
           </div>
-        </div>
-        <div class="portal-hero">
-          <h3>Your MDCAT preparation, in one place.</h3>
-          <p>Practice chapter tests, build your own test, and revise with flashcards — all from your account.</p>
-        </div>
-        <div class="portal-hub-label">Action Hub</div>
-        <div class="portal-actions">
-          <button class="portal-card" type="button" id="portalTakeQuiz">
-            <span class="portal-card-ic"><i data-lucide="clipboard-list"></i></span>
-            <span class="portal-card-text"><b>Take Quiz</b><span class="portal-card-sub">Chapter tests &amp; mock tests — 55 tests</span></span>
-          </button>
-          <button class="portal-card" type="button" id="portalBuildTest">
-            <span class="portal-card-ic gold"><i data-lucide="sparkles"></i></span>
-            <span class="portal-card-text"><b>Build Test</b><span class="portal-card-sub">Make a custom test from any subject</span></span>
-          </button>
-        </div>
-        <div class="portal-builder" id="portalBuilder">
-          <h3>Build Your Own Test</h3>
-          <p>Pick a subject and the number of questions. We mix questions from that subject's chapters into one test.</p>
-          <div class="portal-chips" id="portalSubjectChips">
-            <button class="portal-chip active" type="button" data-psubj="Biology">Biology</button>
-            <button class="portal-chip" type="button" data-psubj="Chemistry">Chemistry</button>
-            <button class="portal-chip" type="button" data-psubj="Physics">Physics</button>
+          <nav class="side-nav" id="ptSideNav" aria-label="Portal sections"></nav>
+          <div class="side-foot">
+            <button type="button" id="ptSignOut">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg>
+              Sign Out
+            </button>
           </div>
-          <div class="portal-chips" id="portalCountChips">
-            <button class="portal-chip active" type="button" data-pcount="10">10 questions</button>
-            <button class="portal-chip" type="button" data-pcount="20">20 questions</button>
-            <button class="portal-chip" type="button" data-pcount="30">30 questions</button>
+        </aside>
+        <div class="scrim hidden" id="ptScrim"></div>
+        <div class="main">
+          <div class="topbar">
+            <button id="ptMenuBtn" type="button" aria-label="Open menu">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+            </button>
+            <b id="ptTopTitle">Dashboard</b>
+            <div class="sp"></div>
           </div>
-          <button class="btn btn-primary" type="button" id="portalStartCustom"><i data-lucide="play"></i> Start Custom Test</button>
-        </div>
-        <div class="portal-hub-label">Your Progress</div>
-        <div class="dash-stats portal-stats">
-          <div class="dash-stat">
-            <div class="dash-stat-top"><span class="dash-stat-label">Tests Completed</span><i data-lucide="graduation-cap" class="ic-blue"></i></div>
-            <b id="pCompleted">0</b>
-            <p class="dash-stat-sub">Timed exams &amp; chapter drills</p>
-          </div>
-          <div class="dash-stat">
-            <div class="dash-stat-top"><span class="dash-stat-label">Questions Attempted</span><i data-lucide="layers" class="ic-green"></i></div>
-            <b id="pQuestions">0</b>
-            <p class="dash-stat-sub green">MCQs practiced</p>
-          </div>
-          <div class="dash-stat">
-            <div class="dash-stat-top"><span class="dash-stat-label">Average Score</span><i data-lucide="trending-up" class="ic-violet"></i></div>
-            <b id="pAverage">—</b>
-            <p class="dash-stat-sub">Across all completed tests</p>
-          </div>
-          <div class="dash-stat">
-            <div class="dash-stat-top"><span class="dash-stat-label">Best Score</span><i data-lucide="medal" class="ic-amber"></i></div>
-            <b id="pBest">—</b>
-            <p class="dash-stat-sub amber">Personal record</p>
-          </div>
-        </div>
-        <div class="dash-recent-head">
-          <h3 id="portalRecentTitle">Recent Test Submissions (0)</h3>
-          <button class="dash-more" type="button" id="portalMoreTests">Take More Tests <i data-lucide="arrow-right"></i></button>
-        </div>
-        <div class="dash-results" id="portalResultsList"></div>
-        <div class="portal-hub-label">Revise</div>
-        <div class="portal-actions">
-          <button class="portal-card" type="button" id="portalFlashcards">
-            <span class="portal-card-ic"><i data-lucide="layers"></i></span>
-            <span class="portal-card-text"><b>Flashcards</b><span class="portal-card-sub">9 revision decks — flip and revise</span></span>
-          </button>
-          <button class="portal-card" type="button" id="portalResources">
-            <span class="portal-card-ic gold"><i data-lucide="book-open"></i></span>
-            <span class="portal-card-text"><b>Resources</b><span class="portal-card-sub">Notes, MCQs &amp; past papers</span></span>
-          </button>
+          <main class="content" id="ptContent"></main>
         </div>
       </div>
-      <nav class="portal-bottomnav" aria-label="Portal navigation">
-        <button type="button" data-pnav="home"><i data-lucide="home"></i>Home</button>
-        <button type="button" data-pnav="tests"><i data-lucide="clipboard-list"></i>Tests</button>
-        <button type="button" data-pnav="create"><i data-lucide="plus-circle"></i>Create</button>
-        <button type="button" data-pnav="flashcards"><i data-lucide="layers"></i>Flashcards</button>
-        <button type="button" data-pnav="menu"><i data-lucide="menu"></i>Menu</button>
-      </nav>
     </div>
-
     <!-- ================= Preview notice modal ================= -->
     <div class="modal-back" id="previewModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
       <div class="modal">
@@ -4301,7 +4407,7 @@
         var t = EXAM_TESTS[key];
         if (!t) { showPreviewNotice(); return; }
         document.getElementById('examTitle').textContent = t.title;
-        document.getElementById('examSubject').textContent = t.subject + ' · Chapter Test';
+        document.getElementById('examSubject').textContent = t.subject + ' · ' + (key.indexOf('custom-') === 0 ? 'Custom Test' : (key.indexOf('general-') === 0 ? 'General Paper' : 'Chapter Test'));
         cur = { key: key, idx: 0, answers: new Array(t.questions.length).fill(null), marked: new Array(t.questions.length).fill(false), timeLeft: t.duration };
         examBack.classList.add('open');
         document.body.style.overflow = 'hidden';
@@ -4570,136 +4676,544 @@
         });
         lucide.createIcons();
       }
-      /* ---------- Student Portal (in-site dashboard) ---------- */
+      /* ---------- Student Portal (artifact port) ---------- */
       var portalView = document.getElementById('portalView');
       var MDCAT_TARGET = new Date('2027-08-01T09:00:00+05:00').getTime();
-      var portalTimer = null;
-      function pad2(n) { return (n < 10 ? '0' : '') + n; }
-      function updateCountdown() {
-        var diff = MDCAT_TARGET - Date.now();
-        if (diff < 0) diff = 0;
-        var d = Math.floor(diff / 86400000);
-        var h = Math.floor(diff / 3600000) % 24;
-        var m = Math.floor(diff / 60000) % 60;
-        var s = Math.floor(diff / 1000) % 60;
-        document.getElementById('cdDays').textContent = d;
-        document.getElementById('cdHours').textContent = pad2(h);
-        document.getElementById('cdMins').textContent = pad2(m);
-        document.getElementById('cdSecs').textContent = pad2(s);
+      var ptResults = [];
+      var ptSection = 'dashboard';
+      var ptSubjFilter = 'All';
+      var ptCustomSubject = '';
+      var ptCustomCount = 10;
+      var ptCustomTime = 'auto';
+      var ptGeneralBuilt = false;
+      var ptCountdownTimer = null;
+
+      /* ---------- Helpers ---------- */
+      function pt$(id) { return document.getElementById(id); }
+      function ptEsc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+      function ptShuffle(a) { var arr = a.slice(); for (var i = arr.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = arr[i]; arr[i] = arr[j]; arr[j] = t; } return arr; }
+      function ptPad2(n) { return (n < 10 ? '0' : '') + n; }
+      function ptInitials(name) { var p = String(name || 'S').trim().split(/\s+/); return (p[0].charAt(0) + (p.length > 1 ? p[p.length - 1].charAt(0) : '')).toUpperCase(); }
+      function ptSubjChip(subj) {
+        if (subj === 'Biology') return '<span class="chip chip-bio">BIOLOGY</span>';
+        if (subj === 'Chemistry') return '<span class="chip chip-chem">CHEMISTRY</span>';
+        if (subj === 'Physics') return '<span class="chip chip-phy">PHYSICS</span>';
+        return '<span class="chip chip-mix">MIXED</span>';
       }
-      function renderPortalStats(res) {
-        var questions = 0, pctSum = 0, best = null;
-        res.forEach(function (r) {
-          questions += r.total; pctSum += r.pct;
-          if (best === null || r.pct > best) best = r.pct;
+      function ptPctPill(pct) {
+        var bg = pct >= 70 ? 'var(--green-soft)' : pct >= 50 ? 'var(--amber-soft)' : 'var(--red-soft)';
+        var fg = pct >= 70 ? 'var(--green)' : pct >= 50 ? 'var(--amber)' : 'var(--red)';
+        return '<span class="pct-pill" style="background:' + bg + ';color:' + fg + '">' + Math.round(pct) + '%</span>';
+      }
+      function ptIcon(name) {
+        var P = {
+          dashboard: '<path d="M3 12l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/>',
+          all: '<path d="M4 6h16M4 12h16M4 18h10"/>',
+          general: '<path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/>',
+          chapter: '<path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h11"/>',
+          subject: '<path d="M4 5h7v6H4zM13 5h7v6h-7zM4 13h7v6H4zM13 13h7v6h-7z"/>',
+          resources: '<path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4"/><path d="M9 12h6M9 16h6"/>',
+          results: '<path d="M5 20V10M11 20V4M17 20v-8"/>',
+          performance: '<path d="M4 19a9 9 0 1 1 16 0"/><path d="M12 14l4-5"/>',
+          custom: '<path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/><path d="M12 3v4M10 5h4"/>',
+          profile: '<circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 5-5.5 8-5.5s6.5 1.5 8 5.5"/>',
+          settings: '<circle cx="12" cy="12" r="3.2"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.5 5.5l2 2M16.5 16.5l2 2M18.5 5.5l-2 2M7.5 16.5l-2 2"/>'
+        };
+        return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">' + (P[name] || '') + '</svg>';
+      }
+      function ptGreet() {
+        var h = new Date().getHours();
+        if (h < 12) return 'Good morning';
+        if (h < 17) return 'Good afternoon';
+        return 'Good evening';
+      }
+      function ptSubjectOf(r) {
+        if (r.subject) return r.subject;
+        if (r.title && EXAM_TESTS[r.title]) return EXAM_TESTS[r.title].subject;
+        return 'Mixed';
+      }
+      function ptIsCustom(r) { return (r.title || '').indexOf('Custom Practice') === 0; }
+      function ptFmtDate(iso) {
+        if (!iso) return '';
+        var d = new Date(iso);
+        if (isNaN(d.getTime())) return '';
+        return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+      }
+
+      /* ---------- Real data (site bank, never the artifact sample bank) ---------- */
+      function ptPoolFor(subj) {
+        var pool = [];
+        Object.keys(QUESTION_BANK).forEach(function (ch) {
+          var t = EXAM_TESTS[ch];
+          if (t && t.subject === subj) pool = pool.concat(QUESTION_BANK[ch]);
         });
-        document.getElementById('pCompleted').textContent = res.length;
-        document.getElementById('pQuestions').textContent = questions;
-        document.getElementById('pAverage').textContent = res.length ? Math.round(pctSum / res.length) + '%' : '—';
-        document.getElementById('pBest').textContent = best === null ? '—' : best + '%';
-        document.getElementById('portalRecentTitle').textContent = 'Recent Test Submissions (' + res.length + ')';
-        var list = document.getElementById('portalResultsList');
-        list.innerHTML = '';
-        if (!res.length) {
-          var d = document.createElement('p');
-          d.className = 'dash-empty';
-          d.textContent = 'No test submissions yet.';
-          list.appendChild(d);
-        } else {
-          res.forEach(function (r) {
-            var row = document.createElement('div');
-            row.className = 'dash-result-row';
-            var b = document.createElement('b'); b.textContent = r.title;
-            var s = document.createElement('span'); s.textContent = r.correct + '/' + r.total + ' · ' + r.pct + '%';
-            row.appendChild(b); row.appendChild(s);
-            list.appendChild(row);
+        return pool;
+      }
+      function ptChapterCount() { return Object.keys(QUESTION_BANK).length; }
+      function ptTotalMcqs() {
+        var n = 0;
+        Object.keys(QUESTION_BANK).forEach(function (ch) { n += QUESTION_BANK[ch].length; });
+        return n;
+      }
+      function ptSubjectCounts() {
+        var out = { Biology: { tests: 0, mcqs: 0 }, Chemistry: { tests: 0, mcqs: 0 }, Physics: { tests: 0, mcqs: 0 } };
+        Object.keys(QUESTION_BANK).forEach(function (ch) {
+          var t = EXAM_TESTS[ch];
+          if (t && out[t.subject]) { out[t.subject].tests++; out[t.subject].mcqs += QUESTION_BANK[ch].length; }
+        });
+        return out;
+      }
+      function ptChapterTests() {
+        var list = [];
+        Object.keys(QUESTION_BANK).forEach(function (ch) {
+          var t = EXAM_TESTS[ch];
+          list.push({ key: ch, kind: 'chapter', subject: t.subject, chapter: ch, title: ch, questions: t.questions.length, minutes: t.questions.length, marks: t.questions.length });
+        });
+        return list;
+      }
+      function ptBuildGeneral() {
+        if (ptGeneralBuilt) return;
+        ptGeneralBuilt = true;
+        for (var g = 1; g <= 6; g++) {
+          var qs = [];
+          qs = qs.concat(ptShuffle(ptPoolFor('Biology')).slice(0, 17));
+          qs = qs.concat(ptShuffle(ptPoolFor('Chemistry')).slice(0, 17));
+          qs = qs.concat(ptShuffle(ptPoolFor('Physics')).slice(0, 16));
+          qs = ptShuffle(qs);
+          EXAM_TESTS['general-' + g] = { title: 'General Paper ' + g, subject: 'Mixed', duration: 50 * 60, questions: qs };
+        }
+      }
+      function ptGeneralTests() {
+        ptBuildGeneral();
+        var list = [];
+        for (var g = 1; g <= 6; g++) {
+          list.push({ key: 'general-' + g, kind: 'general', subject: 'Mixed', chapter: 'Combined Paper', title: 'General Paper ' + g, questions: 50, minutes: 50, marks: 50 });
+        }
+        return list;
+      }
+      function ptBestForTitle(title) {
+        var b = null;
+        ptResults.forEach(function (r) { if (r.title === title && (b === null || r.pct > b)) b = r.pct; });
+        return b;
+      }
+      function ptStats() {
+        var attempted = 0, sumPct = 0, best = 0;
+        ptResults.forEach(function (r) { attempted += r.total; sumPct += r.pct; if (r.pct > best) best = r.pct; });
+        return {
+          tests: ptResults.length,
+          avg: ptResults.length ? Math.round(sumPct / ptResults.length) : 0,
+          attempted: attempted,
+          best: ptResults.length ? Math.round(best) : 0
+        };
+      }
+
+      /* ---------- Navigation ---------- */
+      var ptSECTIONS = [
+        ['dashboard', 'Dashboard'], ['all', 'All Tests'], ['general', 'General Tests'], ['chapter', 'Chapter-wise Tests'],
+        ['subject', 'Subject-wise Tests'], ['custom', 'Custom Test'], ['resources', 'Study Resources'], ['myresults', 'My Results'],
+        ['performance', 'Performance'], ['settings', 'Settings']
+      ];
+      var ptSECTION_ICONS = { dashboard: 'dashboard', all: 'all', general: 'general', chapter: 'chapter', subject: 'subject', custom: 'custom', resources: 'resources', myresults: 'results', performance: 'performance', settings: 'settings' };
+      var ptSECTION_TITLES = {};
+      ptSECTIONS.forEach(function (s) { ptSECTION_TITLES[s[0]] = s[1]; });
+      function ptBuildNav() {
+        var html = '';
+        ptSECTIONS.forEach(function (s) {
+          html += '<button type="button" data-sec="' + s[0] + '">' + ptIcon(ptSECTION_ICONS[s[0]]) + ptEsc(s[1]) + '</button>';
+        });
+        pt$('ptSideNav').innerHTML = html;
+        var btns = pt$('ptSideNav').querySelectorAll('button');
+        for (var i = 0; i < btns.length; i++) {
+          btns[i].addEventListener('click', function () { ptGo(this.getAttribute('data-sec')); ptCloseSidebarMobile(); });
+        }
+      }
+      function ptCloseSidebarMobile() { pt$('ptSidebar').classList.remove('open'); pt$('ptScrim').classList.add('hidden'); }
+      function ptGo(sec) {
+        ptSection = sec;
+        var btns = pt$('ptSideNav').querySelectorAll('button');
+        for (var i = 0; i < btns.length; i++) btns[i].classList.toggle('on', btns[i].getAttribute('data-sec') === sec);
+        pt$('ptTopTitle').textContent = ptSECTION_TITLES[sec] || 'Dashboard';
+        var c = pt$('ptContent');
+        if (sec === 'dashboard') c.innerHTML = ptViewDashboard();
+        else if (sec === 'all') { c.innerHTML = ptViewAllTests(); ptWireTestList(c); }
+        else if (sec === 'general') { c.innerHTML = ptViewTestList(ptGeneralTests(), 'General Tests', 'Combined papers covering Biology, Chemistry and Physics together — the closest practice to the full MDCAT pattern.'); ptWireTestList(c); }
+        else if (sec === 'chapter') c.innerHTML = ptViewChapterWise();
+        else if (sec === 'subject') c.innerHTML = ptViewSubjectWise();
+        else if (sec === 'custom') { c.innerHTML = ptViewCustomTest(); ptWireCustomTest(c); }
+        else if (sec === 'resources') { c.innerHTML = ptViewResources(); ptWireResources(c); }
+        else if (sec === 'myresults') c.innerHTML = ptViewMyResults();
+        else if (sec === 'performance') c.innerHTML = ptViewPerformance();
+        else if (sec === 'settings') { c.innerHTML = ptViewSettings(); ptWireSettings(c); }
+        if (sec === 'chapter' || sec === 'subject') ptWireTestList(c);
+        portalView.scrollTop = 0;
+        lucide.createIcons();
+      }
+
+      /* ---------- Dashboard ---------- */
+      function ptStatCard(lbl, val, sub) {
+        return '<div class="card stat-card"><div class="lbl">' + lbl + '</div><div class="val">' + val + '</div><div class="sub">' + sub + '</div></div>';
+      }
+      function ptQuickCard(sec, ic, title, sub) {
+        return '<button class="quick-card" type="button" data-goto="' + sec + '"><span class="ic" style="background:var(--teal-soft);color:var(--teal)">' + ptIcon(ic) + '</span><b>' + title + '</b><span>' + sub + '</span></button>';
+      }
+      function ptViewDashboard() {
+        var st = ptStats();
+        var n = ptChapterCount();
+        var html = '<div class="dash-hero"><div class="grow"><h2>' + ptGreet() + ' — Welcome to Student Portal</h2>' +
+          '<p>Your MDCAT 2027 Series 1 portal. Pick a chapter test, try a combined general paper, and track your progress here.</p></div>' +
+          '<p class="hero-quote">&ldquo;Every MCQ You Solve Brings You One Step Closer to Your Dream.&rdquo;</p></div>';
+        html += '<div class="pt-count"><div class="pt-count-label">MDCAT 2027 · 1 August 2027</div><div class="pt-count-row">' +
+          '<div class="pt-count-box"><b id="ptCdDays">—</b><span>Days</span></div>' +
+          '<div class="pt-count-box"><b id="ptCdHours">—</b><span>Hours</span></div>' +
+          '<div class="pt-count-box"><b id="ptCdMins">—</b><span>Mins</span></div>' +
+          '<div class="pt-count-box"><b id="ptCdSecs">—</b><span>Secs</span></div>' +
+          '</div></div>';
+        html += '<div class="grid stat-grid" style="margin-top:16px">' +
+          ptStatCard('Tests Completed', st.tests, 'of ' + n + ' chapter tests') +
+          ptStatCard('Average Score', st.tests ? st.avg + '%' : '—', st.tests ? 'across all attempts' : 'no attempts yet') +
+          ptStatCard('Questions Attempted', st.attempted, 'from your saved results') +
+          ptStatCard('Best Score', st.tests ? st.best + '%' : '—', st.tests ? 'your highest result' : 'attempt a test to set it') +
+          '</div>';
+        html += '<h3 class="sec-title">Quick Actions</h3><div class="grid quick-grid">' +
+          ptQuickCard('all', 'all', 'All Tests', 'Browse all ' + n + ' chapter tests') +
+          ptQuickCard('general', 'general', 'General Tests', '6 combined papers') +
+          ptQuickCard('myresults', 'results', 'My Results', 'Review past attempts') +
+          ptQuickCard('performance', 'performance', 'Performance', 'Subject-wise accuracy') +
+          '</div>';
+        html += '<div class="card custom-banner"><span class="ic" style="width:46px;height:46px;border-radius:12px;background:var(--gold-soft);color:var(--gold);display:flex;align-items:center;justify-content:center;flex:0 0 46px"><span style="width:24px;height:24px;display:block">' + ptIcon('custom') + '</span></span>' +
+          '<div class="grow"><h3>Build Your Own Custom Test</h3><p>Pick a subject, choose how many questions you want, and set your time — questions are drawn randomly from the real MDCAT question bank.</p></div>' +
+          '<button class="btn btn-gold" type="button" data-goto="custom">Create Custom Test</button></div>';
+        if (ptResults.length) {
+          html += '<h3 class="sec-title">Recent Attempts</h3><div class="card" style="overflow-x:auto"><table class="tbl"><tr><th>Test</th><th>Score</th><th>Result</th><th>Date</th></tr>';
+          ptResults.slice(0, 4).forEach(function (r) {
+            html += '<tr><td><b>' + ptEsc(r.title) + '</b><br>' + ptSubjChip(ptSubjectOf(r)) + (ptIsCustom(r) ? ' <span class="chip chip-custom">CUSTOM TEST</span>' : '') + '</td><td>' + r.correct + ' / ' + r.total + '</td><td>' + ptPctPill(r.pct) + '</td><td>' + (ptFmtDate(r.date) || '—') + '</td></tr>';
           });
+          html += '</table></div>';
+        } else {
+          html += '<h3 class="sec-title">Getting Started</h3><div class="card empty"><h3>No attempts yet</h3><p>Start with any chapter test — your results will appear here.</p><div style="margin-top:16px"><button class="btn btn-teal" type="button" data-goto="all">Browse Tests</button></div></div>';
+        }
+        return html;
+      }
+
+      /* ---------- Test lists ---------- */
+      function ptTestCard(t) {
+        var b = ptBestForTitle(t.title);
+        return '<div class="card test-card">' +
+          '<div>' + ptSubjChip(t.subject) + '</div>' +
+          '<h3>' + ptEsc(t.title) + '</h3>' +
+          '<div class="test-meta">' +
+            '<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 9.5h6M9 13h4"/></svg>' + t.questions + ' Questions</span>' +
+            '<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>' + t.minutes + ' Minutes</span>' +
+            '<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/></svg>' + t.marks + ' Marks</span>' +
+          '</div>' +
+          '<div class="row">' + (b !== null ? '<span class="best-tag">Best: ' + Math.round(b) + '%</span>' : '<span style="font-size:12.5px;color:var(--ink3);font-weight:700">Not attempted yet</span>') +
+          '<span class="sp"></span><button class="btn btn-teal btn-sm" type="button" data-start="' + ptEsc(t.key) + '">Start Test</button></div></div>';
+      }
+      function ptViewAllTests() {
+        var chapters = ptChapterTests();
+        var generals = ptGeneralTests();
+        var list = ptSubjFilter === 'All' ? chapters.concat(generals) : ptSubjFilter === 'General' ? generals : chapters.filter(function (t) { return t.subject === ptSubjFilter; });
+        var html = '<div class="page-head"><h2>All Tests</h2><p>' + ptChapterCount() + ' chapter tests from the real MDCAT bank, plus 6 combined general papers.</p></div>';
+        html += '<div class="filter-row">' +
+          ['All', 'Biology', 'Chemistry', 'Physics', 'General'].map(function (f) {
+            return '<button class="fbtn' + (ptSubjFilter === f ? ' on' : '') + '" type="button" data-ptfilter="' + f + '">' + f + '</button>';
+          }).join('') +
+          '<div class="search-box"><input id="ptTestSearch" type="search" placeholder="Search tests by chapter name..." /></div></div>';
+        html += '<div class="grid test-grid" id="ptTestGrid">';
+        html += list.length ? list.map(ptTestCard).join('') : '<div class="card empty"><h3>No tests found</h3><p>Try a different subject or search term.</p></div>';
+        html += '</div>';
+        return html;
+      }
+      function ptViewTestList(list, title, sub) {
+        var html = '<div class="page-head"><h2>' + title + '</h2><p>' + sub + '</p></div><div class="grid test-grid">';
+        html += list.length ? list.map(ptTestCard).join('') : '<div class="card empty"><h3>No tests here yet</h3><p>Tests will appear here when they are added.</p></div>';
+        return html + '</div>';
+      }
+      function ptViewChapterWise() {
+        var html = '<div class="page-head"><h2>Chapter-wise Tests</h2><p>All ' + ptChapterCount() + ' chapter tests, grouped by subject. Master one chapter at a time.</p></div>';
+        ['Biology', 'Chemistry', 'Physics'].forEach(function (subj) {
+          var list = ptChapterTests().filter(function (t) { return t.subject === subj; });
+          html += '<div class="subj-head"><h3>' + subj + '</h3><span>' + list.length + ' chapters</span></div><div class="grid test-grid">' + list.map(ptTestCard).join('') + '</div>';
+        });
+        return html;
+      }
+      function ptViewSubjectWise() {
+        var counts = ptSubjectCounts();
+        var html = '<div class="page-head"><h2>Subject-wise Tests</h2><p>Choose a subject to see only its chapter tests.</p></div><div class="grid subj-cards">';
+        [['Biology', 'Cell biology to genetics — the largest MDCAT section.'], ['Chemistry', 'Physical, inorganic and organic chemistry chapters.'], ['Physics', 'Mechanics, electricity, waves and modern physics.']].forEach(function (s) {
+          var n = counts[s[0]].tests;
+          html += '<button class="subj-card" type="button" data-subject="' + s[0] + '"><h3>' + s[0] + '</h3><p>' + s[1] + '</p><div class="big">' + n + '</div><p>chapter tests · ' + counts[s[0]].mcqs + ' MCQs</p></button>';
+        });
+        html += '</div><div id="ptSubjectList"></div>';
+        return html;
+      }
+      function ptWireTestList(root) {
+        var filters = root.querySelectorAll('[data-ptfilter]');
+        for (var i = 0; i < filters.length; i++) filters[i].addEventListener('click', function () { ptSubjFilter = this.getAttribute('data-ptfilter'); ptGo('all'); });
+        var search = root.querySelector('#ptTestSearch');
+        if (search) search.addEventListener('input', function () {
+          var q = this.value.trim().toLowerCase();
+          var cards = root.querySelectorAll('#ptTestGrid .test-card');
+          cards.forEach(function (c) { c.style.display = c.textContent.toLowerCase().indexOf(q) > -1 ? '' : 'none'; });
+        });
+        var subs = root.querySelectorAll('[data-subject]');
+        for (var j = 0; j < subs.length; j++) subs[j].addEventListener('click', function () {
+          var subj = this.getAttribute('data-subject');
+          var list = ptChapterTests().filter(function (t) { return t.subject === subj; });
+          pt$('ptSubjectList').innerHTML = '<div class="subj-head"><h3>' + subj + ' Tests</h3><span>' + list.length + ' tests</span></div><div class="grid test-grid">' + list.map(ptTestCard).join('') + '</div>';
+          pt$('ptSubjectList').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      }
+
+      /* ---------- Custom Test ---------- */
+      function ptCustomPool() {
+        var pool = [];
+        if (!ptCustomSubject) return pool;
+        var subjects = ptCustomSubject === 'All' ? ['Biology', 'Chemistry', 'Physics'] : [ptCustomSubject];
+        subjects.forEach(function (subj) { pool = pool.concat(ptPoolFor(subj)); });
+        return pool;
+      }
+      function ptCustomSubjectLabel() {
+        return ptCustomSubject === 'All' ? 'All Subjects' : ptCustomSubject;
+      }
+      function ptViewCustomTest() {
+        var pool = ptCustomPool();
+        var avail = pool.length;
+        var capped = ptCustomSubject && ptCustomCount > avail && avail > 0;
+        var noQs = ptCustomSubject && avail === 0;
+        var counts = ptSubjectCounts();
+        var html = '<div class="page-head"><h2>Custom Test</h2><p>Build your own test from the real MDCAT question bank — ' + ptTotalMcqs() + ' questions in total. Questions are picked at random every time.</p></div>';
+        html += '<div class="custom-wrap"><div class="card custom-card">';
+        html += '<div id="ptCustomErr" class="custom-err hidden"></div>';
+        html += '<div class="custom-group"><span class="cg-label">1 · Choose a subject</span><div class="opt-grid">';
+        [['Biology', counts.Biology.mcqs + ' questions available'], ['Chemistry', counts.Chemistry.mcqs + ' questions available'], ['Physics', counts.Physics.mcqs + ' questions available'], ['All', 'Biology + Chemistry + Physics · ' + ptTotalMcqs() + ' questions']].forEach(function (o) {
+          var val = o[0], label = o[0] === 'All' ? 'All Subjects' : o[0];
+          html += '<button type="button" class="pick' + (ptCustomSubject === val ? ' on' : '') + '" data-csubject="' + val + '">' + label + '<small>' + o[1] + '</small></button>';
+        });
+        html += '</div></div>';
+        html += '<div class="custom-group"><span class="cg-label">2 · Number of questions</span><div class="opt-grid cols4">';
+        [10, 20, 30, 50].forEach(function (n) {
+          html += '<button type="button" class="pick' + (ptCustomCount === n ? ' on' : '') + '" data-ccount="' + n + '" style="text-align:center">' + n + '<small>questions</small></button>';
+        });
+        html += '</div></div>';
+        html += '<div class="custom-group"><span class="cg-label">3 · Time limit</span><div class="opt-grid cols4">';
+        [['auto', '1 min / question', 'Matches question count'], ['15', '15 minutes', 'Fixed limit'], ['30', '30 minutes', 'Fixed limit'], ['50', '50 minutes', 'Fixed limit']].forEach(function (o) {
+          html += '<button type="button" class="pick' + (ptCustomTime === o[0] ? ' on' : '') + '" data-ctime="' + o[0] + '" style="text-align:center">' + o[1] + '<small>' + o[2] + '</small></button>';
+        });
+        html += '</div></div>';
+        html += '<div class="custom-group"><div id="ptCustomAvail" class="avail-box' + ((capped || noQs) ? ' warn' : '') + '">';
+        if (!ptCustomSubject) html += 'Select a subject above to see how many questions are available.';
+        else if (noQs) html += '<b>No questions available</b> for ' + ptEsc(ptCustomSubjectLabel()) + ' in the question bank, so a test cannot be created for this selection.';
+        else if (capped) html += 'You asked for <b>' + ptCustomCount + ' questions</b>, but only <b>' + avail + ' ' + (avail === 1 ? 'question is' : 'questions are') + ' available</b> for ' + ptEsc(ptCustomSubjectLabel()) + '. Your test will use <b>all ' + avail + ' available questions</b>.';
+        else html += '<b>' + avail + ' questions available</b> for ' + ptEsc(ptCustomSubjectLabel()) + '. Your test will use <b>' + Math.min(ptCustomCount, avail) + ' questions</b>' + (ptCustomTime === 'auto' ? ' with a <b>' + Math.min(ptCustomCount, avail) + ' minute</b> limit (1 minute per question).' : ' with a <b>' + ptCustomTime + ' minute</b> limit.');
+        html += '</div></div>';
+        html += '<button class="btn btn-teal btn-block" type="button" id="ptCustomStart">Start Custom Test</button>';
+        html += '<p class="cg-hint" style="text-align:center;margin-top:10px">Your custom test runs in the same exam player — timer, question palette and mark-for-review included — and the result is saved with your account.</p>';
+        html += '</div></div>';
+        return html;
+      }
+      function ptCustomError(msg) {
+        var e = pt$('ptCustomErr');
+        if (!e) return;
+        if (msg) { e.textContent = msg; e.classList.remove('hidden'); e.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+        else e.classList.add('hidden');
+      }
+      function ptWireCustomTest(root) {
+        var subjBtns = root.querySelectorAll('[data-csubject]');
+        for (var i = 0; i < subjBtns.length; i++) subjBtns[i].addEventListener('click', function () {
+          ptCustomSubject = this.getAttribute('data-csubject');
+          ptGo('custom');
+        });
+        var countBtns = root.querySelectorAll('[data-ccount]');
+        for (var j = 0; j < countBtns.length; j++) countBtns[j].addEventListener('click', function () {
+          ptCustomCount = parseInt(this.getAttribute('data-ccount'), 10);
+          ptGo('custom');
+        });
+        var timeBtns = root.querySelectorAll('[data-ctime]');
+        for (var k = 0; k < timeBtns.length; k++) timeBtns[k].addEventListener('click', function () {
+          ptCustomTime = this.getAttribute('data-ctime');
+          ptGo('custom');
+        });
+        var startBtn = root.querySelector('#ptCustomStart');
+        if (startBtn) startBtn.addEventListener('click', function () {
+          if (!ptCustomSubject) return ptCustomError('Please select a subject — Biology, Chemistry, Physics, or All Subjects — before starting.');
+          if (!ptCustomCount || ptCustomCount < 1) return ptCustomError('Please choose a valid number of questions (10, 20, 30 or 50).');
+          var pool = ptCustomPool();
+          if (!pool.length) return ptCustomError('No questions are available for ' + ptCustomSubjectLabel() + ' in the question bank, so a custom test cannot be created for this selection. Please choose a different subject.');
+          ptCustomError('');
+          var actual = Math.min(ptCustomCount, pool.length);
+          var picked = ptShuffle(pool).slice(0, actual);
+          var minutes = ptCustomTime === 'auto' ? actual : parseInt(ptCustomTime, 10);
+          var subjLabel = ptCustomSubjectLabel();
+          var key = 'custom-' + Date.now();
+          EXAM_TESTS[key] = { title: 'Custom Practice — ' + subjLabel, subject: ptCustomSubject === 'All' ? 'Mixed' : ptCustomSubject, duration: minutes * 60, questions: picked };
+          closePortal();
+          startExam(key);
+        });
+      }
+
+      /* ---------- Study Resources ---------- */
+      function ptViewResources() {
+        var html = '<div class="page-head"><h2>Study Resources</h2><p>Notes, past papers, MCQs and flashcards from the website.</p></div><div class="grid resource-grid">';
+        [
+          ['Past Papers', 'MDCAT past papers uploaded on the website, with answer keys.', 'PAST PAPERS'],
+          ['PDF Notes', 'Subject notes and formula sheets for Biology, Chemistry and Physics.', 'NOTES'],
+          ['PDF MCQs', 'Practice MCQs in PDF form, chapter by chapter.', 'MCQS'],
+          ['Flashcards', 'Flip-card revision decks for every subject.', 'FLASHCARDS']
+        ].forEach(function (c) {
+          html += '<div class="card resource-card"><div><span class="chip chip-res">' + c[2] + '</span></div><h3>' + c[0] + '</h3><p>' + c[1] + '</p><div style="margin-top:6px"><button class="btn btn-teal btn-sm" type="button" data-ptres="open">Open Resources</button></div></div>';
+        });
+        html += '</div>';
+        return html;
+      }
+      function ptWireResources(root) {
+        var btns = root.querySelectorAll('[data-ptres]');
+        for (var i = 0; i < btns.length; i++) btns[i].addEventListener('click', function () { closePortal(); openResourcesView(); });
+      }
+
+      /* ---------- My Results & Performance ---------- */
+      function ptViewMyResults() {
+        var html = '<div class="page-head"><h2>My Results</h2><p>Every test you attempt is recorded here, saved with your account.</p></div>';
+        if (!ptResults.length) return html + '<div class="card empty"><h3>No results yet</h3><p>Attempt a test and your score and result will be saved here.</p><div style="margin-top:16px"><button class="btn btn-teal" type="button" data-goto="all">Start a Test</button></div></div>';
+        html += '<div class="card" style="overflow-x:auto"><table class="tbl"><tr><th>Test</th><th>Score</th><th>Result</th><th>Date</th></tr>';
+        ptResults.forEach(function (r) {
+          html += '<tr><td><b>' + ptEsc(r.title) + '</b><br>' + ptSubjChip(ptSubjectOf(r)) + (ptIsCustom(r) ? ' <span class="chip chip-custom">CUSTOM TEST</span>' : '') + '</td>' +
+            '<td><b>' + r.correct + ' / ' + r.total + '</b></td>' +
+            '<td>' + ptPctPill(r.pct) + '</td><td>' + (ptFmtDate(r.date) || '—') + '</td></tr>';
+        });
+        return html + '</table></div>';
+      }
+      function ptViewPerformance() {
+        var html = '<div class="page-head"><h2>Performance</h2><p>Your subject-wise accuracy across all your attempts.</p></div>';
+        var st = ptStats();
+        html += '<div class="grid stat-grid" style="grid-template-columns:repeat(auto-fit,minmax(160px,1fr));margin-bottom:6px">' +
+          ptStatCard('Tests Taken', st.tests, '') + ptStatCard('Average Score', st.tests ? st.avg + '%' : '—', '') +
+          ptStatCard('Questions Attempted', st.attempted, '') + ptStatCard('Best Score', st.tests ? st.best + '%' : '—', '') + '</div>';
+        if (!ptResults.length) return html + '<div class="card empty" style="margin-top:14px"><h3>Nothing to analyse yet</h3><p>Performance charts appear after your first attempt.</p></div>';
+        ['Biology', 'Chemistry', 'Physics', 'Mixed'].forEach(function (subj) {
+          var rs = ptResults.filter(function (r) { return ptSubjectOf(r) === subj; });
+          if (!rs.length) return;
+          var q = 0, c = 0, sum = 0;
+          rs.forEach(function (r) { q += r.total; c += r.correct; sum += r.pct; });
+          var acc = q ? Math.round(c * 100 / q) : 0;
+          html += '<div class="card perf-row" style="margin-top:14px"><div class="top"><b>' + subj + '</b><span class="nums">' + rs.length + ' test' + (rs.length > 1 ? 's' : '') + ' · Average ' + Math.round(sum / rs.length) + '% · Accuracy ' + acc + '%</span></div>' +
+            '<div class="bar-track"><div class="bar-fill" style="width:' + acc + '%"></div></div>' +
+            '<div class="nums" style="margin-top:8px">' + c + ' correct out of ' + q + ' questions</div></div>';
+        });
+        var weak = null, weakAcc = 101;
+        ['Biology', 'Chemistry', 'Physics'].forEach(function (subj) {
+          var rs = ptResults.filter(function (r) { return ptSubjectOf(r) === subj; });
+          if (!rs.length) return;
+          var q = 0, c = 0;
+          rs.forEach(function (r) { q += r.total; c += r.correct; });
+          var acc = q ? c * 100 / q : 0;
+          if (acc < weakAcc) { weakAcc = acc; weak = subj; }
+        });
+        if (weak) html += '<div class="card" style="margin-top:14px;padding:18px 20px"><b>Focus area:</b> <span style="color:var(--ink2)">' + weak + ' has your lowest accuracy (' + Math.round(weakAcc) + '%). Re-attempt its chapter tests to improve.</span></div>';
+        return html;
+      }
+
+      /* ---------- Settings ---------- */
+      function ptViewSettings() {
+        var counts = ptSubjectCounts();
+        var name = currentUser ? (currentUser.fullName || currentUser.name || '') : '';
+        var email = currentUser ? currentUser.email : '';
+        var html = '<div class="page-head"><h2>Settings</h2><p>Portal preferences.</p></div>';
+        html += '<div class="card profile-card"><div class="avatar">' + ptEsc(ptInitials(name)) + '</div><div><h3>' + ptEsc(name) + '</h3><p>' + ptEsc(email) + '</p></div></div>';
+        html += '<div class="kv" style="margin-top:16px"><div class="item"><div class="k">Full Name</div><div class="v">' + ptEsc(name) + '</div></div><div class="item"><div class="k">Email</div><div class="v">' + ptEsc(email) + '</div></div></div>';
+        html += '<div class="card" style="margin-top:16px">' +
+          '<div class="set-row"><div class="grow"><b>Appearance</b><span>Dark is the default. Switch to light if you prefer a bright screen.</span></div>' +
+            '<div class="seg" id="ptThemeSeg">' +
+              '<button type="button" data-pttheme="dark"' + (!lightTheme ? ' class="on"' : '') + '>Dark</button>' +
+              '<button type="button" data-pttheme="light"' + (lightTheme ? ' class="on"' : '') + '>Light</button>' +
+            '</div></div>' +
+          '<div class="set-row"><div class="grow"><b>Sign Out</b><span>Sign out of your account on this device.</span></div>' +
+            '<button class="btn btn-ghost btn-sm" id="ptSettingsSignOut" type="button">Sign Out</button></div>' +
+        '</div>';
+        html += '<div class="card" style="margin-top:16px;padding:20px"><h3 style="font-size:16px;margin-bottom:6px">About this portal</h3>' +
+          '<p style="margin:0;color:var(--ink2);font-size:14px">Student Portal for MDCAT 2027: ' + ptChapterCount() + ' chapter tests (Biology ' + counts.Biology.tests + ', Chemistry ' + counts.Chemistry.tests + ', Physics ' + counts.Physics.tests + ') — ' + ptTotalMcqs() + ' MCQs — and 6 combined general papers, each 50 questions in 50 minutes. Results are saved with your account so you can review them later.</p></div>';
+        return html;
+      }
+      function ptApplyTheme(light) {
+        lightTheme = !!light;
+        var btn = document.getElementById('themeBtn');
+        if (lightTheme) {
+          document.documentElement.setAttribute('data-theme', 'light');
+          if (btn) { btn.innerHTML = '<i data-lucide="moon"></i>'; btn.setAttribute('aria-label', 'Switch to dark theme'); }
+        } else {
+          document.documentElement.removeAttribute('data-theme');
+          if (btn) { btn.innerHTML = '<i data-lucide="sun"></i>'; btn.setAttribute('aria-label', 'Switch to light theme'); }
         }
         lucide.createIcons();
       }
-      function openPortal() {
+      function ptWireSettings(root) {
+        var seg = root.querySelectorAll('#ptThemeSeg button');
+        for (var i = 0; i < seg.length; i++) seg[i].addEventListener('click', function () {
+          ptApplyTheme(this.getAttribute('data-pttheme') === 'light');
+          ptGo('settings');
+        });
+        var so = root.querySelector('#ptSettingsSignOut');
+        if (so) so.addEventListener('click', function () { closePortal(); signOut(); });
+      }
+
+      /* ---------- Open / close ---------- */
+      function ptUpdateCountdown() {
+        var d = pt$('ptCdDays');
+        if (!d) return;
+        var diff = MDCAT_TARGET - Date.now();
+        if (diff < 0) diff = 0;
+        d.textContent = Math.floor(diff / 86400000);
+        pt$('ptCdHours').textContent = ptPad2(Math.floor(diff / 3600000) % 24);
+        pt$('ptCdMins').textContent = ptPad2(Math.floor(diff / 60000) % 60);
+        pt$('ptCdSecs').textContent = ptPad2(Math.floor(diff / 1000) % 60);
+      }
+      function ptLoadResults() {
+        ptResults = [];
         if (!currentUser) return;
-        var displayName = currentUser.name || currentUser.fullName || '';
-        var first = displayName.split(' ')[0];
-        document.getElementById('portalGreeting').textContent = 'Welcome, ' + first + '!';
-        document.getElementById('portalSub').textContent = 'Signed in as ' + currentUser.email + '.';
-        renderPortalStats([]);
-        updateCountdown();
-        if (portalTimer) clearInterval(portalTimer);
-        portalTimer = setInterval(updateCountdown, 1000);
-        portalView.classList.add('open');
-        document.body.style.overflow = 'hidden';
-        portalView.scrollTop = 0;
         sha256Hex(currentUser.email.toLowerCase()).then(function (userId) {
           return fsFetchUserResults(userId);
         }).then(function (res) {
           if (!currentUser) return;
           currentUser.results = res;
-          if (portalView.classList.contains('open')) renderPortalStats(res);
+          ptResults = res || [];
+          if (portalView.classList.contains('open')) ptGo(ptSection);
         }).catch(function () {
-          if (currentUser) renderPortalStats([]);
+          if (currentUser && portalView.classList.contains('open')) ptGo(ptSection);
         });
+      }
+      function openPortal() {
+        if (!currentUser) return;
+        var displayName = currentUser.name || currentUser.fullName || '';
+        pt$('ptUserName').textContent = displayName;
+        pt$('ptUserEmail').textContent = currentUser.email;
+        pt$('ptAvatar').textContent = ptInitials(displayName);
+        ptBuildGeneral();
+        ptBuildNav();
+        ptGo('dashboard');
+        ptLoadResults();
+        portalView.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        portalView.scrollTop = 0;
+        ptUpdateCountdown();
+        if (ptCountdownTimer) clearInterval(ptCountdownTimer);
+        ptCountdownTimer = setInterval(ptUpdateCountdown, 1000);
         lucide.createIcons();
       }
       function closePortal() {
         portalView.classList.remove('open');
-        if (portalTimer) { clearInterval(portalTimer); portalTimer = null; }
+        if (ptCountdownTimer) { clearInterval(ptCountdownTimer); ptCountdownTimer = null; }
         syncBodyScroll();
         setActiveMenuItem('home');
       }
-      /* Build Your Own Test — mix questions from one subject's chapters */
-      var customSubject = 'Biology';
-      var customCount = 10;
-      function setCustomChips() {
-        document.querySelectorAll('#portalSubjectChips .portal-chip').forEach(function (c) {
-          c.classList.toggle('active', c.getAttribute('data-psubj') === customSubject);
-        });
-        document.querySelectorAll('#portalCountChips .portal-chip').forEach(function (c) {
-          c.classList.toggle('active', parseInt(c.getAttribute('data-pcount'), 10) === customCount);
-        });
-      }
-      document.querySelectorAll('#portalSubjectChips .portal-chip').forEach(function (c) {
-        c.addEventListener('click', function () { customSubject = c.getAttribute('data-psubj'); setCustomChips(); });
-      });
-      document.querySelectorAll('#portalCountChips .portal-chip').forEach(function (c) {
-        c.addEventListener('click', function () { customCount = parseInt(c.getAttribute('data-pcount'), 10); setCustomChips(); });
-      });
-      function startCustomTest() {
-        var pool = [];
-        Object.keys(QUESTION_BANK).forEach(function (chapter) {
-          var t = EXAM_TESTS[chapter];
-          if (t && t.subject === customSubject) pool = pool.concat(QUESTION_BANK[chapter]);
-        });
-        if (!pool.length) { showPreviewNotice(); return; }
-        for (var i = pool.length - 1; i > 0; i--) {
-          var j = Math.floor(Math.random() * (i + 1));
-          var tmp = pool[i]; pool[i] = pool[j]; pool[j] = tmp;
-        }
-        var picked = pool.slice(0, Math.min(customCount, pool.length));
-        var key = 'custom-' + Date.now();
-        EXAM_TESTS[key] = { title: 'Custom Practice — ' + customSubject, subject: customSubject, duration: picked.length * 60, questions: picked };
-        closePortal();
-        startExam(key);
-      }
-      document.getElementById('portalStartCustom').addEventListener('click', startCustomTest);
-      document.getElementById('portalTakeQuiz').addEventListener('click', function () { closePortal(); openAllTests('all'); });
-      document.getElementById('portalBuildTest').addEventListener('click', function () {
-        var b = document.getElementById('portalBuilder');
-        if (b) b.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-      document.getElementById('portalFlashcards').addEventListener('click', function () { closePortal(); openResourcesView(); });
-      document.getElementById('portalResources').addEventListener('click', function () { closePortal(); openResourcesView(); });
-      document.getElementById('portalMoreTests').addEventListener('click', function () { closePortal(); openAllTests('all'); });
-      document.getElementById('portalSignOut').addEventListener('click', function () { closePortal(); signOut(); });
-      document.querySelectorAll('[data-pnav]').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          var k = btn.getAttribute('data-pnav');
-          if (k === 'home') { closePortal(); window.scrollTo(0, 0); }
-          else if (k === 'tests') { closePortal(); openAllTests('all'); }
-          else if (k === 'create') { var b = document.getElementById('portalBuilder'); if (b) b.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-          else if (k === 'flashcards') { closePortal(); openResourcesView(); }
-          else if (k === 'menu') { closePortal(); setMenu(true); }
-        });
+      /* Portal shell buttons (static shell, wired once) */
+      pt$('ptMenuBtn').addEventListener('click', function () { pt$('ptSidebar').classList.add('open'); pt$('ptScrim').classList.remove('hidden'); });
+      pt$('ptScrim').addEventListener('click', ptCloseSidebarMobile);
+      pt$('ptSignOut').addEventListener('click', function () { closePortal(); signOut(); });
+      pt$('ptContent').addEventListener('click', function (e) {
+        var g = e.target.closest ? e.target.closest('[data-goto]') : null;
+        if (g) { ptGo(g.getAttribute('data-goto')); return; }
+        var s = e.target.closest ? e.target.closest('[data-start]') : null;
+        if (s) { closePortal(); startExam(s.getAttribute('data-start')); }
       });
       function signInSuccess(user) {
         currentUser = { name: user.fullName || user.name, fullName: user.fullName || user.name, email: user.email, results: [] };
