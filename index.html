@@ -4680,12 +4680,12 @@
       var portalView = document.getElementById('portalView');
       var MDCAT_TARGET = new Date('2027-08-01T09:00:00+05:00').getTime();
       var ptResults = [];
+      /* Portal test registry — titles of tests that belong to this portal only.
+         Empty for now: portal tests are added separately later. Website test
+         titles are never added here, so website attempts never show in the
+         portal's results. */
+      var ptTestTitles = new Set();
       var ptSection = 'dashboard';
-      var ptSubjFilter = 'All';
-      var ptCustomSubject = '';
-      var ptCustomCount = 10;
-      var ptCustomTime = 'auto';
-      var ptGeneralBuilt = false;
       var ptCountdownTimer = null;
 
       /* ---------- Helpers ---------- */
@@ -4729,7 +4729,6 @@
       }
       function ptSubjectOf(r) {
         if (r.subject) return r.subject;
-        if (r.title && EXAM_TESTS[r.title]) return EXAM_TESTS[r.title].subject;
         return 'Mixed';
       }
       function ptIsCustom(r) { return (r.title || '').indexOf('Custom Practice') === 0; }
@@ -4740,62 +4739,10 @@
         return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
       }
 
-      /* ---------- Real data (site bank, never the artifact sample bank) ---------- */
-      function ptPoolFor(subj) {
-        var pool = [];
-        Object.keys(QUESTION_BANK).forEach(function (ch) {
-          var t = EXAM_TESTS[ch];
-          if (t && t.subject === subj) pool = pool.concat(QUESTION_BANK[ch]);
-        });
-        return pool;
-      }
-      function ptChapterCount() { return Object.keys(QUESTION_BANK).length; }
-      function ptTotalMcqs() {
-        var n = 0;
-        Object.keys(QUESTION_BANK).forEach(function (ch) { n += QUESTION_BANK[ch].length; });
-        return n;
-      }
-      function ptSubjectCounts() {
-        var out = { Biology: { tests: 0, mcqs: 0 }, Chemistry: { tests: 0, mcqs: 0 }, Physics: { tests: 0, mcqs: 0 } };
-        Object.keys(QUESTION_BANK).forEach(function (ch) {
-          var t = EXAM_TESTS[ch];
-          if (t && out[t.subject]) { out[t.subject].tests++; out[t.subject].mcqs += QUESTION_BANK[ch].length; }
-        });
-        return out;
-      }
-      function ptChapterTests() {
-        var list = [];
-        Object.keys(QUESTION_BANK).forEach(function (ch) {
-          var t = EXAM_TESTS[ch];
-          list.push({ key: ch, kind: 'chapter', subject: t.subject, chapter: ch, title: ch, questions: t.questions.length, minutes: t.questions.length, marks: t.questions.length });
-        });
-        return list;
-      }
-      function ptBuildGeneral() {
-        if (ptGeneralBuilt) return;
-        ptGeneralBuilt = true;
-        for (var g = 1; g <= 6; g++) {
-          var qs = [];
-          qs = qs.concat(ptShuffle(ptPoolFor('Biology')).slice(0, 17));
-          qs = qs.concat(ptShuffle(ptPoolFor('Chemistry')).slice(0, 17));
-          qs = qs.concat(ptShuffle(ptPoolFor('Physics')).slice(0, 16));
-          qs = ptShuffle(qs);
-          EXAM_TESTS['general-' + g] = { title: 'General Paper ' + g, subject: 'Mixed', duration: 50 * 60, questions: qs };
-        }
-      }
-      function ptGeneralTests() {
-        ptBuildGeneral();
-        var list = [];
-        for (var g = 1; g <= 6; g++) {
-          list.push({ key: 'general-' + g, kind: 'general', subject: 'Mixed', chapter: 'Combined Paper', title: 'General Paper ' + g, questions: 50, minutes: 50, marks: 50 });
-        }
-        return list;
-      }
-      function ptBestForTitle(title) {
-        var b = null;
-        ptResults.forEach(function (r) { if (r.title === title && (b === null || r.pct > b)) b = r.pct; });
-        return b;
-      }
+      /* Portal content is separate from the website: no website question bank,
+         no website test list and no combined papers are built here. Portal
+         tests are added later and registered in ptTestTitles. */
+
       function ptStats() {
         var attempted = 0, sumPct = 0, best = 0;
         ptResults.forEach(function (r) { attempted += r.total; sumPct += r.pct; if (r.pct > best) best = r.pct; });
@@ -4835,16 +4782,15 @@
         pt$('ptTopTitle').textContent = ptSECTION_TITLES[sec] || 'Dashboard';
         var c = pt$('ptContent');
         if (sec === 'dashboard') c.innerHTML = ptViewDashboard();
-        else if (sec === 'all') { c.innerHTML = ptViewAllTests(); ptWireTestList(c); }
-        else if (sec === 'general') { c.innerHTML = ptViewTestList(ptGeneralTests(), 'General Tests', 'Combined papers covering Biology, Chemistry and Physics together — the closest practice to the full MDCAT pattern.'); ptWireTestList(c); }
+        else if (sec === 'all') c.innerHTML = ptViewAllTests();
+        else if (sec === 'general') c.innerHTML = ptViewGeneralTests();
         else if (sec === 'chapter') c.innerHTML = ptViewChapterWise();
         else if (sec === 'subject') c.innerHTML = ptViewSubjectWise();
-        else if (sec === 'custom') { c.innerHTML = ptViewCustomTest(); ptWireCustomTest(c); }
-        else if (sec === 'resources') { c.innerHTML = ptViewResources(); ptWireResources(c); }
+        else if (sec === 'custom') c.innerHTML = ptViewCustomTest();
+        else if (sec === 'resources') c.innerHTML = ptViewResources();
         else if (sec === 'myresults') c.innerHTML = ptViewMyResults();
         else if (sec === 'performance') c.innerHTML = ptViewPerformance();
         else if (sec === 'settings') { c.innerHTML = ptViewSettings(); ptWireSettings(c); }
-        if (sec === 'chapter' || sec === 'subject') ptWireTestList(c);
         portalView.scrollTop = 0;
         lucide.createIcons();
       }
@@ -4858,9 +4804,8 @@
       }
       function ptViewDashboard() {
         var st = ptStats();
-        var n = ptChapterCount();
         var html = '<div class="dash-hero"><div class="grow"><h2>' + ptGreet() + ' — Welcome to Student Portal</h2>' +
-          '<p>Your MDCAT 2027 Series 1 portal. Pick a chapter test, try a combined general paper, and track your progress here.</p></div>' +
+          '<p>Your MDCAT 2027 Series 1 portal. Tests and resources added to this portal will appear here.</p></div>' +
           '<p class="hero-quote">&ldquo;Every MCQ You Solve Brings You One Step Closer to Your Dream.&rdquo;</p></div>';
         html += '<div class="pt-count"><div class="pt-count-label">MDCAT 2027 · 1 August 2027</div><div class="pt-count-row">' +
           '<div class="pt-count-box"><b id="ptCdDays">—</b><span>Days</span></div>' +
@@ -4869,20 +4814,17 @@
           '<div class="pt-count-box"><b id="ptCdSecs">—</b><span>Secs</span></div>' +
           '</div></div>';
         html += '<div class="grid stat-grid" style="margin-top:16px">' +
-          ptStatCard('Tests Completed', st.tests, 'of ' + n + ' chapter tests') +
+          ptStatCard('Tests Completed', st.tests, 'in this portal') +
           ptStatCard('Average Score', st.tests ? st.avg + '%' : '—', st.tests ? 'across all attempts' : 'no attempts yet') +
-          ptStatCard('Questions Attempted', st.attempted, 'from your saved results') +
+          ptStatCard('Questions Attempted', st.attempted, 'from your portal results') +
           ptStatCard('Best Score', st.tests ? st.best + '%' : '—', st.tests ? 'your highest result' : 'attempt a test to set it') +
           '</div>';
         html += '<h3 class="sec-title">Quick Actions</h3><div class="grid quick-grid">' +
-          ptQuickCard('all', 'all', 'All Tests', 'Browse all ' + n + ' chapter tests') +
-          ptQuickCard('general', 'general', 'General Tests', '6 combined papers') +
+          ptQuickCard('all', 'all', 'All Tests', 'No tests added yet') +
+          ptQuickCard('general', 'general', 'General Tests', 'No general papers yet') +
           ptQuickCard('myresults', 'results', 'My Results', 'Review past attempts') +
           ptQuickCard('performance', 'performance', 'Performance', 'Subject-wise accuracy') +
           '</div>';
-        html += '<div class="card custom-banner"><span class="ic" style="width:46px;height:46px;border-radius:12px;background:var(--gold-soft);color:var(--gold);display:flex;align-items:center;justify-content:center;flex:0 0 46px"><span style="width:24px;height:24px;display:block">' + ptIcon('custom') + '</span></span>' +
-          '<div class="grow"><h3>Build Your Own Custom Test</h3><p>Pick a subject, choose how many questions you want, and set your time — questions are drawn randomly from the real MDCAT question bank.</p></div>' +
-          '<button class="btn btn-gold" type="button" data-goto="custom">Create Custom Test</button></div>';
         if (ptResults.length) {
           html += '<h3 class="sec-title">Recent Attempts</h3><div class="card" style="overflow-x:auto"><table class="tbl"><tr><th>Test</th><th>Score</th><th>Result</th><th>Date</th></tr>';
           ptResults.slice(0, 4).forEach(function (r) {
@@ -4890,185 +4832,39 @@
           });
           html += '</table></div>';
         } else {
-          html += '<h3 class="sec-title">Getting Started</h3><div class="card empty"><h3>No attempts yet</h3><p>Start with any chapter test — your results will appear here.</p><div style="margin-top:16px"><button class="btn btn-teal" type="button" data-goto="all">Browse Tests</button></div></div>';
+          html += '<h3 class="sec-title">Getting Started</h3><div class="card empty"><h3>No attempts yet</h3><p>Attempt a portal test and your results will appear here.</p><div style="margin-top:16px"><button class="btn btn-teal" type="button" data-goto="all">Browse Tests</button></div></div>';
         }
         return html;
       }
 
-      /* ---------- Test lists ---------- */
-      function ptTestCard(t) {
-        var b = ptBestForTitle(t.title);
-        return '<div class="card test-card">' +
-          '<div>' + ptSubjChip(t.subject) + '</div>' +
-          '<h3>' + ptEsc(t.title) + '</h3>' +
-          '<div class="test-meta">' +
-            '<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 9.5h6M9 13h4"/></svg>' + t.questions + ' Questions</span>' +
-            '<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>' + t.minutes + ' Minutes</span>' +
-            '<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/></svg>' + t.marks + ' Marks</span>' +
-          '</div>' +
-          '<div class="row">' + (b !== null ? '<span class="best-tag">Best: ' + Math.round(b) + '%</span>' : '<span style="font-size:12.5px;color:var(--ink3);font-weight:700">Not attempted yet</span>') +
-          '<span class="sp"></span><button class="btn btn-teal btn-sm" type="button" data-start="' + ptEsc(t.key) + '">Start Test</button></div></div>';
-      }
+      /* ---------- Test lists (portal-only; empty until portal tests are added) ---------- */
       function ptViewAllTests() {
-        var chapters = ptChapterTests();
-        var generals = ptGeneralTests();
-        var list = ptSubjFilter === 'All' ? chapters.concat(generals) : ptSubjFilter === 'General' ? generals : chapters.filter(function (t) { return t.subject === ptSubjFilter; });
-        var html = '<div class="page-head"><h2>All Tests</h2><p>' + ptChapterCount() + ' chapter tests from the real MDCAT bank, plus 6 combined general papers.</p></div>';
-        html += '<div class="filter-row">' +
-          ['All', 'Biology', 'Chemistry', 'Physics', 'General'].map(function (f) {
-            return '<button class="fbtn' + (ptSubjFilter === f ? ' on' : '') + '" type="button" data-ptfilter="' + f + '">' + f + '</button>';
-          }).join('') +
-          '<div class="search-box"><input id="ptTestSearch" type="search" placeholder="Search tests by chapter name..." /></div></div>';
-        html += '<div class="grid test-grid" id="ptTestGrid">';
-        html += list.length ? list.map(ptTestCard).join('') : '<div class="card empty"><h3>No tests found</h3><p>Try a different subject or search term.</p></div>';
-        html += '</div>';
-        return html;
+        return '<div class="page-head"><h2>All Tests</h2><p>Tests added to this portal will appear here.</p></div>' +
+          '<div class="card empty"><h3>No tests added yet</h3><p>Tests will be added here.</p></div>';
       }
-      function ptViewTestList(list, title, sub) {
-        var html = '<div class="page-head"><h2>' + title + '</h2><p>' + sub + '</p></div><div class="grid test-grid">';
-        html += list.length ? list.map(ptTestCard).join('') : '<div class="card empty"><h3>No tests here yet</h3><p>Tests will appear here when they are added.</p></div>';
-        return html + '</div>';
+      function ptViewGeneralTests() {
+        return '<div class="page-head"><h2>General Tests</h2><p>Combined papers added to this portal will appear here.</p></div>' +
+          '<div class="card empty"><h3>No general papers yet</h3><p>General papers will be added here.</p></div>';
       }
       function ptViewChapterWise() {
-        var html = '<div class="page-head"><h2>Chapter-wise Tests</h2><p>All ' + ptChapterCount() + ' chapter tests, grouped by subject. Master one chapter at a time.</p></div>';
-        ['Biology', 'Chemistry', 'Physics'].forEach(function (subj) {
-          var list = ptChapterTests().filter(function (t) { return t.subject === subj; });
-          html += '<div class="subj-head"><h3>' + subj + '</h3><span>' + list.length + ' chapters</span></div><div class="grid test-grid">' + list.map(ptTestCard).join('') + '</div>';
-        });
-        return html;
+        return '<div class="page-head"><h2>Chapter-wise Tests</h2><p>Chapter tests added to this portal will appear here, grouped by subject.</p></div>' +
+          '<div class="card empty"><h3>No chapter tests yet</h3><p>Chapter tests will be added here.</p></div>';
       }
       function ptViewSubjectWise() {
-        var counts = ptSubjectCounts();
-        var html = '<div class="page-head"><h2>Subject-wise Tests</h2><p>Choose a subject to see only its chapter tests.</p></div><div class="grid subj-cards">';
-        [['Biology', 'Cell biology to genetics — the largest MDCAT section.'], ['Chemistry', 'Physical, inorganic and organic chemistry chapters.'], ['Physics', 'Mechanics, electricity, waves and modern physics.']].forEach(function (s) {
-          var n = counts[s[0]].tests;
-          html += '<button class="subj-card" type="button" data-subject="' + s[0] + '"><h3>' + s[0] + '</h3><p>' + s[1] + '</p><div class="big">' + n + '</div><p>chapter tests · ' + counts[s[0]].mcqs + ' MCQs</p></button>';
-        });
-        html += '</div><div id="ptSubjectList"></div>';
-        return html;
-      }
-      function ptWireTestList(root) {
-        var filters = root.querySelectorAll('[data-ptfilter]');
-        for (var i = 0; i < filters.length; i++) filters[i].addEventListener('click', function () { ptSubjFilter = this.getAttribute('data-ptfilter'); ptGo('all'); });
-        var search = root.querySelector('#ptTestSearch');
-        if (search) search.addEventListener('input', function () {
-          var q = this.value.trim().toLowerCase();
-          var cards = root.querySelectorAll('#ptTestGrid .test-card');
-          cards.forEach(function (c) { c.style.display = c.textContent.toLowerCase().indexOf(q) > -1 ? '' : 'none'; });
-        });
-        var subs = root.querySelectorAll('[data-subject]');
-        for (var j = 0; j < subs.length; j++) subs[j].addEventListener('click', function () {
-          var subj = this.getAttribute('data-subject');
-          var list = ptChapterTests().filter(function (t) { return t.subject === subj; });
-          pt$('ptSubjectList').innerHTML = '<div class="subj-head"><h3>' + subj + ' Tests</h3><span>' + list.length + ' tests</span></div><div class="grid test-grid">' + list.map(ptTestCard).join('') + '</div>';
-          pt$('ptSubjectList').scrollIntoView({ behavior: 'smooth', block: 'start' });
-        });
+        return '<div class="page-head"><h2>Subject-wise Tests</h2><p>Subject tests added to this portal will appear here.</p></div>' +
+          '<div class="card empty"><h3>No subject tests yet</h3><p>Subject tests will be added here.</p></div>';
       }
 
-      /* ---------- Custom Test ---------- */
-      function ptCustomPool() {
-        var pool = [];
-        if (!ptCustomSubject) return pool;
-        var subjects = ptCustomSubject === 'All' ? ['Biology', 'Chemistry', 'Physics'] : [ptCustomSubject];
-        subjects.forEach(function (subj) { pool = pool.concat(ptPoolFor(subj)); });
-        return pool;
-      }
-      function ptCustomSubjectLabel() {
-        return ptCustomSubject === 'All' ? 'All Subjects' : ptCustomSubject;
-      }
+      /* ---------- Custom Test (portal-only; empty until portal tests are added) ---------- */
       function ptViewCustomTest() {
-        var pool = ptCustomPool();
-        var avail = pool.length;
-        var capped = ptCustomSubject && ptCustomCount > avail && avail > 0;
-        var noQs = ptCustomSubject && avail === 0;
-        var counts = ptSubjectCounts();
-        var html = '<div class="page-head"><h2>Custom Test</h2><p>Build your own test from the real MDCAT question bank — ' + ptTotalMcqs() + ' questions in total. Questions are picked at random every time.</p></div>';
-        html += '<div class="custom-wrap"><div class="card custom-card">';
-        html += '<div id="ptCustomErr" class="custom-err hidden"></div>';
-        html += '<div class="custom-group"><span class="cg-label">1 · Choose a subject</span><div class="opt-grid">';
-        [['Biology', counts.Biology.mcqs + ' questions available'], ['Chemistry', counts.Chemistry.mcqs + ' questions available'], ['Physics', counts.Physics.mcqs + ' questions available'], ['All', 'Biology + Chemistry + Physics · ' + ptTotalMcqs() + ' questions']].forEach(function (o) {
-          var val = o[0], label = o[0] === 'All' ? 'All Subjects' : o[0];
-          html += '<button type="button" class="pick' + (ptCustomSubject === val ? ' on' : '') + '" data-csubject="' + val + '">' + label + '<small>' + o[1] + '</small></button>';
-        });
-        html += '</div></div>';
-        html += '<div class="custom-group"><span class="cg-label">2 · Number of questions</span><div class="opt-grid cols4">';
-        [10, 20, 30, 50].forEach(function (n) {
-          html += '<button type="button" class="pick' + (ptCustomCount === n ? ' on' : '') + '" data-ccount="' + n + '" style="text-align:center">' + n + '<small>questions</small></button>';
-        });
-        html += '</div></div>';
-        html += '<div class="custom-group"><span class="cg-label">3 · Time limit</span><div class="opt-grid cols4">';
-        [['auto', '1 min / question', 'Matches question count'], ['15', '15 minutes', 'Fixed limit'], ['30', '30 minutes', 'Fixed limit'], ['50', '50 minutes', 'Fixed limit']].forEach(function (o) {
-          html += '<button type="button" class="pick' + (ptCustomTime === o[0] ? ' on' : '') + '" data-ctime="' + o[0] + '" style="text-align:center">' + o[1] + '<small>' + o[2] + '</small></button>';
-        });
-        html += '</div></div>';
-        html += '<div class="custom-group"><div id="ptCustomAvail" class="avail-box' + ((capped || noQs) ? ' warn' : '') + '">';
-        if (!ptCustomSubject) html += 'Select a subject above to see how many questions are available.';
-        else if (noQs) html += '<b>No questions available</b> for ' + ptEsc(ptCustomSubjectLabel()) + ' in the question bank, so a test cannot be created for this selection.';
-        else if (capped) html += 'You asked for <b>' + ptCustomCount + ' questions</b>, but only <b>' + avail + ' ' + (avail === 1 ? 'question is' : 'questions are') + ' available</b> for ' + ptEsc(ptCustomSubjectLabel()) + '. Your test will use <b>all ' + avail + ' available questions</b>.';
-        else html += '<b>' + avail + ' questions available</b> for ' + ptEsc(ptCustomSubjectLabel()) + '. Your test will use <b>' + Math.min(ptCustomCount, avail) + ' questions</b>' + (ptCustomTime === 'auto' ? ' with a <b>' + Math.min(ptCustomCount, avail) + ' minute</b> limit (1 minute per question).' : ' with a <b>' + ptCustomTime + ' minute</b> limit.');
-        html += '</div></div>';
-        html += '<button class="btn btn-teal btn-block" type="button" id="ptCustomStart">Start Custom Test</button>';
-        html += '<p class="cg-hint" style="text-align:center;margin-top:10px">Your custom test runs in the same exam player — timer, question palette and mark-for-review included — and the result is saved with your account.</p>';
-        html += '</div></div>';
-        return html;
-      }
-      function ptCustomError(msg) {
-        var e = pt$('ptCustomErr');
-        if (!e) return;
-        if (msg) { e.textContent = msg; e.classList.remove('hidden'); e.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
-        else e.classList.add('hidden');
-      }
-      function ptWireCustomTest(root) {
-        var subjBtns = root.querySelectorAll('[data-csubject]');
-        for (var i = 0; i < subjBtns.length; i++) subjBtns[i].addEventListener('click', function () {
-          ptCustomSubject = this.getAttribute('data-csubject');
-          ptGo('custom');
-        });
-        var countBtns = root.querySelectorAll('[data-ccount]');
-        for (var j = 0; j < countBtns.length; j++) countBtns[j].addEventListener('click', function () {
-          ptCustomCount = parseInt(this.getAttribute('data-ccount'), 10);
-          ptGo('custom');
-        });
-        var timeBtns = root.querySelectorAll('[data-ctime]');
-        for (var k = 0; k < timeBtns.length; k++) timeBtns[k].addEventListener('click', function () {
-          ptCustomTime = this.getAttribute('data-ctime');
-          ptGo('custom');
-        });
-        var startBtn = root.querySelector('#ptCustomStart');
-        if (startBtn) startBtn.addEventListener('click', function () {
-          if (!ptCustomSubject) return ptCustomError('Please select a subject — Biology, Chemistry, Physics, or All Subjects — before starting.');
-          if (!ptCustomCount || ptCustomCount < 1) return ptCustomError('Please choose a valid number of questions (10, 20, 30 or 50).');
-          var pool = ptCustomPool();
-          if (!pool.length) return ptCustomError('No questions are available for ' + ptCustomSubjectLabel() + ' in the question bank, so a custom test cannot be created for this selection. Please choose a different subject.');
-          ptCustomError('');
-          var actual = Math.min(ptCustomCount, pool.length);
-          var picked = ptShuffle(pool).slice(0, actual);
-          var minutes = ptCustomTime === 'auto' ? actual : parseInt(ptCustomTime, 10);
-          var subjLabel = ptCustomSubjectLabel();
-          var key = 'custom-' + Date.now();
-          EXAM_TESTS[key] = { title: 'Custom Practice — ' + subjLabel, subject: ptCustomSubject === 'All' ? 'Mixed' : ptCustomSubject, duration: minutes * 60, questions: picked };
-          closePortal();
-          startExam(key);
-        });
+        return '<div class="page-head"><h2>Custom Test</h2><p>Build your own test from portal questions.</p></div>' +
+          '<div class="card empty"><h3>No questions available yet</h3><p>Custom tests will work once tests are added.</p></div>';
       }
 
-      /* ---------- Study Resources ---------- */
+      /* ---------- Study Resources (portal-only; empty until portal resources are added) ---------- */
       function ptViewResources() {
-        var html = '<div class="page-head"><h2>Study Resources</h2><p>Notes, past papers, MCQs and flashcards from the website.</p></div><div class="grid resource-grid">';
-        [
-          ['Past Papers', 'MDCAT past papers uploaded on the website, with answer keys.', 'PAST PAPERS'],
-          ['PDF Notes', 'Subject notes and formula sheets for Biology, Chemistry and Physics.', 'NOTES'],
-          ['PDF MCQs', 'Practice MCQs in PDF form, chapter by chapter.', 'MCQS'],
-          ['Flashcards', 'Flip-card revision decks for every subject.', 'FLASHCARDS']
-        ].forEach(function (c) {
-          html += '<div class="card resource-card"><div><span class="chip chip-res">' + c[2] + '</span></div><h3>' + c[0] + '</h3><p>' + c[1] + '</p><div style="margin-top:6px"><button class="btn btn-teal btn-sm" type="button" data-ptres="open">Open Resources</button></div></div>';
-        });
-        html += '</div>';
-        return html;
-      }
-      function ptWireResources(root) {
-        var btns = root.querySelectorAll('[data-ptres]');
-        for (var i = 0; i < btns.length; i++) btns[i].addEventListener('click', function () { closePortal(); openResourcesView(); });
+        return '<div class="page-head"><h2>Study Resources</h2><p>Resources added to this portal will appear here.</p></div>' +
+          '<div class="card empty"><h3>No resources yet</h3><p>Resources will be added here.</p></div>';
       }
 
       /* ---------- My Results & Performance ---------- */
@@ -5115,7 +4911,6 @@
 
       /* ---------- Settings ---------- */
       function ptViewSettings() {
-        var counts = ptSubjectCounts();
         var name = currentUser ? (currentUser.fullName || currentUser.name || '') : '';
         var email = currentUser ? currentUser.email : '';
         var html = '<div class="page-head"><h2>Settings</h2><p>Portal preferences.</p></div>';
@@ -5131,7 +4926,7 @@
             '<button class="btn btn-ghost btn-sm" id="ptSettingsSignOut" type="button">Sign Out</button></div>' +
         '</div>';
         html += '<div class="card" style="margin-top:16px;padding:20px"><h3 style="font-size:16px;margin-bottom:6px">About this portal</h3>' +
-          '<p style="margin:0;color:var(--ink2);font-size:14px">Student Portal for MDCAT 2027: ' + ptChapterCount() + ' chapter tests (Biology ' + counts.Biology.tests + ', Chemistry ' + counts.Chemistry.tests + ', Physics ' + counts.Physics.tests + ') — ' + ptTotalMcqs() + ' MCQs — and 6 combined general papers, each 50 questions in 50 minutes. Results are saved with your account so you can review them later.</p></div>';
+          '<p style="margin:0;color:var(--ink2);font-size:14px">Student Portal for MDCAT 2027. The tests and resources in this portal are added separately. Results from portal tests are saved with your account so you can review them later.</p></div>';
         return html;
       }
       function ptApplyTheme(light) {
@@ -5175,7 +4970,9 @@
         }).then(function (res) {
           if (!currentUser) return;
           currentUser.results = res;
-          ptResults = res || [];
+          /* Portal only: keep attempts whose test title is registered in
+             ptTestTitles. Website attempts are never shown in the portal. */
+          ptResults = (res || []).filter(function (r) { return ptTestTitles.has(r.title); });
           if (portalView.classList.contains('open')) ptGo(ptSection);
         }).catch(function () {
           if (currentUser && portalView.classList.contains('open')) ptGo(ptSection);
@@ -5187,7 +4984,6 @@
         pt$('ptUserName').textContent = displayName;
         pt$('ptUserEmail').textContent = currentUser.email;
         pt$('ptAvatar').textContent = ptInitials(displayName);
-        ptBuildGeneral();
         ptBuildNav();
         ptGo('dashboard');
         ptLoadResults();
@@ -5209,11 +5005,11 @@
       pt$('ptMenuBtn').addEventListener('click', function () { pt$('ptSidebar').classList.add('open'); pt$('ptScrim').classList.remove('hidden'); });
       pt$('ptScrim').addEventListener('click', ptCloseSidebarMobile);
       pt$('ptSignOut').addEventListener('click', function () { closePortal(); signOut(); });
+      /* Portal navigation only — the portal never opens the website exam.
+         Portal tests (when added later) will run in the portal's own exam flow. */
       pt$('ptContent').addEventListener('click', function (e) {
         var g = e.target.closest ? e.target.closest('[data-goto]') : null;
         if (g) { ptGo(g.getAttribute('data-goto')); return; }
-        var s = e.target.closest ? e.target.closest('[data-start]') : null;
-        if (s) { closePortal(); startExam(s.getAttribute('data-start')); }
       });
       function signInSuccess(user) {
         currentUser = { name: user.fullName || user.name, fullName: user.fullName || user.name, email: user.email, results: [] };
