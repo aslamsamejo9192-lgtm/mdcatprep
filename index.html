@@ -1200,6 +1200,45 @@
       .dash-result-row b{ font-size:13px; font-weight:650; }
       .dash-result-row span{ font-family:"Sora",sans-serif; font-weight:800; font-size:13.5px; color:var(--accent-soft); white-space:nowrap; }
       .dash-empty{ font-size:13.5px; color:var(--muted); background:rgba(148,180,255,.04); border:1px dashed var(--line-strong); border-radius:13px; padding:17px 14px; text-align:center; }
+      /* Student Portal — TayyariHub-style dashboard inside the website */
+      .portal-wrap{ max-width:1180px; margin:0 auto; padding:24px 20px 110px; }
+      .portal-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+      .portal-greeting{ font-size:29px; font-weight:800; letter-spacing:-.03em; line-height:1.1; }
+      @media (min-width:640px){ .portal-greeting{ font-size:35px; } }
+      .portal-sub{ color:var(--muted); font-size:14.5px; line-height:1.55; margin-top:8px; }
+      .portal-signout{ flex:none; padding:9px 14px; font-size:13.5px; border-radius:11px; }
+      .portal-count{ margin-top:20px; background:linear-gradient(135deg, #1D4ED8, #2563EB 55%, #1E40AF); border-radius:20px; padding:18px; color:#fff; box-shadow:0 14px 30px rgba(37,99,235,.35); }
+      .portal-count-label{ font-family:"Sora",sans-serif; font-size:14px; font-weight:700; letter-spacing:.02em; }
+      .portal-count-row{ display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:10px; margin-top:14px; }
+      .portal-count-box{ background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.22); border-radius:14px; padding:12px 6px; text-align:center; min-width:0; }
+      .portal-count-box b{ display:block; font-family:"Sora",sans-serif; font-size:26px; font-weight:800; line-height:1; }
+      .portal-count-box span{ display:block; font-size:11.5px; font-weight:600; opacity:.85; margin-top:6px; }
+      .portal-hero{ margin-top:20px; }
+      .portal-hero h3{ font-size:21px; font-weight:800; letter-spacing:-.025em; line-height:1.25; }
+      .portal-hero p{ color:var(--muted); font-size:14.5px; line-height:1.6; margin-top:7px; max-width:560px; }
+      .portal-hub-label{ font-size:13px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--muted-2); margin:26px 0 12px; }
+      .portal-actions{ display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:12px; }
+      @media (max-width:560px){ .portal-actions{ grid-template-columns:1fr; } }
+      .portal-card{ display:flex; align-items:center; gap:14px; text-align:left; width:100%; background:linear-gradient(180deg, var(--surface-2), var(--surface)); border:1px solid var(--line); border-radius:18px; padding:18px; color:var(--text); font-family:inherit; box-shadow:var(--shadow-card); cursor:pointer; }
+      .portal-card:hover{ border-color:var(--blue-bright); }
+      .portal-card-ic{ flex:none; width:46px; height:46px; border-radius:13px; display:flex; align-items:center; justify-content:center; background:rgba(59,130,246,.14); color:#60A5FA; }
+      .portal-card-ic.gold{ background:rgba(245,158,11,.14); color:#FBBF24; }
+      .portal-card-ic svg{ width:23px; height:23px; }
+      .portal-card-text{ display:block; min-width:0; }
+      .portal-card-text b{ display:block; font-size:16.5px; font-weight:750; }
+      .portal-card-sub{ display:block; font-size:13px; color:var(--muted); margin-top:4px; line-height:1.45; }
+      .portal-builder{ margin-top:26px; background:linear-gradient(180deg, var(--surface-2), var(--surface)); border:1px solid var(--line); border-radius:18px; padding:20px; box-shadow:var(--shadow-card); }
+      .portal-builder h3{ font-size:19px; font-weight:800; letter-spacing:-.02em; }
+      .portal-builder p{ color:var(--muted); font-size:14px; line-height:1.6; margin-top:6px; }
+      .portal-chips{ display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+      .portal-chip{ border:1.5px solid var(--line-strong); background:transparent; color:var(--text); font-family:inherit; font-size:14px; font-weight:650; padding:8px 16px; border-radius:999px; cursor:pointer; }
+      .portal-chip.active{ background:#2563EB; border-color:#2563EB; color:#fff; }
+      .portal-builder .btn{ margin-top:16px; }
+      .portal-stats{ margin-top:26px; }
+      .portal-bottomnav{ position:fixed; left:0; right:0; bottom:0; z-index:95; display:flex; background:var(--surface); border-top:1px solid var(--line-strong); padding:6px 4px calc(8px + env(safe-area-inset-bottom)); }
+      .portal-bottomnav button{ flex:1; min-width:0; background:none; border:none; color:var(--muted); font-family:inherit; font-size:11.5px; font-weight:650; padding:6px 2px 2px; display:flex; flex-direction:column; align-items:center; gap:3px; cursor:pointer; }
+      .portal-bottomnav button svg{ width:21px; height:21px; }
+      .portal-bottomnav button.active{ color:var(--sky); }
       .dash-signout{ margin-top:22px; }
       .dash-signout .btn{ padding:10px 18px; font-size:13.5px; border-radius:11px; }
       /* Dashboard mobile containment: nothing inside the dashboard may widen it past the screen */
@@ -3004,6 +3043,104 @@
       </div>
     </div>
 
+    <!-- ================= Student Portal (in-site dashboard) ================= -->
+    <div class="exam-back" id="portalView" role="dialog" aria-modal="true" aria-label="Student Portal">
+      <div class="portal-wrap">
+        <div class="portal-top">
+          <div>
+            <h2 class="portal-greeting" id="portalGreeting">Welcome</h2>
+            <p class="portal-sub" id="portalSub"></p>
+          </div>
+          <button class="btn btn-ghost portal-signout" type="button" id="portalSignOut"><i data-lucide="log-out"></i> Sign Out</button>
+        </div>
+        <div class="portal-count">
+          <div class="portal-count-label">MDCAT 2027 · 1 August 2027</div>
+          <div class="portal-count-row">
+            <div class="portal-count-box"><b id="cdDays">—</b><span>Days</span></div>
+            <div class="portal-count-box"><b id="cdHours">—</b><span>Hours</span></div>
+            <div class="portal-count-box"><b id="cdMins">—</b><span>Mins</span></div>
+            <div class="portal-count-box"><b id="cdSecs">—</b><span>Secs</span></div>
+          </div>
+        </div>
+        <div class="portal-hero">
+          <h3>Your MDCAT preparation, in one place.</h3>
+          <p>Practice chapter tests, build your own test, and revise with flashcards — all from your account.</p>
+        </div>
+        <div class="portal-hub-label">Action Hub</div>
+        <div class="portal-actions">
+          <button class="portal-card" type="button" id="portalTakeQuiz">
+            <span class="portal-card-ic"><i data-lucide="clipboard-list"></i></span>
+            <span class="portal-card-text"><b>Take Quiz</b><span class="portal-card-sub">Chapter tests &amp; mock tests — 55 tests</span></span>
+          </button>
+          <button class="portal-card" type="button" id="portalBuildTest">
+            <span class="portal-card-ic gold"><i data-lucide="sparkles"></i></span>
+            <span class="portal-card-text"><b>Build Test</b><span class="portal-card-sub">Make a custom test from any subject</span></span>
+          </button>
+        </div>
+        <div class="portal-builder" id="portalBuilder">
+          <h3>Build Your Own Test</h3>
+          <p>Pick a subject and the number of questions. We mix questions from that subject's chapters into one test.</p>
+          <div class="portal-chips" id="portalSubjectChips">
+            <button class="portal-chip active" type="button" data-psubj="Biology">Biology</button>
+            <button class="portal-chip" type="button" data-psubj="Chemistry">Chemistry</button>
+            <button class="portal-chip" type="button" data-psubj="Physics">Physics</button>
+          </div>
+          <div class="portal-chips" id="portalCountChips">
+            <button class="portal-chip active" type="button" data-pcount="10">10 questions</button>
+            <button class="portal-chip" type="button" data-pcount="20">20 questions</button>
+            <button class="portal-chip" type="button" data-pcount="30">30 questions</button>
+          </div>
+          <button class="btn btn-primary" type="button" id="portalStartCustom"><i data-lucide="play"></i> Start Custom Test</button>
+        </div>
+        <div class="portal-hub-label">Your Progress</div>
+        <div class="dash-stats portal-stats">
+          <div class="dash-stat">
+            <div class="dash-stat-top"><span class="dash-stat-label">Tests Completed</span><i data-lucide="graduation-cap" class="ic-blue"></i></div>
+            <b id="pCompleted">0</b>
+            <p class="dash-stat-sub">Timed exams &amp; chapter drills</p>
+          </div>
+          <div class="dash-stat">
+            <div class="dash-stat-top"><span class="dash-stat-label">Questions Attempted</span><i data-lucide="layers" class="ic-green"></i></div>
+            <b id="pQuestions">0</b>
+            <p class="dash-stat-sub green">MCQs practiced</p>
+          </div>
+          <div class="dash-stat">
+            <div class="dash-stat-top"><span class="dash-stat-label">Average Score</span><i data-lucide="trending-up" class="ic-violet"></i></div>
+            <b id="pAverage">—</b>
+            <p class="dash-stat-sub">Across all completed tests</p>
+          </div>
+          <div class="dash-stat">
+            <div class="dash-stat-top"><span class="dash-stat-label">Best Score</span><i data-lucide="medal" class="ic-amber"></i></div>
+            <b id="pBest">—</b>
+            <p class="dash-stat-sub amber">Personal record</p>
+          </div>
+        </div>
+        <div class="dash-recent-head">
+          <h3 id="portalRecentTitle">Recent Test Submissions (0)</h3>
+          <button class="dash-more" type="button" id="portalMoreTests">Take More Tests <i data-lucide="arrow-right"></i></button>
+        </div>
+        <div class="dash-results" id="portalResultsList"></div>
+        <div class="portal-hub-label">Revise</div>
+        <div class="portal-actions">
+          <button class="portal-card" type="button" id="portalFlashcards">
+            <span class="portal-card-ic"><i data-lucide="layers"></i></span>
+            <span class="portal-card-text"><b>Flashcards</b><span class="portal-card-sub">9 revision decks — flip and revise</span></span>
+          </button>
+          <button class="portal-card" type="button" id="portalResources">
+            <span class="portal-card-ic gold"><i data-lucide="book-open"></i></span>
+            <span class="portal-card-text"><b>Resources</b><span class="portal-card-sub">Notes, MCQs &amp; past papers</span></span>
+          </button>
+        </div>
+      </div>
+      <nav class="portal-bottomnav" aria-label="Portal navigation">
+        <button type="button" data-pnav="home"><i data-lucide="home"></i>Home</button>
+        <button type="button" data-pnav="tests"><i data-lucide="clipboard-list"></i>Tests</button>
+        <button type="button" data-pnav="create"><i data-lucide="plus-circle"></i>Create</button>
+        <button type="button" data-pnav="flashcards"><i data-lucide="layers"></i>Flashcards</button>
+        <button type="button" data-pnav="menu"><i data-lucide="menu"></i>Menu</button>
+      </nav>
+    </div>
+
     <!-- ================= Preview notice modal ================= -->
     <div class="modal-back" id="previewModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
       <div class="modal">
@@ -4267,8 +4404,6 @@
       var FS_BASE = 'https://firestore.googleapis.com/v1/projects/mdcatprep-4ae3e/databases/(default)/documents';
       var FS_KEY = 'AIzaSyCthuUN4Uhn-gllqufLhP1cMfss8r6vFwM';
       var SESSION_KEY = 'mdcatprep-session';
-      /* Student Portal (shared preview page) — opens after a new account is created. */
-      var STUDENT_PORTAL_URL = 'https://muse.ai/s/mdcat-portal-hxr6xoxaxnxix0xqxrp/OCQO2yrtihmHaboLt_-WWoLrJ-CySzcq7Mt9QvC1mww';
       var currentUser = null;
       var accountBack = document.getElementById('accountBack');
       var authView = document.getElementById('authView');
@@ -4435,15 +4570,146 @@
         });
         lucide.createIcons();
       }
+      /* ---------- Student Portal (in-site dashboard) ---------- */
+      var portalView = document.getElementById('portalView');
+      var MDCAT_TARGET = new Date('2027-08-01T09:00:00+05:00').getTime();
+      var portalTimer = null;
+      function pad2(n) { return (n < 10 ? '0' : '') + n; }
+      function updateCountdown() {
+        var diff = MDCAT_TARGET - Date.now();
+        if (diff < 0) diff = 0;
+        var d = Math.floor(diff / 86400000);
+        var h = Math.floor(diff / 3600000) % 24;
+        var m = Math.floor(diff / 60000) % 60;
+        var s = Math.floor(diff / 1000) % 60;
+        document.getElementById('cdDays').textContent = d;
+        document.getElementById('cdHours').textContent = pad2(h);
+        document.getElementById('cdMins').textContent = pad2(m);
+        document.getElementById('cdSecs').textContent = pad2(s);
+      }
+      function renderPortalStats(res) {
+        var questions = 0, pctSum = 0, best = null;
+        res.forEach(function (r) {
+          questions += r.total; pctSum += r.pct;
+          if (best === null || r.pct > best) best = r.pct;
+        });
+        document.getElementById('pCompleted').textContent = res.length;
+        document.getElementById('pQuestions').textContent = questions;
+        document.getElementById('pAverage').textContent = res.length ? Math.round(pctSum / res.length) + '%' : '—';
+        document.getElementById('pBest').textContent = best === null ? '—' : best + '%';
+        document.getElementById('portalRecentTitle').textContent = 'Recent Test Submissions (' + res.length + ')';
+        var list = document.getElementById('portalResultsList');
+        list.innerHTML = '';
+        if (!res.length) {
+          var d = document.createElement('p');
+          d.className = 'dash-empty';
+          d.textContent = 'No test submissions yet.';
+          list.appendChild(d);
+        } else {
+          res.forEach(function (r) {
+            var row = document.createElement('div');
+            row.className = 'dash-result-row';
+            var b = document.createElement('b'); b.textContent = r.title;
+            var s = document.createElement('span'); s.textContent = r.correct + '/' + r.total + ' · ' + r.pct + '%';
+            row.appendChild(b); row.appendChild(s);
+            list.appendChild(row);
+          });
+        }
+        lucide.createIcons();
+      }
+      function openPortal() {
+        if (!currentUser) return;
+        var displayName = currentUser.name || currentUser.fullName || '';
+        var first = displayName.split(' ')[0];
+        document.getElementById('portalGreeting').textContent = 'Welcome, ' + first + '!';
+        document.getElementById('portalSub').textContent = 'Signed in as ' + currentUser.email + '.';
+        renderPortalStats([]);
+        updateCountdown();
+        if (portalTimer) clearInterval(portalTimer);
+        portalTimer = setInterval(updateCountdown, 1000);
+        portalView.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        portalView.scrollTop = 0;
+        sha256Hex(currentUser.email.toLowerCase()).then(function (userId) {
+          return fsFetchUserResults(userId);
+        }).then(function (res) {
+          if (!currentUser) return;
+          currentUser.results = res;
+          if (portalView.classList.contains('open')) renderPortalStats(res);
+        }).catch(function () {
+          if (currentUser) renderPortalStats([]);
+        });
+        lucide.createIcons();
+      }
+      function closePortal() {
+        portalView.classList.remove('open');
+        if (portalTimer) { clearInterval(portalTimer); portalTimer = null; }
+        syncBodyScroll();
+        setActiveMenuItem('home');
+      }
+      /* Build Your Own Test — mix questions from one subject's chapters */
+      var customSubject = 'Biology';
+      var customCount = 10;
+      function setCustomChips() {
+        document.querySelectorAll('#portalSubjectChips .portal-chip').forEach(function (c) {
+          c.classList.toggle('active', c.getAttribute('data-psubj') === customSubject);
+        });
+        document.querySelectorAll('#portalCountChips .portal-chip').forEach(function (c) {
+          c.classList.toggle('active', parseInt(c.getAttribute('data-pcount'), 10) === customCount);
+        });
+      }
+      document.querySelectorAll('#portalSubjectChips .portal-chip').forEach(function (c) {
+        c.addEventListener('click', function () { customSubject = c.getAttribute('data-psubj'); setCustomChips(); });
+      });
+      document.querySelectorAll('#portalCountChips .portal-chip').forEach(function (c) {
+        c.addEventListener('click', function () { customCount = parseInt(c.getAttribute('data-pcount'), 10); setCustomChips(); });
+      });
+      function startCustomTest() {
+        var pool = [];
+        Object.keys(QUESTION_BANK).forEach(function (chapter) {
+          var t = EXAM_TESTS[chapter];
+          if (t && t.subject === customSubject) pool = pool.concat(QUESTION_BANK[chapter]);
+        });
+        if (!pool.length) { showPreviewNotice(); return; }
+        for (var i = pool.length - 1; i > 0; i--) {
+          var j = Math.floor(Math.random() * (i + 1));
+          var tmp = pool[i]; pool[i] = pool[j]; pool[j] = tmp;
+        }
+        var picked = pool.slice(0, Math.min(customCount, pool.length));
+        var key = 'custom-' + Date.now();
+        EXAM_TESTS[key] = { title: 'Custom Practice — ' + customSubject, subject: customSubject, duration: picked.length * 60, questions: picked };
+        closePortal();
+        startExam(key);
+      }
+      document.getElementById('portalStartCustom').addEventListener('click', startCustomTest);
+      document.getElementById('portalTakeQuiz').addEventListener('click', function () { closePortal(); openAllTests('all'); });
+      document.getElementById('portalBuildTest').addEventListener('click', function () {
+        var b = document.getElementById('portalBuilder');
+        if (b) b.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+      document.getElementById('portalFlashcards').addEventListener('click', function () { closePortal(); openResourcesView(); });
+      document.getElementById('portalResources').addEventListener('click', function () { closePortal(); openResourcesView(); });
+      document.getElementById('portalMoreTests').addEventListener('click', function () { closePortal(); openAllTests('all'); });
+      document.getElementById('portalSignOut').addEventListener('click', function () { closePortal(); signOut(); });
+      document.querySelectorAll('[data-pnav]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var k = btn.getAttribute('data-pnav');
+          if (k === 'home') { closePortal(); window.scrollTo(0, 0); }
+          else if (k === 'tests') { closePortal(); openAllTests('all'); }
+          else if (k === 'create') { var b = document.getElementById('portalBuilder'); if (b) b.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+          else if (k === 'flashcards') { closePortal(); openResourcesView(); }
+          else if (k === 'menu') { closePortal(); setMenu(true); }
+        });
+      });
       function signInSuccess(user) {
         currentUser = { name: user.fullName || user.name, fullName: user.fullName || user.name, email: user.email, results: [] };
         try { sessionStorage.setItem(SESSION_KEY, JSON.stringify({ email: currentUser.email, fullName: currentUser.fullName })); } catch (e) {}
         document.body.classList.add('signed-in');
         document.getElementById('mmUserName').textContent = currentUser.fullName;
         document.getElementById('mmUserEmail').textContent = currentUser.email;
-        /* After sign-in (or creating an account), open the Student Portal instead of the dashboard. */
+        /* After sign-in (or creating an account), open the in-site Student Portal. */
         closeAccount();
-        window.location.href = STUDENT_PORTAL_URL;
+        openPortal();
       }
       function signOut() {
         currentUser = null;
@@ -4545,7 +4811,7 @@
       });
       document.getElementById('mmDash').addEventListener('click', function () {
         closeMenu();
-        openAccount('dashboard');
+        openPortal();
       });
       document.getElementById('dashStartPractice').addEventListener('click', function () {
         closeAccount();
