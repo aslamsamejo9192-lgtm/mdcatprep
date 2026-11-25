@@ -4601,15 +4601,19 @@
       }
       function restoreSession() {
         try {
-          var raw = sessionStorage.getItem(SESSION_KEY);
-          if (!raw) return;
+          var raw = null;
+          try { raw = localStorage.getItem(SESSION_KEY); } catch (e) {}
+          if (!raw) { try { raw = sessionStorage.getItem(SESSION_KEY); } catch (e) {} }
+          if (!raw) return false;
           var s = JSON.parse(raw);
-          if (!s || !s.email || !s.fullName) return;
+          if (!s || !s.email || !s.fullName) return false;
           currentUser = { name: s.fullName, fullName: s.fullName, email: s.email, results: [] };
           document.body.classList.add('signed-in');
           document.getElementById('mmUserName').textContent = s.fullName;
           document.getElementById('mmUserEmail').textContent = s.email;
-        } catch (e) { /* no saved session */ }
+          try { localStorage.setItem(SESSION_KEY, raw); } catch (e) {}
+          return true;
+        } catch (e) { /* no saved session */ return false; }
       }
 
       function validEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
@@ -5197,7 +5201,8 @@
       });
       function signInSuccess(user) {
         currentUser = { name: user.fullName || user.name, fullName: user.fullName || user.name, email: user.email, results: [] };
-        try { sessionStorage.setItem(SESSION_KEY, JSON.stringify({ email: currentUser.email, fullName: currentUser.fullName })); } catch (e) {}
+        try { localStorage.setItem(SESSION_KEY, JSON.stringify({ email: currentUser.email, fullName: currentUser.fullName })); } catch (e) {}
+        try { sessionStorage.removeItem(SESSION_KEY); } catch (e) {}
         document.body.classList.add('signed-in');
         document.getElementById('mmUserName').textContent = currentUser.fullName;
         document.getElementById('mmUserEmail').textContent = currentUser.email;
@@ -5207,6 +5212,7 @@
       }
       function signOut() {
         currentUser = null;
+        try { localStorage.removeItem(SESSION_KEY); } catch (e) {}
         try { sessionStorage.removeItem(SESSION_KEY); } catch (e) {}
         document.body.classList.remove('signed-in');
         closeAccount();
@@ -5323,7 +5329,8 @@
         setActiveMenuItem('tests');
         openAllTests('all');
       });
-      restoreSession();
+      /* Signed in once before? Open the Student Portal straight away. */
+      if (restoreSession()) openPortal();
     </script>
   </body>
 </html>
