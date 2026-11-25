@@ -1366,6 +1366,26 @@
       #ptShell .custom-banner h3{ font-size:16.5px; margin-bottom:4px; }
       #ptShell .custom-banner p{ margin:0; color:var(--ink2); font-size:14px; }
       #ptShell .chip-custom{ background:var(--gold-soft); color:var(--gold); }
+      /* ---------- PORTAL EXAM ---------- */
+      #ptShell .pt-test-card{ padding:20px; display:flex; flex-direction:column; gap:8px; }
+      #ptShell .pt-test-card h3{ font-size:17px; }
+      #ptShell .pt-test-card p{ margin:0; color:var(--ink2); font-size:14px; }
+      #ptShell .pt-test-meta{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+      #ptShell .pt-exam-top{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap; }
+      #ptShell .pt-timer{ font-weight:800; font-size:17px; background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:10px 16px; white-space:nowrap; }
+      #ptShell .pt-timer.low{ color:var(--red); border-color:var(--red); }
+      #ptShell .pt-qcard{ padding:18px 20px; margin-bottom:14px; }
+      #ptShell .pt-qcard h3{ font-size:15.5px; line-height:1.5; margin-bottom:12px; }
+      #ptShell .pt-opts{ display:grid; gap:9px; }
+      #ptShell .pt-opt{ display:flex; gap:10px; align-items:flex-start; text-align:left; width:100%; border:1.5px solid var(--line); background:var(--panel); color:var(--ink); border-radius:11px; padding:12px 14px; font-size:14.5px; font-weight:600; }
+      #ptShell .pt-opt .ltr{ font-weight:800; color:var(--teal-bright); flex:none; }
+      #ptShell .pt-opt.sel{ border-color:var(--teal-bright); background:var(--teal-soft); }
+      #ptShell .pt-opt.correct{ border-color:var(--green); background:var(--green-soft); }
+      #ptShell .pt-opt.wrong{ border-color:var(--red); background:var(--red-soft); }
+      #ptShell .pt-expl{ margin-top:12px; font-size:13.5px; color:var(--ink2); background:var(--panel2); border-radius:10px; padding:10px 12px; }
+      #ptShell .pt-exam-actions{ display:flex; gap:10px; flex-wrap:wrap; margin:6px 0 20px; }
+      #ptShell .pt-score{ font-size:44px; font-weight:800; }
+      #ptShell .btn:disabled{ opacity:.65; cursor:not-allowed; }
       /* ---------- RESULTS / PERFORMANCE ---------- */
       #ptShell table.tbl{ width:100%; border-collapse:collapse; font-size:14px; }
       #ptShell table.tbl th{ text-align:left; padding:11px 14px; color:var(--ink3); font-size:12px; letter-spacing:.05em; text-transform:uppercase; border-bottom:1px solid var(--line); }
@@ -4686,7 +4706,11 @@
          Empty for now: portal tests are added separately later. Website test
          titles are never added here, so website attempts never show in the
          portal's results. */
-      var ptTestTitles = new Set();
+      /* ---------- Portal question bank (portal-only; website bank untouched) ---------- */
+      var PT_TESTS = [
+        { id: 'chemical-equilibrium', title: 'Chemical Equilibrium', subject: 'Chemistry', chapter: 'Chemical Equilibrium', minutes: 60, questions: [{"q": "What is meant by dynamic equilibrium?", "options": ["The forward and reverse reactions continue at equal rates", "The reaction has completely stopped", "All reactants have been used up", "The reaction goes only in the forward direction"], "answer": 0, "explanation": "At dynamic equilibrium both reactions continue, but at equal rates, so concentrations stay constant.", "topic": "Dynamic equilibrium"}, {"q": "Which condition is necessary for a chemical equilibrium to be established?", "options": ["The system must be open", "The system must be closed", "The temperature must be very high", "A catalyst must be present"], "answer": 1, "explanation": "In an open system, products escape and equilibrium cannot be reached.", "topic": "Dynamic equilibrium"}, {"q": "At equilibrium, which of the following remains constant?", "options": ["Rate of the forward reaction only", "Temperature of the surroundings", "Concentrations of reactants and products", "Amount of the catalyst"], "answer": 2, "explanation": "At equilibrium the composition of the mixture does not change with time.", "topic": "Dynamic equilibrium"}, {"q": "In a reversible reaction at equilibrium:", "options": ["Forward rate = reverse rate", "Forward rate > reverse rate", "Reverse rate > forward rate", "Both rates are zero"], "answer": 0, "explanation": "Equilibrium is reached when the forward and reverse rates become equal.", "topic": "Dynamic equilibrium"}, {"q": "Which statement about chemical equilibrium is true?", "options": ["Equilibrium means the reaction has stopped", "A catalyst changes the equilibrium constant", "The same equilibrium can be reached from either direction", "Concentrations of reactants and products are equal at equilibrium"], "answer": 2, "explanation": "Starting from reactants or from products leads to the same equilibrium mixture.", "topic": "Dynamic equilibrium"}, {"q": "A reaction reaches equilibrium when:", "options": ["All reactants are used up", "The rates of the forward and backward reactions become equal", "The reaction vessel is cooled", "The catalyst is removed"], "answer": 1, "explanation": "Equal opposing rates keep the concentrations constant.", "topic": "Dynamic equilibrium"}, {"q": "For the reaction N2 + 3H2 <-> 2NH3, the equilibrium constant Kc is:", "options": ["[NH3] / ([N2][H2])", "[N2][H2]^3 / [NH3]^2", "[NH3]^2 / ([N2][H2]^3)", "[NH3]^2 / ([N2][H2])"], "answer": 2, "explanation": "Kc = [products]^coefficients / [reactants]^coefficients.", "topic": "Equilibrium constant Kc"}, {"q": "For H2 + I2 <-> 2HI, what are the units of Kc?", "options": ["No units", "mol/dm3", "dm3/mol", "mol^2/dm^6"], "answer": 0, "explanation": "Equal moles on both sides cancel out, so Kc has no units.", "topic": "Equilibrium constant Kc"}, {"q": "For N2 + 3H2 <-> 2NH3, what are the units of Kc?", "options": ["dm6/mol2", "dm3/mol", "mol2/dm6", "No units"], "answer": 0, "explanation": "Kc = [NH3]^2/([N2][H2]^3) has units (mol/dm3)^-2 = dm6/mol2.", "topic": "Equilibrium constant Kc"}, {"q": "For CaCO3(s) <-> CaO(s) + CO2(g), the Kc expression is:", "options": ["[CaO][CO2]/[CaCO3]", "[CaO]/[CaCO3]", "[CaCO3]/[CO2]", "[CO2]"], "answer": 3, "explanation": "Pure solids are omitted from the equilibrium expression.", "topic": "Equilibrium constant Kc"}, {"q": "For 2SO2 + O2 <-> 2SO3, Kc is equal to:", "options": ["[SO3]^2 / ([SO2]^2[O2])", "[SO3] / ([SO2][O2])", "[SO2]^2[O2] / [SO3]^2", "[SO3]^2 / ([SO2][O2])"], "answer": 0, "explanation": "Each concentration is raised to the power of its coefficient.", "topic": "Equilibrium constant Kc"}, {"q": "For PCl5(g) <-> PCl3(g) + Cl2(g), Kc is equal to:", "options": ["[PCl5] / ([PCl3][Cl2])", "[PCl3] / [PCl5]", "[Cl2] / [PCl5]", "[PCl3][Cl2] / [PCl5]"], "answer": 3, "explanation": "Kc = [products]/[reactants] with coefficients as powers.", "topic": "Equilibrium constant Kc"}, {"q": "The equilibrium constant for a reaction is 4.0 at 25 degrees Celsius. If the reaction is reversed, the new Kc is:", "options": ["0.25", "4.0", "2.0", "16.0"], "answer": 0, "explanation": "Reversing a reaction inverts Kc: 1/4.0 = 0.25.", "topic": "Equilibrium constant Kc"}, {"q": "If Kc for A + B <-> C is 2.0, what is Kc for 2A + 2B <-> 2C?", "options": ["2.0", "4.0", "1.0", "8.0"], "answer": 1, "explanation": "Doubling the equation squares Kc: 2.0^2 = 4.0.", "topic": "Equilibrium constant Kc"}, {"q": "The relation between Kp and Kc is:", "options": ["Kp = Kc(RT)^-delta n", "Kp = Kc + RT", "Kp = Kc / RT", "Kp = Kc(RT)^delta n"], "answer": 3, "explanation": "Kp = Kc(RT)^delta n, where delta n = moles of gaseous products - moles of gaseous reactants.", "topic": "Equilibrium constant Kp"}, {"q": "For N2 + 3H2 <-> 2NH3, the value of delta n is:", "options": ["0", "+2", "-4", "-2"], "answer": 3, "explanation": "delta n = 2 - 4 = -2.", "topic": "Equilibrium constant Kp"}, {"q": "For which reaction is Kp equal to Kc?", "options": ["N2 + 3H2 <-> 2NH3", "H2 + I2 <-> 2HI", "PCl5 <-> PCl3 + Cl2", "2SO2 + O2 <-> 2SO3"], "answer": 1, "explanation": "Kp = Kc when delta n = 0, as in H2 + I2 <-> 2HI.", "topic": "Equilibrium constant Kp"}, {"q": "For 2NO2(g) <-> N2O4(g), what is the value of delta n in Kp = Kc(RT)^delta n?", "options": ["+1", "-2", "0", "-1"], "answer": 3, "explanation": "delta n = 1 - 2 = -1.", "topic": "Equilibrium constant Kp"}, {"q": "If Qc is less than Kc, the reaction will proceed:", "options": ["In the reverse direction", "Not at all", "In the forward direction", "Until Qc becomes zero"], "answer": 2, "explanation": "Qc < Kc means more products must form to reach equilibrium.", "topic": "Reaction quotient"}, {"q": "If Qc is greater than Kc, the net reaction is:", "options": ["Forward", "No net change", "Faster in both directions", "Backward"], "answer": 3, "explanation": "Qc > Kc means products must convert back to reactants.", "topic": "Reaction quotient"}, {"q": "A reaction mixture is at equilibrium when:", "options": ["Qc = 0", "Qc > Kc", "Qc = Kc", "Qc < Kc"], "answer": 2, "explanation": "At equilibrium the reaction quotient equals the equilibrium constant.", "topic": "Reaction quotient"}, {"q": "For N2 + 3H2 <-> 2NH3, adding more H2 will:", "options": ["Shift the equilibrium to the left", "Have no effect", "Decrease Kc", "Shift the equilibrium to the right"], "answer": 3, "explanation": "Added reactant is used up by the forward reaction.", "topic": "Le Chatelier - concentration"}, {"q": "For H2 + I2 <-> 2HI, removing HI from the mixture will:", "options": ["Shift the equilibrium to the right", "Shift the equilibrium to the left", "Have no effect", "Decrease Kc"], "answer": 0, "explanation": "Removing a product makes the forward reaction replace it.", "topic": "Le Chatelier - concentration"}, {"q": "Adding a reactant to an equilibrium mixture:", "options": ["Always decreases Kc", "Shifts the equilibrium to produce more reactant", "Shifts the equilibrium to use up the added reactant", "Has no effect on the position of equilibrium"], "answer": 2, "explanation": "Le Chatelier's principle: the system opposes the change.", "topic": "Le Chatelier - concentration"}, {"q": "In the equilibrium Fe3+ + SCN- <-> FeSCN2+ (blood-red complex), adding Fe3+ ions will:", "options": ["Lighten the colour", "Cause no change", "Deepen the red colour", "Precipitate FeSCN2+"], "answer": 2, "explanation": "More FeSCN2+ forms, so the red colour deepens.", "topic": "Le Chatelier - concentration"}, {"q": "For N2O4(g) <-> 2NO2(g), increasing the pressure will:", "options": ["Favour NO2", "Have no effect", "Favour N2O4", "Increase Kc"], "answer": 2, "explanation": "Higher pressure favours the side with fewer gas moles.", "topic": "Le Chatelier - pressure"}, {"q": "For H2 + I2 <-> 2HI, increasing the pressure has:", "options": ["No effect on the position of equilibrium", "Shifts the equilibrium to the right", "Shifts the equilibrium to the left", "Increases Kc"], "answer": 0, "explanation": "Equal gas moles on both sides, so pressure has no effect.", "topic": "Le Chatelier - pressure"}, {"q": "For 2SO2 + O2 <-> 2SO3, decreasing the volume (increasing pressure) will:", "options": ["Shift the equilibrium to the left", "Shift the equilibrium to the right", "Have no effect", "Decrease Kc"], "answer": 1, "explanation": "3 moles become 2 moles, so higher pressure favours SO3.", "topic": "Le Chatelier - pressure"}, {"q": "For PCl5(g) <-> PCl3(g) + Cl2(g), decreasing the pressure will:", "options": ["Decrease the dissociation of PCl5", "Increase the dissociation of PCl5", "Have no effect", "Increase Kc"], "answer": 1, "explanation": "Lower pressure favours the side with more gas moles.", "topic": "Le Chatelier - pressure"}, {"q": "Adding an inert gas at constant volume to an equilibrium mixture:", "options": ["Shifts the equilibrium to the right", "Has no effect on the position of equilibrium", "Shifts the equilibrium to the left", "Increases Kc"], "answer": 1, "explanation": "At constant volume the partial pressures do not change.", "topic": "Le Chatelier - pressure"}, {"q": "For the exothermic reaction N2 + 3H2 <-> 2NH3 (delta H = -92 kJ/mol), increasing the temperature will:", "options": ["Increase the yield of NH3", "Have no effect", "Decrease the yield of NH3", "Increase Kc"], "answer": 2, "explanation": "Higher temperature favours the endothermic reverse reaction.", "topic": "Le Chatelier - temperature"}, {"q": "For an endothermic reaction, increasing the temperature:", "options": ["Decreases Kc", "Increases Kc", "Leaves Kc unchanged", "Shifts the equilibrium to the left"], "answer": 1, "explanation": "Heat favours the endothermic direction, so K increases.", "topic": "Le Chatelier - temperature"}, {"q": "For the exothermic reaction 2SO2 + O2 <-> 2SO3, lowering the temperature will:", "options": ["Decrease the yield of SO3", "Increase the yield of SO3", "Have no effect", "Decrease Kc"], "answer": 1, "explanation": "Lower temperature favours the exothermic forward reaction.", "topic": "Le Chatelier - temperature"}, {"q": "The value of Kc for an exothermic reaction decreases when the temperature is:", "options": ["Increased", "Decreased", "Kept constant", "Doubled"], "answer": 0, "explanation": "Heating an exothermic reaction shifts it backwards, so K falls.", "topic": "Le Chatelier - temperature"}, {"q": "Which factor changes the value of the equilibrium constant?", "options": ["Catalyst", "Pressure", "Temperature", "Concentration"], "answer": 2, "explanation": "Only temperature changes K; concentration, pressure and catalyst do not.", "topic": "Le Chatelier - temperature"}, {"q": "A catalyst in a reversible reaction:", "options": ["Shifts the equilibrium to the right", "Increases Kc", "Decreases Kc", "Increases the rate of both forward and reverse reactions equally"], "answer": 3, "explanation": "A catalyst speeds up both directions equally, so K is unchanged.", "topic": "Catalyst"}, {"q": "The presence of a catalyst:", "options": ["Helps equilibrium to be reached faster without changing K", "Changes the equilibrium constant", "Changes the position of equilibrium", "Increases the yield"], "answer": 0, "explanation": "A catalyst changes the rate, not the position of equilibrium.", "topic": "Catalyst"}, {"q": "For PCl5 <-> PCl3 + Cl2, if 1.0 mol of PCl5 is taken and 0.4 mol dissociates, the degree of dissociation is:", "options": ["0.2", "0.6", "0.8", "0.4"], "answer": 3, "explanation": "Degree of dissociation = moles dissociated / initial moles = 0.4/1.0.", "topic": "Degree of dissociation"}, {"q": "The degree of dissociation of N2O4 increases when:", "options": ["The pressure is increased", "NO2 is added", "The volume is decreased", "The temperature is increased"], "answer": 3, "explanation": "Dissociation of N2O4 is endothermic, so heating favours it.", "topic": "Degree of dissociation"}, {"q": "For a gas-phase dissociation A <-> B + C, the degree of dissociation increases when the pressure is:", "options": ["Decreased", "Increased", "Kept constant", "Doubled"], "answer": 0, "explanation": "Lower pressure favours the side with more gas moles.", "topic": "Degree of dissociation"}, {"q": "In the dissociation of PCl5, adding Cl2 will:", "options": ["Increase the dissociation", "Have no effect", "Increase Kc", "Decrease the dissociation"], "answer": 3, "explanation": "Added product shifts the equilibrium back towards PCl5.", "topic": "Degree of dissociation"}, {"q": "The Haber process is used to manufacture:", "options": ["Sulphuric acid", "Nitric acid", "Ammonia", "Hydrogen"], "answer": 2, "explanation": "N2 + 3H2 <-> 2NH3 is the Haber process.", "topic": "Haber process"}, {"q": "The catalyst used in the Haber process is:", "options": ["Vanadium pentoxide", "Platinum", "Iron", "Nickel"], "answer": 2, "explanation": "Finely divided iron catalyses the Haber process.", "topic": "Haber process"}, {"q": "The conditions that favour the highest yield of ammonia in the Haber process are:", "options": ["High temperature and low pressure", "High temperature and high pressure", "Low temperature and low pressure", "Low temperature and high pressure"], "answer": 3, "explanation": "The reaction is exothermic with fewer product moles, so low T and high P favour NH3.", "topic": "Haber process"}, {"q": "In the Haber process, the unreacted nitrogen and hydrogen are:", "options": ["Discarded", "Recycled", "Burned", "Liquefied"], "answer": 1, "explanation": "Unreacted gases are separated from NH3 and fed back into the reactor.", "topic": "Haber process"}, {"q": "The Contact process is used to manufacture:", "options": ["Ammonia", "Nitric acid", "Sulphuric acid", "Hydrochloric acid"], "answer": 2, "explanation": "The Contact process oxidises SO2 to SO3 for sulphuric acid.", "topic": "Contact process"}, {"q": "The catalyst used in the Contact process is:", "options": ["Iron", "Vanadium pentoxide (V2O5)", "Platinum", "Nickel"], "answer": 1, "explanation": "V2O5 catalyses 2SO2 + O2 <-> 2SO3.", "topic": "Contact process"}, {"q": "In the Contact process, the conversion of SO2 to SO3 is favoured by:", "options": ["Low temperature and high pressure", "High temperature and low pressure", "High temperature and high pressure", "Low temperature and low pressure"], "answer": 0, "explanation": "The reaction is exothermic with fewer product moles.", "topic": "Contact process"}, {"q": "At equilibrium, [N2] = 0.5 mol/dm3, [H2] = 1.5 mol/dm3 and [NH3] = 0.5 mol/dm3 for N2 + 3H2 <-> 2NH3. What is Kc?", "options": ["0.5", "1.48", "0.074", "0.148"], "answer": 3, "explanation": "Kc = 0.5^2 / (0.5 x 1.5^3) = 0.25 / 1.6875 = 0.148.", "topic": "Numerical problems"}, {"q": "For H2 + I2 <-> 2HI, at equilibrium [H2] = [I2] = 0.1 mol/dm3 and [HI] = 0.8 mol/dm3. What is Kc?", "options": ["8", "64", "0.64", "6.4"], "answer": 1, "explanation": "Kc = 0.8^2 / (0.1 x 0.1) = 0.64 / 0.01 = 64.", "topic": "Numerical problems"}, {"q": "For A <-> B + C, 1.0 mol of A is taken and 0.6 mol remains at equilibrium. What is the degree of dissociation?", "options": ["0.6", "0.3", "0.5", "0.4"], "answer": 3, "explanation": "Dissociated moles = 1.0 - 0.6 = 0.4, so alpha = 0.4/1.0 = 0.4.", "topic": "Numerical problems"}, {"q": "For 2NO2 <-> N2O4, Kc = 4.0. If [NO2] = 0.5 mol/dm3 at equilibrium, what is [N2O4]?", "options": ["0.5 mol/dm3", "2.0 mol/dm3", "1.0 mol/dm3", "4.0 mol/dm3"], "answer": 2, "explanation": "[N2O4] = Kc x [NO2]^2 = 4.0 x 0.25 = 1.0 mol/dm3.", "topic": "Numerical problems"}, {"q": "Kp = 0.5 for a reaction with delta n = -1 at 300 K. What is Kc? (R = 0.0821 dm3 atm / mol K)", "options": ["0.02", "0.5", "12.3", "24.6"], "answer": 2, "explanation": "Kc = Kp / (RT)^delta n = 0.5 x (0.0821 x 300) = 0.5 x 24.63 = 12.3.", "topic": "Numerical problems"}, {"q": "For PCl5 <-> PCl3 + Cl2 in a 1 dm3 vessel, 1.0 mol of PCl5 is taken and 0.2 mol dissociates at equilibrium. What is Kc?", "options": ["0.05 mol/dm3", "0.25 mol/dm3", "0.5 mol/dm3", "0.04 mol/dm3"], "answer": 0, "explanation": "Kc = (0.2 x 0.2) / 0.8 = 0.05 mol/dm3.", "topic": "Numerical problems"}, {"q": "Which of the following is a homogeneous equilibrium?", "options": ["H2(g) + I2(g) <-> 2HI(g)", "CaCO3(s) <-> CaO(s) + CO2(g)", "C(s) + O2(g) <-> CO2(g)", "Zn(s) + Cu2+ <-> Zn2+ + Cu(s)"], "answer": 0, "explanation": "All species are in the same (gas) phase.", "topic": "Types of equilibrium"}, {"q": "Which of the following is a heterogeneous equilibrium?", "options": ["N2 + 3H2 <-> 2NH3", "2SO2 + O2 <-> 2SO3", "H2 + I2 <-> 2HI", "CaCO3(s) <-> CaO(s) + CO2(g)"], "answer": 3, "explanation": "Reactants and products are in different phases (solid and gas).", "topic": "Types of equilibrium"}, {"q": "In the decomposition of CaCO3(s), the equilibrium constant Kp is equal to:", "options": ["[CaO][CO2]/[CaCO3]", "The partial pressure of CO2", "[CO2]/[CaO]", "1/[CO2]"], "answer": 1, "explanation": "Solids are omitted, so Kp = pCO2.", "topic": "Types of equilibrium"}, {"q": "The equilibrium 2NO2(g) <-> N2O4(g) is exothermic in the forward direction. Cooling the mixture will:", "options": ["Darken the colour (more NO2)", "Lighten the colour (more N2O4)", "Cause no colour change", "Increase Kc and darken the colour"], "answer": 1, "explanation": "Cooling favours the forward reaction; brown NO2 converts to colourless N2O4.", "topic": "Types of equilibrium"}, {"q": "For A + B <-> C + D, Kc = 1.0. If [A] = [B] = [C] = [D] = 1.0 mol/dm3, the mixture is:", "options": ["Will shift forward", "At equilibrium", "Will shift backward", "Cannot be told"], "answer": 1, "explanation": "Qc = (1 x 1)/(1 x 1) = 1.0 = Kc.", "topic": "Types of equilibrium"}, {"q": "The equilibrium constant Kc has a very large value (much greater than 1). This means:", "options": ["The equilibrium lies far to the right", "The equilibrium lies far to the left", "The reaction is very slow", "The reaction is irreversible"], "answer": 0, "explanation": "A large K means products dominate at equilibrium.", "topic": "Types of equilibrium"}] }
+      ];
+      var ptTestTitles = new Set(PT_TESTS.map(function (t) { return t.title; }));
       var ptSection = 'dashboard';
       var ptCountdownTimer = null;
 
@@ -4778,10 +4802,13 @@
       }
       function ptCloseSidebarMobile() { pt$('ptSidebar').classList.remove('open'); pt$('ptScrim').classList.add('hidden'); }
       function ptGo(sec) {
+        if (ptExam && sec !== 'exam') return;
         ptSection = sec;
         var btns = pt$('ptSideNav').querySelectorAll('button');
         for (var i = 0; i < btns.length; i++) btns[i].classList.toggle('on', btns[i].getAttribute('data-sec') === sec);
         pt$('ptTopTitle').textContent = ptSECTION_TITLES[sec] || 'Dashboard';
+        if (sec === 'exam' && ptExam) pt$('ptTopTitle').textContent = ptExam.test.title;
+        if (sec === 'result') pt$('ptTopTitle').textContent = 'Result';
         var c = pt$('ptContent');
         if (sec === 'dashboard') c.innerHTML = ptViewDashboard();
         else if (sec === 'all') c.innerHTML = ptViewAllTests();
@@ -4792,8 +4819,10 @@
         else if (sec === 'resources') c.innerHTML = ptViewResources();
         else if (sec === 'myresults') c.innerHTML = ptViewMyResults();
         else if (sec === 'performance') c.innerHTML = ptViewPerformance();
+        else if (sec === 'exam') c.innerHTML = ptViewExam();
+        else if (sec === 'result') c.innerHTML = ptViewResult();
         else if (sec === 'settings') { c.innerHTML = ptViewSettings(); ptWireSettings(c); }
-        portalView.scrollTop = 0;
+        if (!(sec === 'exam' && ptExam)) portalView.scrollTop = 0;
         lucide.createIcons();
       }
 
@@ -4822,7 +4851,7 @@
           ptStatCard('Best Score', st.tests ? st.best + '%' : '—', st.tests ? 'your highest result' : 'attempt a test to set it') +
           '</div>';
         html += '<h3 class="sec-title">Quick Actions</h3><div class="grid quick-grid">' +
-          ptQuickCard('all', 'all', 'All Tests', 'No tests added yet') +
+          ptQuickCard('all', 'all', 'All Tests', PT_TESTS.length ? PT_TESTS.length + ' test available' : 'No tests added yet') +
           ptQuickCard('general', 'general', 'General Tests', 'No general papers yet') +
           ptQuickCard('myresults', 'results', 'My Results', 'Review past attempts') +
           ptQuickCard('performance', 'performance', 'Performance', 'Subject-wise accuracy') +
@@ -4839,22 +4868,44 @@
         return html;
       }
 
-      /* ---------- Test lists (portal-only; empty until portal tests are added) ---------- */
+      /* ---------- Test lists (portal-only) ---------- */
+      function ptTestCard(t) {
+        var done = ptResults.some(function (r) { return r.title === t.title; });
+        return '<div class="card pt-test-card"><div class="pt-test-meta">' + ptSubjChip(t.subject) + '<span class="chip chip-res">' + ptEsc(t.chapter) + '</span></div>' +
+          '<h3>' + ptEsc(t.title) + '</h3><p>' + t.questions.length + ' Questions · ' + t.minutes + ' min' + (done ? ' · Attempted' : '') + '</p>' +
+          '<div><button class="btn btn-teal" type="button" data-pt-start="' + t.id + '">Start Test</button></div></div>';
+      }
+      function ptTestListHtml(list) {
+        return '<div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr))">' + list.map(ptTestCard).join('') + '</div>';
+      }
       function ptViewAllTests() {
-        return '<div class="page-head"><h2>All Tests</h2><p>Tests added to this portal will appear here.</p></div>' +
-          '<div class="card empty"><h3>No tests added yet</h3><p>Tests will be added here.</p></div>';
+        var html = '<div class="page-head"><h2>All Tests</h2><p>Tests added to this portal will appear here.</p></div>';
+        if (!PT_TESTS.length) return html + '<div class="card empty"><h3>No tests added yet</h3><p>Tests will be added here.</p></div>';
+        return html + ptTestListHtml(PT_TESTS);
       }
       function ptViewGeneralTests() {
         return '<div class="page-head"><h2>General Tests</h2><p>Combined papers added to this portal will appear here.</p></div>' +
           '<div class="card empty"><h3>No general papers yet</h3><p>General papers will be added here.</p></div>';
       }
       function ptViewChapterWise() {
-        return '<div class="page-head"><h2>Chapter-wise Tests</h2><p>Chapter tests added to this portal will appear here, grouped by subject.</p></div>' +
-          '<div class="card empty"><h3>No chapter tests yet</h3><p>Chapter tests will be added here.</p></div>';
+        var html = '<div class="page-head"><h2>Chapter-wise Tests</h2><p>Chapter tests added to this portal will appear here, grouped by subject.</p></div>';
+        if (!PT_TESTS.length) return html + '<div class="card empty"><h3>No chapter tests yet</h3><p>Chapter tests will be added here.</p></div>';
+        var bySubj = {};
+        PT_TESTS.forEach(function (t) { (bySubj[t.subject] = bySubj[t.subject] || []).push(t); });
+        Object.keys(bySubj).forEach(function (s) {
+          html += '<h3 class="sec-title">' + ptEsc(s) + '</h3>' + ptTestListHtml(bySubj[s]);
+        });
+        return html;
       }
       function ptViewSubjectWise() {
-        return '<div class="page-head"><h2>Subject-wise Tests</h2><p>Subject tests added to this portal will appear here.</p></div>' +
-          '<div class="card empty"><h3>No subject tests yet</h3><p>Subject tests will be added here.</p></div>';
+        var html = '<div class="page-head"><h2>Subject-wise Tests</h2><p>Subject tests added to this portal will appear here.</p></div>';
+        if (!PT_TESTS.length) return html + '<div class="card empty"><h3>No subject tests yet</h3><p>Subject tests will be added here.</p></div>';
+        var bySubj = {};
+        PT_TESTS.forEach(function (t) { (bySubj[t.subject] = bySubj[t.subject] || []).push(t); });
+        Object.keys(bySubj).forEach(function (s) {
+          html += '<h3 class="sec-title">' + ptEsc(s) + ' · ' + bySubj[s].length + ' test' + (bySubj[s].length > 1 ? 's' : '') + '</h3>' + ptTestListHtml(bySubj[s]);
+        });
+        return html;
       }
 
       /* ---------- Custom Test (portal-only; empty until portal tests are added) ---------- */
@@ -4953,6 +5004,124 @@
         if (so) so.addEventListener('click', function () { closePortal(); signOut(); });
       }
 
+      /* ---------- Portal exam flow (portal-only; never the website exam) ---------- */
+      var ptExam = null;
+      var ptLastResult = null;
+      function ptFmtClock(sec) {
+        sec = Math.max(0, sec);
+        return ptPad2(Math.floor(sec / 60)) + ':' + ptPad2(sec % 60);
+      }
+      function ptFindTest(id) {
+        for (var i = 0; i < PT_TESTS.length; i++) if (PT_TESTS[i].id === id) return PT_TESTS[i];
+        return null;
+      }
+      function ptStartTest(id) {
+        var t = ptFindTest(id);
+        if (!t) return;
+        ptExam = { test: t, answers: t.questions.map(function () { return -1; }), secondsLeft: t.minutes * 60, totalSeconds: t.minutes * 60, timerId: null };
+        ptSection = 'exam';
+        ptGo('exam');
+        ptExam.timerId = setInterval(function () {
+          if (!ptExam) return;
+          ptExam.secondsLeft--;
+          var el = document.getElementById('ptTimer');
+          if (el) { el.textContent = ptFmtClock(ptExam.secondsLeft); el.classList.toggle('low', ptExam.secondsLeft <= 60); }
+          if (ptExam.secondsLeft <= 0) ptSubmitExam(true);
+        }, 1000);
+      }
+      function ptUpdateExamProgress() {
+        if (!ptExam) return;
+        var n = ptExam.answers.filter(function (a) { return a !== -1; }).length;
+        var el = document.getElementById('ptExamProgress');
+        if (el) el.textContent = n + ' of ' + ptExam.test.questions.length + ' answered';
+      }
+      function ptViewExam() {
+        if (!ptExam) return ptViewAllTests();
+        var t = ptExam.test;
+        var letters = ['A', 'B', 'C', 'D'];
+        var html = '<div class="page-head"><div class="pt-exam-top"><div><h2>' + ptEsc(t.title) + '</h2><p id="ptExamProgress">' + ptExam.answers.filter(function (a) { return a !== -1; }).length + ' of ' + t.questions.length + ' answered</p></div>' +
+          '<div class="pt-timer" id="ptTimer">' + ptFmtClock(ptExam.secondsLeft) + '</div></div></div>';
+        ptExam.test.questions.forEach(function (q, i) {
+          html += '<div class="card pt-qcard"><h3>' + (i + 1) + '. ' + ptEsc(q.q) + '</h3><div class="pt-opts">';
+          q.options.forEach(function (opt, oi) {
+            html += '<button type="button" class="pt-opt' + (ptExam.answers[i] === oi ? ' sel' : '') + '" data-pt-opt="' + i + ':' + oi + '"><span class="ltr">' + letters[oi] + '.</span><span>' + ptEsc(opt) + '</span></button>';
+          });
+          html += '</div></div>';
+        });
+        html += '<div class="pt-exam-actions" id="ptSubmitArea"><button class="btn btn-teal" type="button" data-pt-submit>Submit Test</button></div>';
+        return html;
+      }
+      function ptChoose(qi, oi) {
+        if (!ptExam) return;
+        ptExam.answers[qi] = oi;
+        var cards = pt$('ptContent').querySelectorAll('.pt-qcard');
+        var card = cards[qi];
+        if (card) card.querySelectorAll('.pt-opt').forEach(function (b, bi) { b.classList.toggle('sel', bi === oi); });
+        ptUpdateExamProgress();
+      }
+      function ptAskSubmit() {
+        if (!ptExam) return;
+        var un = ptExam.answers.filter(function (a) { return a === -1; }).length;
+        var area = document.getElementById('ptSubmitArea');
+        if (!area) return;
+        area.innerHTML = '<div class="card" style="padding:18px 20px;flex:1"><b>Submit this test?</b><p style="margin:6px 0 14px;color:var(--ink2);font-size:14px">' +
+          (un > 0 ? un + ' question' + (un > 1 ? 's are' : ' is') + ' still unanswered — unanswered questions get zero marks.' : 'All questions are answered.') +
+          '</p><div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn btn-teal" type="button" data-pt-confirm>Submit</button>' +
+          '<button class="btn btn-ghost" type="button" data-pt-cancel>Continue Exam</button></div></div>';
+      }
+      function ptSubmitExam(auto) {
+        if (!ptExam) return;
+        var ex = ptExam;
+        if (ex.timerId) clearInterval(ex.timerId);
+        var correct = 0, wrong = 0, skipped = 0;
+        var review = ex.test.questions.map(function (q, i) {
+          var chosen = ex.answers[i];
+          if (chosen === -1) skipped++;
+          else if (chosen === q.answer) correct++;
+          else wrong++;
+          return { q: q.q, options: q.options, answer: q.answer, chosen: chosen, explanation: q.explanation || '' };
+        });
+        var total = ex.test.questions.length;
+        var pct = total ? Math.round(correct * 100 / total) : 0;
+        ptLastResult = { title: ex.test.title, subject: ex.test.subject, correct: correct, wrong: wrong, skipped: skipped, total: total, pct: pct, timeUsed: ptFmtClock(ex.totalSeconds - ex.secondsLeft), date: new Date().toISOString(), review: review, autoSubmitted: !!auto };
+        saveResultToStore({ testName: ex.test.title, subject: ex.test.subject, score: correct, total: total, percentage: pct });
+        ptResults.unshift({ title: ex.test.title, subject: ex.test.subject, correct: correct, total: total, pct: pct, date: ptLastResult.date });
+        ptExam = null;
+        ptSection = 'result';
+        ptGo('result');
+      }
+      function ptViewResult() {
+        if (!ptLastResult) return ptViewAllTests();
+        var r = ptLastResult;
+        var letters = ['A', 'B', 'C', 'D'];
+        var html = '<div class="page-head"><h2>' + ptEsc(r.title) + '</h2><p>' + (r.autoSubmitted ? 'Time expired — auto submitted. ' : '') + 'Your result is saved with your account.</p></div>';
+        html += '<div class="card" style="padding:26px;text-align:center;margin-bottom:18px"><div class="pt-score">' + r.correct + ' / ' + r.total + '</div>' +
+          '<div style="margin-top:6px">' + ptPctPill(r.pct) + '</div>' +
+          '<p style="margin:12px 0 0;color:var(--ink2);font-size:14px">' + r.correct + ' Correct · ' + r.wrong + ' Wrong · ' + r.skipped + ' Skipped · Time used ' + r.timeUsed + '</p>' +
+          '<div style="margin-top:18px"><button class="btn btn-teal" type="button" data-pt-back>Back to Tests</button></div></div>';
+        html += '<h3 class="sec-title">Answer Review</h3>';
+        r.review.forEach(function (item, i) {
+          html += '<div class="card pt-qcard"><h3>' + (i + 1) + '. ' + ptEsc(item.q) + '</h3><div class="pt-opts">';
+          item.options.forEach(function (opt, oi) {
+            var cls = '';
+            var tag = '';
+            if (oi === item.answer) { cls = ' correct'; tag = ' <b>· Correct answer</b>'; }
+            if (oi === item.chosen && item.chosen !== item.answer) { cls = ' wrong'; tag = ' <b>· Your answer</b>'; }
+            if (oi === item.chosen && item.chosen === item.answer) { tag = ' <b>· Your answer ✓</b>'; }
+            html += '<div class="pt-opt' + cls + '"><span class="ltr">' + letters[oi] + '.</span><span>' + ptEsc(opt) + tag + '</span></div>';
+          });
+          html += '</div>';
+          if (item.chosen === -1) html += '<div class="pt-expl">You did not answer this question.</div>';
+          else if (item.explanation) html += '<div class="pt-expl">' + ptEsc(item.explanation) + '</div>';
+          html += '</div>';
+        });
+        return html;
+      }
+      function ptEndExam() {
+        if (ptExam && ptExam.timerId) clearInterval(ptExam.timerId);
+        ptExam = null;
+      }
+
       /* ---------- Open / close ---------- */
       function ptUpdateCountdown() {
         var d = pt$('ptCdDays');
@@ -4998,6 +5167,7 @@
         lucide.createIcons();
       }
       function closePortal() {
+        ptEndExam();
         portalView.classList.remove('open');
         if (ptCountdownTimer) { clearInterval(ptCountdownTimer); ptCountdownTimer = null; }
         syncBodyScroll();
@@ -5012,6 +5182,18 @@
       pt$('ptContent').addEventListener('click', function (e) {
         var g = e.target.closest ? e.target.closest('[data-goto]') : null;
         if (g) { ptGo(g.getAttribute('data-goto')); return; }
+        var st = e.target.closest ? e.target.closest('[data-pt-start]') : null;
+        if (st) { st.textContent = 'Starting…'; st.disabled = true; ptStartTest(st.getAttribute('data-pt-start')); return; }
+        var op = e.target.closest ? e.target.closest('[data-pt-opt]') : null;
+        if (op) { var parts = op.getAttribute('data-pt-opt').split(':'); ptChoose(parseInt(parts[0], 10), parseInt(parts[1], 10)); return; }
+        var sb = e.target.closest ? e.target.closest('[data-pt-submit]') : null;
+        if (sb) { ptAskSubmit(); return; }
+        var cf = e.target.closest ? e.target.closest('[data-pt-confirm]') : null;
+        if (cf) { cf.textContent = 'Submitting…'; cf.disabled = true; ptSubmitExam(false); return; }
+        var cc = e.target.closest ? e.target.closest('[data-pt-cancel]') : null;
+        if (cc) { ptGo('exam'); return; }
+        var bk = e.target.closest ? e.target.closest('[data-pt-back]') : null;
+        if (bk) { ptGo('all'); return; }
       });
       function signInSuccess(user) {
         currentUser = { name: user.fullName || user.name, fullName: user.fullName || user.name, email: user.email, results: [] };
