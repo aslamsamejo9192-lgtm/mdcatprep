@@ -4861,8 +4861,9 @@
       }
       function ptViewDashboard() {
         var st = ptStats();
-        var html = '<div class="dash-hero"><div class="grow"><h2>' + ptGreet() + ' — Welcome to Student Portal</h2>' +
-          '<p>Your MDCAT 2027 Series 1 portal. Tests and resources added to this portal will appear here.</p></div>' +
+        var studentName = (currentUser && (currentUser.name || currentUser.fullName)) || '';
+        var html = '<div class="dash-hero"><div class="grow"><h2>' + ptGreet() + ' — ' + (studentName ? 'Welcome, ' + ptEsc(studentName) : 'Welcome to Student Portal') + '</h2>' +
+          '<p>Prepare for MDCAT 2027 with practice tests, MCQs, past papers and study notes. Track your progress and achieve your dream of becoming a doctor!</p></div>' +
           '<p class="hero-quote">&ldquo;Every MCQ You Solve Brings You One Step Closer to Your Dream.&rdquo;</p></div>';
         html += '<div class="pt-count"><div class="pt-count-label">MDCAT 2027 · 1 August 2027</div><div class="pt-count-row">' +
           '<div class="pt-count-box"><b id="ptCdDays">—</b><span>Days</span></div>' +
