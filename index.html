@@ -1272,6 +1272,15 @@
       #ptShell .topbar button{ background:rgba(255,255,255,.1); border:0; color:#fff; width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; }
       #ptShell .topbar button svg{ width:21px; height:21px; }
       #ptShell .topbar .sp{ flex:1; }
+      #ptShell .topbar button.pt-home-btn{ width:auto; padding:0 12px; gap:7px; font-size:13.5px; font-weight:700; }
+      #ptShell .topbar button.pt-home-btn svg{ width:18px; height:18px; }
+      #ptShell .side-foot button.pt-home-btn{ color:#bfe8d6; }
+      /* "Opening Portal" transition shown for 3s before the portal auto-opens */
+      .portal-opening{ position:fixed; inset:0; z-index:95; background:#070d1f; display:none; align-items:center; justify-content:center; flex-direction:column; gap:20px; color:#fff; }
+      .portal-opening.show{ display:flex; }
+      .portal-opening .ring{ width:52px; height:52px; border-radius:50%; border:4px solid rgba(255,255,255,.18); border-top-color:#0ec48a; animation:ptOpeningSpin 1s linear infinite; }
+      .portal-opening b{ font-family:"Plus Jakarta Sans","Sora",sans-serif; font-size:19px; letter-spacing:.01em; }
+      @keyframes ptOpeningSpin{ to{ transform:rotate(360deg); } }
       #ptShell .content{ padding:26px 28px 60px; max-width:1080px; width:100%; margin:0 auto; }
       #ptShell .scrim{ position:fixed; inset:0; background:rgba(0,0,0,.55); backdrop-filter:blur(4px); z-index:35; }
       /* ---------- COMMON ---------- */
@@ -3250,6 +3259,10 @@
           </div>
           <nav class="side-nav" id="ptSideNav" aria-label="Portal sections"></nav>
           <div class="side-foot">
+            <button type="button" class="pt-home-btn" data-pt-home>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V9.5Z"/></svg>
+              Back to Homepage
+            </button>
             <button type="button" id="ptSignOut">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg>
               Sign Out
@@ -3264,10 +3277,19 @@
             </button>
             <b id="ptTopTitle">Dashboard</b>
             <div class="sp"></div>
+            <button type="button" class="pt-home-btn" data-pt-home aria-label="Back to homepage">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V9.5Z"/></svg>
+              <span>Homepage</span>
+            </button>
           </div>
           <main class="content" id="ptContent"></main>
         </div>
       </div>
+    </div>
+    <!-- "Opening Portal" transition (3s) before the portal auto-opens -->
+    <div class="portal-opening" id="portalOpening" role="status" aria-live="polite">
+      <div class="ring" aria-hidden="true"></div>
+      <b>Opening Portal</b>
     </div>
     <!-- ================= Preview notice modal ================= -->
     <div class="modal-back" id="previewModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
@@ -5155,6 +5177,8 @@
       }
       function openPortal() {
         if (!currentUser) return;
+        ptClearAutoOpen();
+        ptHideOpening();
         var displayName = currentUser.name || currentUser.fullName || '';
         pt$('ptUserName').textContent = displayName;
         pt$('ptUserEmail').textContent = currentUser.email;
@@ -5171,16 +5195,35 @@
         lucide.createIcons();
       }
       function closePortal() {
+        ptClearAutoOpen();
+        ptHideOpening();
         ptEndExam();
         portalView.classList.remove('open');
         if (ptCountdownTimer) { clearInterval(ptCountdownTimer); ptCountdownTimer = null; }
         syncBodyScroll();
         setActiveMenuItem('home');
       }
+      /* Auto-open after sign-in: homepage 3s, then "Opening Portal" 3s, then portal. */
+      var ptAutoOpenTimers = [];
+      function ptClearAutoOpen() { for (var i = 0; i < ptAutoOpenTimers.length; i++) clearTimeout(ptAutoOpenTimers[i]); ptAutoOpenTimers = []; }
+      function ptHideOpening() { var ov = document.getElementById('portalOpening'); if (ov) ov.classList.remove('show'); }
+      function ptScheduleAutoOpen() {
+        ptClearAutoOpen();
+        ptAutoOpenTimers.push(setTimeout(function () {
+          if (!currentUser) return;
+          var ov = document.getElementById('portalOpening');
+          if (ov) ov.classList.add('show');
+          ptAutoOpenTimers.push(setTimeout(function () {
+            ptHideOpening();
+            if (currentUser) openPortal();
+          }, 3000));
+        }, 3000));
+      }
       /* Portal shell buttons (static shell, wired once) */
       pt$('ptMenuBtn').addEventListener('click', function () { pt$('ptSidebar').classList.add('open'); pt$('ptScrim').classList.remove('hidden'); });
       pt$('ptScrim').addEventListener('click', ptCloseSidebarMobile);
       pt$('ptSignOut').addEventListener('click', function () { closePortal(); signOut(); });
+      Array.prototype.forEach.call(document.querySelectorAll('[data-pt-home]'), function (b) { b.addEventListener('click', function () { closePortal(); }); });
       /* Portal navigation only — the portal never opens the website exam.
          Portal tests (when added later) will run in the portal's own exam flow. */
       pt$('ptContent').addEventListener('click', function (e) {
@@ -5212,6 +5255,8 @@
       }
       function signOut() {
         currentUser = null;
+        ptClearAutoOpen();
+        ptHideOpening();
         try { localStorage.removeItem(SESSION_KEY); } catch (e) {}
         try { sessionStorage.removeItem(SESSION_KEY); } catch (e) {}
         document.body.classList.remove('signed-in');
@@ -5329,8 +5374,8 @@
         setActiveMenuItem('tests');
         openAllTests('all');
       });
-      /* Signed in once before? Open the Student Portal straight away. */
-      if (restoreSession()) openPortal();
+      /* Signed in once before? Homepage 3s, then "Opening Portal" 3s, then portal. */
+      if (restoreSession()) ptScheduleAutoOpen();
     </script>
   </body>
 </html>
