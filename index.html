@@ -1309,12 +1309,6 @@
       #ptShell .dash-hero h2{ color:#fff; font-size:22px; line-height:1.15; }
       #ptShell .dash-hero p{ margin:6px 0 0; color:#bfe8d6; font-size:13.5px; line-height:1.6; }
       #ptShell .hero-quote{ flex:1 1 100%; margin:4px 0 0; font-family:"Plus Jakarta Sans","Sora",sans-serif; font-weight:800; font-size:16.5px; line-height:1.45; color:var(--gold2); text-align:center; }
-      #ptShell .pt-count{ margin-top:14px; background:radial-gradient(600px 240px at 85% -20%, rgba(14,196,138,.2), transparent 60%), linear-gradient(135deg,#063d2e,#0a5c44); border-radius:22px; padding:20px; color:#fff; border:1px solid rgba(255,255,255,.09); }
-      #ptShell .pt-count-label{ font-family:"Plus Jakarta Sans","Sora",sans-serif; font-size:11px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; color:var(--gold2); }
-      #ptShell .pt-count-row{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; margin-top:12px; }
-      #ptShell .pt-count-box{ background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); border-radius:16px; padding:14px 6px; text-align:center; min-width:0; }
-      #ptShell .pt-count-box b{ display:block; font-family:"Plus Jakarta Sans","Sora",sans-serif; font-size:24px; font-weight:800; line-height:1; }
-      #ptShell .pt-count-box span{ display:block; font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#9ed8bf; margin-top:5px; }
       #ptShell .stat-grid{ grid-template-columns:repeat(4,1fr); }
       #ptShell .stat-card{ padding:16px; }
       #ptShell .stat-card .lbl{ font-size:11px; font-weight:800; color:var(--ink2); letter-spacing:.1em; text-transform:uppercase; }
@@ -4738,7 +4732,6 @@
       ];
       var ptTestTitles = new Set(PT_TESTS.map(function (t) { return t.title; }));
       var ptSection = 'dashboard';
-      var ptCountdownTimer = null;
 
       /* ---------- Helpers ---------- */
       function pt$(id) { return document.getElementById(id); }
@@ -4862,15 +4855,9 @@
       function ptViewDashboard() {
         var st = ptStats();
         var studentName = (currentUser && (currentUser.name || currentUser.fullName)) || '';
-        var html = '<div class="dash-hero"><div class="grow"><h2>' + ptGreet() + ' — ' + (studentName ? 'Welcome, ' + ptEsc(studentName) : 'Welcome to Student Portal') + '</h2>' +
+        var html = '<div class="dash-hero"><div class="grow"><h2>' + ptGreet() + ' — ' + (studentName ? 'Welcome back, ' + ptEsc(studentName) : 'Welcome back') + '</h2>' +
           '<p>Prepare for MDCAT 2027 with practice tests, MCQs, past papers and study notes. Track your progress and achieve your dream of becoming a doctor!</p></div>' +
           '<p class="hero-quote">&ldquo;Every MCQ You Solve Brings You One Step Closer to Your Dream.&rdquo;</p></div>';
-        html += '<div class="pt-count"><div class="pt-count-label">MDCAT 2027 · 1 August 2027</div><div class="pt-count-row">' +
-          '<div class="pt-count-box"><b id="ptCdDays">—</b><span>Days</span></div>' +
-          '<div class="pt-count-box"><b id="ptCdHours">—</b><span>Hours</span></div>' +
-          '<div class="pt-count-box"><b id="ptCdMins">—</b><span>Mins</span></div>' +
-          '<div class="pt-count-box"><b id="ptCdSecs">—</b><span>Secs</span></div>' +
-          '</div></div>';
         html += '<div class="grid stat-grid" style="margin-top:16px">' +
           ptStatCard('Tests Completed', st.tests, 'in this portal') +
           ptStatCard('Average Score', st.tests ? st.avg + '%' : '—', st.tests ? 'across all attempts' : 'no attempts yet') +
@@ -5150,16 +5137,6 @@
       }
 
       /* ---------- Open / close ---------- */
-      function ptUpdateCountdown() {
-        var d = pt$('ptCdDays');
-        if (!d) return;
-        var diff = MDCAT_TARGET - Date.now();
-        if (diff < 0) diff = 0;
-        d.textContent = Math.floor(diff / 86400000);
-        pt$('ptCdHours').textContent = ptPad2(Math.floor(diff / 3600000) % 24);
-        pt$('ptCdMins').textContent = ptPad2(Math.floor(diff / 60000) % 60);
-        pt$('ptCdSecs').textContent = ptPad2(Math.floor(diff / 1000) % 60);
-      }
       function ptLoadResults() {
         ptResults = [];
         if (!currentUser) return;
@@ -5190,9 +5167,6 @@
         portalView.classList.add('open');
         document.body.style.overflow = 'hidden';
         portalView.scrollTop = 0;
-        ptUpdateCountdown();
-        if (ptCountdownTimer) clearInterval(ptCountdownTimer);
-        ptCountdownTimer = setInterval(ptUpdateCountdown, 1000);
         lucide.createIcons();
       }
       function closePortal() {
@@ -5200,7 +5174,6 @@
         ptHideOpening();
         ptEndExam();
         portalView.classList.remove('open');
-        if (ptCountdownTimer) { clearInterval(ptCountdownTimer); ptCountdownTimer = null; }
         syncBodyScroll();
         setActiveMenuItem('home');
       }
