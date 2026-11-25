@@ -1300,6 +1300,12 @@
       #ptShell .filter-row{ display:flex; flex-wrap:wrap; gap:9px; margin-bottom:18px; align-items:center; }
       #ptShell .filter-row .fbtn{ border:1px solid var(--line); background:var(--panel); color:var(--ink2); font-weight:800; font-size:13px; padding:8px 14px; border-radius:999px; min-height:38px; }
       #ptShell .filter-row .fbtn.on{ background:var(--navy); border-color:var(--navy); color:#fff; }
+      #ptShell .res-filter-card{ padding:18px; margin-bottom:18px; }
+      #ptShell .res-filters{ display:grid; grid-template-columns:1fr; gap:14px; }
+      @media (min-width:640px){ #ptShell .res-filters{ grid-template-columns:repeat(3,1fr); } }
+      #ptShell .res-filters label{ display:block; font-size:13px; font-weight:700; color:var(--ink2); margin-bottom:6px; }
+      #ptShell .res-filters select{ width:100%; min-height:46px; padding:10px 12px; border:1px solid var(--line); border-radius:12px; background:var(--panel2); color:var(--ink); font-size:15px; font-weight:600; outline:none; }
+      #ptShell .res-count{ font-size:13px; color:var(--ink2); margin:0 0 12px; }
       #ptShell .search-box{ flex:1; min-width:190px; }
       #ptShell .search-box input{ width:100%; padding:0 14px; min-height:44px; border:1px solid var(--line); border-radius:12px; background:var(--panel); color:var(--ink); font-size:14px; outline:none; }
       #ptShell .search-box input:focus{ border-color:var(--teal-bright); }
@@ -4894,7 +4900,7 @@
         else if (sec === 'chapter') c.innerHTML = ptViewChapterWise();
         else if (sec === 'subject') c.innerHTML = ptViewSubjectWise();
         else if (sec === 'custom') c.innerHTML = ptViewCustomTest();
-        else if (sec === 'resources') c.innerHTML = ptViewResources();
+        else if (sec === 'resources') { c.innerHTML = ptViewResources(); ptRenderResList(); }
         else if (sec === 'myresults') c.innerHTML = ptViewMyResults();
         else if (sec === 'performance') c.innerHTML = ptViewPerformance();
         else if (sec === 'exam') c.innerHTML = ptViewExam();
@@ -4988,13 +4994,74 @@
       }
 
       /* ---------- Study Resources (portal-only; empty until portal resources are added) ---------- */
-      function ptViewResources() {
-        var head = '<div class="page-head"><h2>Study Resources</h2><p>Access notes, PDFs and study materials.</p></div>';
-        if (!PT_RESOURCES.length) return head + '<div class="card empty"><h3>No resources yet</h3><p>Resources will be added here.</p></div>';
+      /* Filter state: '' = All. The chapter list rebuilds from the resources that
+         match the selected type + subject, so it always follows the subject —
+         and all three filters apply together to the list below. */
+      var ptResFilter = { type: '', subject: '', chapter: '' };
+      function ptResTypes() {
+        var order = ['Notes PDF', 'MCQs PDF', 'Past Paper'];
+        var seen = {};
+        PT_RESOURCES.forEach(function (r) { if (r.kind) seen[r.kind] = true; });
+        var out = order.filter(function (k) { return seen[k]; });
+        Object.keys(seen).forEach(function (k) { if (order.indexOf(k) < 0) out.push(k); });
+        return out;
+      }
+      function ptResSubjects() {
+        var order = ['Biology', 'Chemistry', 'Physics', 'English'];
+        var seen = {};
+        PT_RESOURCES.forEach(function (r) { if (r.subject) seen[r.subject] = true; });
+        var out = order.filter(function (s) { return seen[s]; });
+        Object.keys(seen).forEach(function (s) { if (order.indexOf(s) < 0) out.push(s); });
+        return out;
+      }
+      function ptResChapters() {
+        var seen = {};
+        PT_RESOURCES.forEach(function (r) {
+          if (!r.chapter) return;
+          if (ptResFilter.type && r.kind !== ptResFilter.type) return;
+          if (ptResFilter.subject && r.subject !== ptResFilter.subject) return;
+          seen[r.chapter] = true;
+        });
+        return Object.keys(seen).sort();
+      }
+      function ptResOptions(list, allLabel, current) {
+        var html = '<option value="">' + ptEsc(allLabel) + '</option>';
+        list.forEach(function (v) {
+          html += '<option value="' + ptEsc(v) + '"' + (v === current ? ' selected' : '') + '>' + ptEsc(v) + '</option>';
+        });
+        return html;
+      }
+      function ptRebuildResChapters() {
+        var sel = pt$('ptResChapter');
+        if (!sel) return;
+        var chapters = ptResChapters();
+        if (ptResFilter.chapter && chapters.indexOf(ptResFilter.chapter) < 0) ptResFilter.chapter = '';
+        sel.innerHTML = ptResOptions(chapters, 'All Chapters', ptResFilter.chapter);
+      }
+      function ptResFiltered() {
+        return PT_RESOURCES.filter(function (r) {
+          if (ptResFilter.type && r.kind !== ptResFilter.type) return false;
+          if (ptResFilter.subject && r.subject !== ptResFilter.subject) return false;
+          if (ptResFilter.chapter && r.chapter !== ptResFilter.chapter) return false;
+          return true;
+        });
+      }
+      function ptRenderResList() {
+        var box = pt$('ptResList');
+        if (!box) return;
+        var list = ptResFiltered();
+        var anyFilter = ptResFilter.type || ptResFilter.subject || ptResFilter.chapter;
+        if (!list.length) {
+          box.innerHTML = '<div class="card empty"><h3>' + (anyFilter ? 'No resources match these filters' : 'No resources yet') + '</h3><p>' + (anyFilter ? 'Try a different combination or clear the filters.' : 'Resources will be added here.') + '</p>' + (anyFilter ? '<div style="margin-top:16px"><button class="btn btn-teal" type="button" data-pt-res-clear>Clear filters</button></div>' : '') + '</div>';
+          return;
+        }
         var kinds = {};
-        PT_RESOURCES.forEach(function (r) { (kinds[r.kind] = kinds[r.kind] || []).push(r); });
-        var html = head;
-        Object.keys(kinds).forEach(function (k) {
+        var order = ['Notes PDF', 'MCQs PDF', 'Past Paper'];
+        list.forEach(function (r) { (kinds[r.kind || 'Other'] = kinds[r.kind || 'Other'] || []).push(r); });
+        var html = '';
+        if (anyFilter) html += '<p class="res-count">' + list.length + ' resource' + (list.length > 1 ? 's' : '') + ' found</p>';
+        order.concat(Object.keys(kinds).filter(function (k) { return order.indexOf(k) < 0; }).sort()).forEach(function (k) {
+          if (!kinds[k]) return;
           html += '<h3 class="sec-title">' + ptEsc(k) + '</h3><div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr))">';
           kinds[k].forEach(function (r) {
             html += '<div class="card pt-test-card"><div class="pt-test-meta">' + ptSubjChip(r.subject) + '<span class="chip chip-res">' + ptEsc(r.chapter || r.subject || '') + '</span></div>' +
@@ -5003,7 +5070,17 @@
           });
           html += '</div>';
         });
-        return html;
+        box.innerHTML = html;
+      }
+      function ptViewResources() {
+        var head = '<div class="page-head"><h2>Study Resources</h2><p>Find your MDCAT study materials</p></div>';
+        return head +
+          '<div class="card res-filter-card"><div class="res-filters">' +
+          '<div><label for="ptResType">Resource Type</label><select id="ptResType">' + ptResOptions(ptResTypes(), 'All Types', ptResFilter.type) + '</select></div>' +
+          '<div><label for="ptResSubject">Subject</label><select id="ptResSubject">' + ptResOptions(ptResSubjects(), 'All Subjects', ptResFilter.subject) + '</select></div>' +
+          '<div><label for="ptResChapter">Chapter</label><select id="ptResChapter">' + ptResOptions(ptResChapters(), 'All Chapters', ptResFilter.chapter) + '</select></div>' +
+          '</div></div>' +
+          '<div id="ptResList"></div>';
       }
 
       /* ---------- My Results & Performance ---------- */
@@ -5288,6 +5365,15 @@
         if (cc) { ptGo('exam'); return; }
         var bk = e.target.closest ? e.target.closest('[data-pt-back]') : null;
         if (bk) { ptGo('all'); return; }
+        var rc = e.target.closest ? e.target.closest('[data-pt-res-clear]') : null;
+        if (rc) { ptResFilter.type = ''; ptResFilter.subject = ''; ptResFilter.chapter = ''; ptGo('resources'); return; }
+      });
+      pt$('ptContent').addEventListener('change', function (e) {
+        var t = e.target;
+        if (!t || !t.id) return;
+        if (t.id === 'ptResType') { ptResFilter.type = t.value; ptResFilter.chapter = ''; ptRebuildResChapters(); ptRenderResList(); }
+        else if (t.id === 'ptResSubject') { ptResFilter.subject = t.value; ptResFilter.chapter = ''; ptRebuildResChapters(); ptRenderResList(); }
+        else if (t.id === 'ptResChapter') { ptResFilter.chapter = t.value; ptRenderResList(); }
       });
       function signInSuccess(user) {
         currentUser = { name: user.fullName || user.name, fullName: user.fullName || user.name, email: user.email, results: [] };
