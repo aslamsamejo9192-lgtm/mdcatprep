@@ -4879,16 +4879,16 @@
         return '<div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr))">' + list.map(ptTestCard).join('') + '</div>';
       }
       function ptViewAllTests() {
-        var html = '<div class="page-head"><h2>All Tests</h2><p>Tests added to this portal will appear here.</p></div>';
+        var html = '<div class="page-head"><h2>All Tests</h2><p>Explore and attempt all available tests.</p></div>';
         if (!PT_TESTS.length) return html + '<div class="card empty"><h3>No tests added yet</h3><p>Tests will be added here.</p></div>';
         return html + ptTestListHtml(PT_TESTS);
       }
       function ptViewGeneralTests() {
-        return '<div class="page-head"><h2>General Tests</h2><p>Combined papers added to this portal will appear here.</p></div>' +
+        return '<div class="page-head"><h2>General Tests</h2><p>Practice mixed-topic MDCAT questions.</p></div>' +
           '<div class="card empty"><h3>No general papers yet</h3><p>General papers will be added here.</p></div>';
       }
       function ptViewChapterWise() {
-        var html = '<div class="page-head"><h2>Chapter-wise Tests</h2><p>Chapter tests added to this portal will appear here, grouped by subject.</p></div>';
+        var html = '<div class="page-head"><h2>Chapter-wise Tests</h2><p>Prepare chapter by chapter with MCQs.</p></div>';
         if (!PT_TESTS.length) return html + '<div class="card empty"><h3>No chapter tests yet</h3><p>Chapter tests will be added here.</p></div>';
         var bySubj = {};
         PT_TESTS.forEach(function (t) { (bySubj[t.subject] = bySubj[t.subject] || []).push(t); });
@@ -4898,7 +4898,7 @@
         return html;
       }
       function ptViewSubjectWise() {
-        var html = '<div class="page-head"><h2>Subject-wise Tests</h2><p>Subject tests added to this portal will appear here.</p></div>';
+        var html = '<div class="page-head"><h2>Subject-wise Tests</h2><p>Test your knowledge by subject.</p></div>';
         if (!PT_TESTS.length) return html + '<div class="card empty"><h3>No subject tests yet</h3><p>Subject tests will be added here.</p></div>';
         var bySubj = {};
         PT_TESTS.forEach(function (t) { (bySubj[t.subject] = bySubj[t.subject] || []).push(t); });
@@ -4910,19 +4910,19 @@
 
       /* ---------- Custom Test (portal-only; empty until portal tests are added) ---------- */
       function ptViewCustomTest() {
-        return '<div class="page-head"><h2>Custom Test</h2><p>Build your own test from portal questions.</p></div>' +
+        return '<div class="page-head"><h2>Custom Test</h2><p>Create a personalized test.</p></div>' +
           '<div class="card empty"><h3>No questions available yet</h3><p>Custom tests will work once tests are added.</p></div>';
       }
 
       /* ---------- Study Resources (portal-only; empty until portal resources are added) ---------- */
       function ptViewResources() {
-        return '<div class="page-head"><h2>Study Resources</h2><p>Resources added to this portal will appear here.</p></div>' +
+        return '<div class="page-head"><h2>Study Resources</h2><p>Access notes, PDFs and study materials.</p></div>' +
           '<div class="card empty"><h3>No resources yet</h3><p>Resources will be added here.</p></div>';
       }
 
       /* ---------- My Results & Performance ---------- */
       function ptViewMyResults() {
-        var html = '<div class="page-head"><h2>My Results</h2><p>Every test you attempt is recorded here, saved with your account.</p></div>';
+        var html = '<div class="page-head"><h2>My Results</h2><p>Review your test scores and answers.</p></div>';
         if (!ptResults.length) return html + '<div class="card empty"><h3>No results yet</h3><p>Attempt a test and your score and result will be saved here.</p><div style="margin-top:16px"><button class="btn btn-teal" type="button" data-goto="all">Start a Test</button></div></div>';
         html += '<div class="card" style="overflow-x:auto"><table class="tbl"><tr><th>Test</th><th>Score</th><th>Result</th><th>Date</th></tr>';
         ptResults.forEach(function (r) {
@@ -4933,7 +4933,7 @@
         return html + '</table></div>';
       }
       function ptViewPerformance() {
-        var html = '<div class="page-head"><h2>Performance</h2><p>Your subject-wise accuracy across all your attempts.</p></div>';
+        var html = '<div class="page-head"><h2>Performance</h2><p>Track your learning and improvement.</p></div>';
         var st = ptStats();
         html += '<div class="grid stat-grid" style="grid-template-columns:repeat(auto-fit,minmax(160px,1fr));margin-bottom:6px">' +
           ptStatCard('Tests Taken', st.tests, '') + ptStatCard('Average Score', st.tests ? st.avg + '%' : '—', '') +
