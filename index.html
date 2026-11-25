@@ -4733,6 +4733,66 @@
       var ptTestTitles = new Set(PT_TESTS.map(function (t) { return t.title; }));
       var ptSection = 'dashboard';
 
+      /* ---------- Portal cloud data (admin panel: portalTests + portalResources) ----------
+         Tests and resources uploaded in the portal admin panel live in Firestore.
+         When they load, they REPLACE the hardcoded PT_TESTS above (the panel is
+         the source of truth); if the fetch fails or nothing is published yet,
+         the hardcoded tests stay as the fallback so the portal never goes empty. */
+      var PT_CLOUD_TESTS = null; /* null = not loaded yet */
+      var PT_RESOURCES = [];
+      var ptCloudLoading = false;
+      function ptFsBool(fields, name) { if (!fields || !fields[name]) return false; return fields[name].booleanValue === true; }
+      function ptFsArr(fields, name) { if (!fields || !fields[name] || !fields[name].arrayValue) return []; return fields[name].arrayValue.values || []; }
+      function ptCloudTestFromDoc(doc) {
+        if (!doc || !doc.fields) return null;
+        var f = doc.fields;
+        if (f.published && f.published.booleanValue === false) return null;
+        var qs = ptFsArr(f, 'questions').map(function (qv) {
+          var qf = (qv && qv.mapValue && qv.mapValue.fields) || {};
+          var opts = ptFsArr(qf, 'opts').map(function (ov) { return (ov && typeof ov.stringValue === 'string') ? ov.stringValue : ''; });
+          if (opts.length < 4) return null;
+          return { q: fsReadStr(qf, 'q'), options: opts.slice(0, 4), answer: fsReadNum(qf, 'ans'), explanation: fsReadStr(qf, 'exp'), topic: fsReadStr(qf, 'topic') };
+        }).filter(function (q) { return q && q.q && q.options.every(function (o) { return o !== ''; }); });
+        if (!qs.length) return null;
+        var id = String(doc.name || '').split('/').pop() || ('cloud-' + Math.random().toString(36).slice(2, 8));
+        return { id: id, title: fsReadStr(f, 'title'), subject: fsReadStr(f, 'subject'), chapter: fsReadStr(f, 'chapter'), minutes: fsReadNum(f, 'minutes') || 60, questions: qs };
+      }
+      function ptCloudResourceFromDoc(doc) {
+        if (!doc || !doc.fields) return null;
+        var f = doc.fields;
+        var url = fsReadStr(f, 'url');
+        var title = fsReadStr(f, 'title');
+        if (!url || !title) return null;
+        var id = String(doc.name || '').split('/').pop() || ('res-' + Math.random().toString(36).slice(2, 8));
+        return { id: id, title: title, subject: fsReadStr(f, 'subject'), chapter: fsReadStr(f, 'chapter'), kind: fsReadStr(f, 'kind') || 'Notes PDF', url: url, createdAt: fsReadStr(f, 'createdAt') };
+      }
+      function ptLoadCloudData() {
+        if (ptCloudLoading) return;
+        ptCloudLoading = true;
+        var testsP = fetch(FS_BASE + '/portalTests?pageSize=100&key=' + FS_KEY).then(function (r) { if (!r.ok) throw new Error('tests-failed'); return r.json(); }).catch(function () { return null; });
+        var resP = fetch(FS_BASE + '/portalResources?pageSize=100&key=' + FS_KEY).then(function (r) { if (!r.ok) throw new Error('resources-failed'); return r.json(); }).catch(function () { return null; });
+        Promise.all([testsP, resP]).then(function (out) {
+          var changed = false;
+          if (out[0] && out[0].documents) {
+            var cloud = out[0].documents.map(ptCloudTestFromDoc).filter(function (t) { return t && t.title; });
+            if (cloud.length) {
+              PT_TESTS.length = 0;
+              cloud.forEach(function (t) { PT_TESTS.push(t); });
+              ptTestTitles = new Set(PT_TESTS.map(function (t) { return t.title; }));
+              PT_CLOUD_TESTS = cloud;
+              changed = true;
+            }
+          }
+          if (out[1] && out[1].documents) {
+            var res = out[1].documents.map(ptCloudResourceFromDoc).filter(function (x) { return x; });
+            res.sort(function (a, b) { return (b.createdAt || '').localeCompare(a.createdAt || ''); });
+            PT_RESOURCES = res;
+            changed = true;
+          }
+          if (changed && portalView.classList.contains('open') && ptSection !== 'exam' && currentUser) ptGo(ptSection);
+        });
+      }
+
       /* ---------- Helpers ---------- */
       function pt$(id) { return document.getElementById(id); }
       function ptEsc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
@@ -4930,8 +4990,21 @@
 
       /* ---------- Study Resources (portal-only; empty until portal resources are added) ---------- */
       function ptViewResources() {
-        return '<div class="page-head"><h2>Study Resources</h2><p>Access notes, PDFs and study materials.</p></div>' +
-          '<div class="card empty"><h3>No resources yet</h3><p>Resources will be added here.</p></div>';
+        var head = '<div class="page-head"><h2>Study Resources</h2><p>Access notes, PDFs and study materials.</p></div>';
+        if (!PT_RESOURCES.length) return head + '<div class="card empty"><h3>No resources yet</h3><p>Resources will be added here.</p></div>';
+        var kinds = {};
+        PT_RESOURCES.forEach(function (r) { (kinds[r.kind] = kinds[r.kind] || []).push(r); });
+        var html = head;
+        Object.keys(kinds).forEach(function (k) {
+          html += '<h3 class="sec-title">' + ptEsc(k) + '</h3><div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr))">';
+          kinds[k].forEach(function (r) {
+            html += '<div class="card pt-test-card"><div class="pt-test-meta">' + ptSubjChip(r.subject) + '<span class="chip chip-res">' + ptEsc(r.chapter || r.subject || '') + '</span></div>' +
+              '<h3>' + ptEsc(r.title) + '</h3><p>' + ptEsc(r.subject || '') + (r.chapter ? ' · ' + ptEsc(r.chapter) : '') + '</p>' +
+              '<div><a class="btn btn-teal" href="' + ptEsc(r.url) + '" target="_blank" rel="noopener">Open PDF</a></div></div>';
+          });
+          html += '</div>';
+        });
+        return html;
       }
 
       /* ---------- My Results & Performance ---------- */
@@ -5164,6 +5237,7 @@
         ptBuildNav();
         ptGo('dashboard');
         ptLoadResults();
+        ptLoadCloudData();
         portalView.classList.add('open');
         document.body.style.overflow = 'hidden';
         portalView.scrollTop = 0;
