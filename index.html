@@ -1313,7 +1313,6 @@
       #ptShell .stat-card{ padding:16px; }
       #ptShell .stat-card .lbl{ font-size:11px; font-weight:800; color:var(--ink2); letter-spacing:.1em; text-transform:uppercase; }
       #ptShell .stat-card .val{ font-family:"Plus Jakarta Sans","Sora",sans-serif; font-size:22px; font-weight:800; margin:8px 0 4px; }
-      #ptShell .stat-card .sub{ font-size:12.5px; font-weight:700; color:var(--ink2); margin-top:2px; }
       #ptShell .quick-grid{ grid-template-columns:repeat(4,1fr); }
       #ptShell .quick-card{ padding:14px; text-align:left; border:1px solid var(--line); background:var(--panel2); border-radius:14px; color:var(--ink); min-height:76px; display:flex; flex-direction:column; gap:8px; }
       #ptShell .quick-card .ic{ width:42px; height:42px; border-radius:11px; display:flex; align-items:center; justify-content:center; }
@@ -4906,8 +4905,8 @@
       }
 
       /* ---------- Dashboard ---------- */
-      function ptStatCard(lbl, val, sub) {
-        return '<div class="card stat-card"><div class="lbl">' + lbl + '</div><div class="val">' + val + '</div><div class="sub">' + sub + '</div></div>';
+      function ptStatCard(lbl, val) {
+        return '<div class="card stat-card"><div class="lbl">' + lbl + '</div><div class="val">' + val + '</div></div>';
       }
       function ptQuickCard(sec, ic, title, sub) {
         return '<button class="quick-card" type="button" data-goto="' + sec + '"><span class="ic" style="background:var(--teal-soft);color:var(--teal-bright)">' + ptIcon(ic) + '</span><b>' + title + '</b><span>' + sub + '</span></button>';
@@ -4919,10 +4918,10 @@
           '<p>Prepare for MDCAT 2027 with practice tests, MCQs, past papers and study notes. Track your progress and achieve your dream of becoming a doctor!</p></div>' +
           '<p class="hero-quote">&ldquo;Every MCQ You Solve Brings You One Step Closer to Your Dream.&rdquo;</p></div>';
         html += '<div class="grid stat-grid" style="margin-top:16px">' +
-          ptStatCard('Tests Completed', st.tests, 'in this portal') +
-          ptStatCard('Average Score', st.tests ? st.avg + '%' : '—', st.tests ? 'across all attempts' : 'no attempts yet') +
-          ptStatCard('Questions Attempted', st.attempted, 'from your portal results') +
-          ptStatCard('Best Score', st.tests ? st.best + '%' : '—', st.tests ? 'your highest result' : 'attempt a test to set it') +
+          ptStatCard('Tests Completed', st.tests) +
+          ptStatCard('Average Score', st.tests ? st.avg + '%' : '—') +
+          ptStatCard('Questions Attempted', st.attempted) +
+          ptStatCard('Best Score', st.tests ? st.best + '%' : '—') +
           '</div>';
         html += '<h3 class="sec-title">Quick Actions</h3><div class="grid quick-grid">' +
           ptQuickCard('all', 'all', 'All Tests', PT_TESTS.length ? PT_TESTS.length + ' test available' : 'No tests added yet') +
@@ -5023,8 +5022,8 @@
         var html = '<div class="page-head"><h2>Performance</h2><p>Track your learning and improvement.</p></div>';
         var st = ptStats();
         html += '<div class="grid stat-grid" style="grid-template-columns:repeat(auto-fit,minmax(160px,1fr));margin-bottom:6px">' +
-          ptStatCard('Tests Taken', st.tests, '') + ptStatCard('Average Score', st.tests ? st.avg + '%' : '—', '') +
-          ptStatCard('Questions Attempted', st.attempted, '') + ptStatCard('Best Score', st.tests ? st.best + '%' : '—', '') + '</div>';
+          ptStatCard('Tests Taken', st.tests) + ptStatCard('Average Score', st.tests ? st.avg + '%' : '—') +
+          ptStatCard('Questions Attempted', st.attempted) + ptStatCard('Best Score', st.tests ? st.best + '%' : '—') + '</div>';
         if (!ptResults.length) return html + '<div class="card empty" style="margin-top:14px"><h3>Nothing to analyse yet</h3><p>Performance charts appear after your first attempt.</p></div>';
         ['Biology', 'Chemistry', 'Physics', 'Mixed'].forEach(function (subj) {
           var rs = ptResults.filter(function (r) { return ptSubjectOf(r) === subj; });
